@@ -1,0 +1,213 @@
+{
+  "brand": {
+    "prefix": "SHRI GAURISHANKAR",
+    "title": "BAIKUNTHNATH DHAM",
+    "subtitle": "BAIKATHPUR (KHUSRPUR)"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "aboutUs": "About Us",
+    "history": "History",
+    "construction": "Construction",
+    "darshan": "Darshan",
+    "gallery": "Gallery",
+    "galleryPhotos": "Photos",
+    "galleryVideos": "Videos",
+    "galleryWallpapers": "Wallpapers",
+    "galleryMedia": "Media Coverage",
+    "onlineServices": "Online Services",
+    "servicePoojaBooking": "Pooja Booking",
+    "serviceRoomBooking": "Room Booking",
+    "serviceVolunteers": "Volunteers",
+    "donate": "Donation",
+    "donateOnline": "Online Donation",
+    "donateSeva": "Seva Daan",
+    "members": "Members",
+    "memberPriest": "Priest",
+    "memberTrust": "Trust Members",
+    "memberManagement": "Management",
+    "contact": "Contact"
+  },
+  "topbar": {
+    "pratahAarti": "Pratah Aarti",
+    "hours": "Mandir Hours",
+    "hoursTime": "5:00 AM - 9:00 PM",
+    "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Om Namah Shivaya ॥",
+    "helpdesk": "Helpdesk",
+    "eDonation": "e-Donation / Seva"
+  },
+  "hero": {
+    "chant": "ॐ नमो नारायणाय",
+    "titleLine1": "Baikunthnath Dham",
+    "titleLine2": "Baikathpur",
+    "desc": "A divine abode of Lord Vishnu where faith meets divinity and peace resides.",
+    "liveDarshan": "LIVE DARSHAN",
+    "donate": "DONATE"
+  },
+  "upcomingEvents": {
+    "title": "Upcoming Events",
+    "subtitle": "Upcoming religious events and celebrations organized at our holy shrine",
+    "calendarTitle": "Divine Calendar",
+    "month": "August 2026",
+    "events": [
+      {
+        "id": 1,
+        "day": "07",
+        "month": "Aug",
+        "year": "2026",
+        "badgeGradient": "from-amber-800/90 to-amber-950/95",
+        "title": "Shri Krishna Janmashtami",
+        "icon": "🪶"
+      },
+      {
+        "id": 2,
+        "day": "11",
+        "month": "Aug",
+        "year": "2026",
+        "badgeGradient": "from-slate-800/90 to-slate-950/95",
+        "title": "Shravan Somvar Vishesh Puja",
+        "icon": "🛕"
+      },
+      {
+        "id": 3,
+        "day": "15",
+        "month": "Aug",
+        "year": "2026",
+        "badgeGradient": "from-emerald-800/90 to-emerald-950/95",
+        "title": "Independence Day Samaroh",
+        "icon": "🇮🇳"
+      },
+      {
+        "id": 4,
+        "day": "19",
+        "month": "Aug",
+        "year": "2026",
+        "badgeGradient": "from-orange-800/90 to-amber-950/95",
+        "title": "Rakshabandhan Vishesh Karyakram",
+        "icon": "🪷"
+      },
+      {
+        "id": 5,
+        "day": "26",
+        "month": "Aug",
+        "year": "2026",
+        "badgeGradient": "from-purple-800/90 to-purple-950/95",
+        "title": "Shri Ganesh Chaturthi",
+        "icon": "🐘"
+      }
+    ]
+  },
+  "about": {
+    "chant": "॥ Om Namah Shivaya ॥",
+    "title": "About Us",
+    "subtitle": "Union of Faith, Service, and Eternal Sanatan Culture",
+    "desc1": "Shri Gaurishankar Baikunthnath Dham, located in Baikathpur (Khusrpur), is a sacred pilgrimage shrine situated on the holy banks of Mother Ganga. It holds immense spiritual glory where Lord Shiva (Gaurishankar) and Lord Vishnu (Baikunthnath) reside together, guiding devotees toward spiritual enlightenment and divine bliss.",
+    "desc2": "This holy abode is not only a center of worship, but also continuously strives for the revival of Sanatan Vedic culture, anna kshetra (free prasad meals), healthcare, and human welfare. Thousands of pilgrims visit every year to seek divine blessings and perform sacred rituals.",
+    "desc3": "The sacred origins of this shrine date back to ancient historical traditions. The evening Aarti and divine Ganga Aarti fill the hearts of devotees with profound serenity, instilling positive energy and spiritual awakening in every visitor.",
+    "readMore": "READ MORE",
+    "missionTitle": "Our Mission",
+    "missionDesc": "Awakening spiritual consciousness in society through devotion, sadhana, and religious initiatives.",
+    "pillars": {
+      "spiritual": "Spiritual Awakening",
+      "welfare": "Seva & Welfare",
+      "culture": "Cultural Heritage",
+      "harmony": "Unity & Harmony"
+    },
+    "quoteLine1": "Dharma is the foundation of life,",
+    "quoteLine2": "Seva is true worship, and",
+    "quoteLine3": "Humanity is our highest religion."
+  },
+  "liveDarshan": {
+    "badge": "LIVE STREAM",
+    "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Direct Live Darshan ॥",
+    "title": "Live Darshan",
+    "subtitle": "Experience the divine presence of Lord Gaurishankar & Baikunthnath from anywhere in the world",
+    "playerStatus": "Shri Baikunthnath Dham Main Sanctum Live",
+    "viewers": "2,450 Viewers Live",
+    "aartiSchedule": {
+      "pratah": "Pratah Aarti",
+      "pratahTime": "5:30 AM • Live",
+      "sandhya": "Sandhya Aarti",
+      "sandhyaTime": "6:30 PM • Live",
+      "shayan": "Shayan Aarti",
+      "shayanTime": "8:30 PM • Live"
+    }
+  },
+  "mandirSchedule": {
+    "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Daily Aarti & Temple Hours ॥",
+    "title": "Aarti & Temple Timings",
+    "subtitle": "Daily schedule of divine Aarti ceremonies, temple opening, and closing hours",
+    "hoursTitle": "Temple Door Hours",
+    "openingTime": "Opening Time",
+    "openingTimeVal": "05:00 AM",
+    "openingSub": "Morning door opening & mangal aarti",
+    "closingTime": "Closing Time",
+    "closingTimeVal": "09:00 PM",
+    "closingSub": "Night door closing & shayan samadhi",
+    "statusOpen": "OPEN NOW FOR DARSHAN",
+    "aartiCards": {
+      "pratah": "Pratah Aarti",
+      "pratahTime": "05:30 AM",
+      "pratahSub": "Morning Alankar & Mangala Aarti",
+      "rajbhog": "Rajbhog Aarti",
+      "rajbhogTime": "12:00 PM",
+      "rajbhogSub": "Midday Bhog Prasad Offering",
+      "sandhya": "Sandhya Aarti",
+      "sandhyaTime": "06:30 PM",
+      "sandhyaSub": "Evening Ganga Aarti & Deepotsav",
+      "shayan": "Shayan Aarti",
+      "shayanTime": "08:30 PM",
+      "shayanSub": "Night Flower Decoration & Shayan"
+    }
+  },
+  "gallery": {
+    "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Divine Photo Gallery ॥",
+    "title": "DIVINE GALLERY",
+    "subtitle": "Glance into the divine beauty, grand festivals, and sacred moments of our temple",
+    "explore": "EXPLORE GALLERY",
+    "items": {
+      "temple": "TEMPLE",
+      "festivals": "FESTIVALS",
+      "rathYatra": "RATH YATRA",
+      "janmashtami": "JANMASHTAMI",
+      "droneView": "DRONE VIEW",
+      "devotees": "DEVOTEES"
+    }
+  },
+  "historyPage": {
+    "chant": "॥ ॐ नमः शिवाय • ॐ नमो नारायणाय ॥",
+    "title": "History & Divine Heritage",
+    "subtitle": "Centuries of Divine Legacy & Ancient Sanatan Roots at Baikathpur",
+    "overviewTitle": "The Sacred Heritage of Baikunthnath Dham",
+    "overviewSubtitle": "Uniting Eternal Devotion & Vedic Traditions on the Banks of Ganga",
+    "overviewDesc1": "Situated on the holy banks of Mother Ganga in Baikathpur (Khusrupur), Patna, Shri Gaurishankar Baikunthnath Dham is one of the most revered ancient pilgrimage shrines in Bihar. The temple is historically famous for housing the rare Hari-Hara composite deity form where Lord Shiva and Lord Vishnu reside in single sanctum.",
+    "overviewDesc2": "According to ancient historical records and oral traditions, the shrine gained grand royal patronage during the 16th century under Raja Man Singh, who reconstructed the temple sanctum and consecrated the holy Shivling after experiencing divine grace on his expedition.",
+    "overviewDesc3": "Over centuries, millions of pilgrims, saints, and devotees have visited this sacred Ganga ghat to perform pinda daan, holy dips, and offer prayers for liberation and spiritual peace.",
+    "timelineTitle": "Key Eras in Temple History",
+    "timeline1Title": "Ancient Vedic Roots",
+    "timeline1Sub": "Pre-16th Century",
+    "timeline1Desc": "Sacred reverence of Baikathpur Ganga banks as a tapobhumi for rishis performing sadhana under ancient banyan trees.",
+    "timeline2Title": "Royal Construction & Revival",
+    "timeline2Sub": "16th Century (Raja Man Singh Era)",
+    "timeline2Desc": "Restoration of the main garbha griha, stone architecture construction, and royal patronage of daily aarti rituals.",
+    "timeline3Title": "Modern Era & Trust Governance",
+    "timeline3Sub": "Present Day",
+    "timeline3Desc": "Establishment of Shri Baikunthnath Mandir Trust, Ganga Ghat renovation, bhandara halls, and global live streaming."
+  },
+  "darshanPage": {
+    "chant": "॥ ॐ नमो भगवते वासुदेवाय • ॐ नमः शिवाय ॥",
+    "title": "Live Darshan & Virtual Tour",
+    "subtitle": "Immerse yourself in the divine presence of Lord Gaurishankar & Baikunthnath Dham from anywhere in the world",
+    "liveTitle": "24x7 Main Sanctum Live Streaming",
+    "liveSubtitle": "Direct Live Broadcast from Garbha Griha & Ganga Aarti Deck",
+    "virtualTitle": "360° Virtual Sanctum Tour",
+    "virtualSubtitle": "Explore the Sacred Shrine, Ganga Ghat, and Temple Campus Interactively",
+    "tourSpots": {
+      "garbhaGriha": "Main Garbha Griha (Sanctum)",
+      "gangaGhat": "Holy Ganga Ghat Promenade",
+      "mandap": "Carved Sandstone Mandap",
+      "campus": "Temple Courtyard & Campus"
+    }
+  }
+}

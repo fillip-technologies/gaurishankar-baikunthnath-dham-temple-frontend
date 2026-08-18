@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Yatra+One&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-hindi: 'Yatra One', cursive;
+
+    /* Primary Accent Gold from screenshot */
+    --color-gold-accent: #c28227;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #f8fafc;
+    color: #1e293b;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Custom Exact Utilities */
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.text-gold-accent {
+  color: #c28227;
+}
+
+.bg-gold-btn {
+  background-color: #c28227;
+}
+
+.bg-gold-btn:hover {
+  background-color: #a86e1e;
+}
+
+.border-gold-accent {
+  border-color: #c28227;
+}
+
+/* 100% Seamless Infinite Chant Marquee Ticker (No Gaps) */
+@keyframes marquee-seamless {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-continuous {
+  display: flex;
+  width: max-content;
+  animation: marquee-seamless 30s linear infinite;
+}
+
+.animate-marquee-continuous:hover {
+  animation-play-state: paused;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Top to Down Unfold Animation for Dropdown */
+@keyframes foldDown {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.7) translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+.animate-fold-down {
+  transform-origin: top;
+  animation: foldDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

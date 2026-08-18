@@ -1,0 +1,44 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Sacred HD Wallpapers ॥",
+  "title": "Divine HD Wallpapers",
+  "subtitle": "Download high-resolution sacred wallpapers of Shri Baikunthnath Dham for your phone & desktop",
+  "categories": {
+    "all": "All Wallpapers",
+    "mobile": "Mobile (Vertical)",
+    "desktop": "Desktop (Horizontal)",
+    "sanctum": "Sanctum & Deities",
+    "gangaGhat": "Ganga Ghat"
+  },
+  "wallpapers": [
+    {
+      "id": 1,
+      "category": "desktop",
+      "resolution": "4K Ultra HD"
+    },
+    {
+      "id": 2,
+      "category": "mobile",
+      "resolution": "Full HD Vertical"
+    },
+    {
+      "id": 3,
+      "category": "gangaGhat",
+      "resolution": "4K Ultra HD"
+    },
+    {
+      "id": 4,
+      "category": "sanctum",
+      "resolution": "4K Ultra HD"
+    },
+    {
+      "id": 5,
+      "category": "mobile",
+      "resolution": "Full HD Vertical"
+    },
+    {
+      "id": 6,
+      "category": "desktop",
+      "resolution": "4K Ultra HD"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "chant": "॥ श्री गौरीशंकर बैकुंठनाथ धाम • पावन एचडी वॉलपेपर ॥",
+  "title": "दिव्य एचडी वॉलपेपर",
+  "subtitle": "अपने मोबाइल एवं डेस्कटॉप हेतु श्री बैकुंठनाथ धाम के उच्च गुणवत्ता वाले पावन वॉलपेपर डाउनलोड करें",
+  "categories": {
+    "all": "सभी वॉलपेपर",
+    "mobile": "मोबाइल वॉलपेपर",
+    "desktop": "डेस्कटॉप वॉलपेपर",
+    "sanctum": "गर्भ गृह एवं स्वरूप",
+    "gangaGhat": "गंगा घाट"
+  },
+  "wallpapers": [
+    {
+      "id": 1,
+      "category": "desktop",
+      "resolution": "४K अल्ट्रा एचडी"
+    },
+    {
+      "id": 2,
+      "category": "mobile",
+      "resolution": "फुल एचडी मोबाइल"
+    },
+    {
+      "id": 3,
+      "category": "gangaGhat",
+      "resolution": "४K अल्ट्रा एचडी"
+    },
+    {
+      "id": 4,
+      "category": "sanctum",
+      "resolution": "४K अल्ट्रा एचडी"
+    },
+    {
+      "id": 5,
+      "category": "mobile",
+      "resolution": "फुल एचडी मोबाइल"
+    },
+    {
+      "id": 6,
+      "category": "desktop",
+      "resolution": "४K अल्ट्रा एचडी"
+    }
+  ]
+}

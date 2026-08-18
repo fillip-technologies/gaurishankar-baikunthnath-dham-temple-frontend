@@ -1,0 +1,56 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Divine Video Gallery ॥",
+  "title": "Divine Video Gallery",
+  "subtitle": "Watch holy Aartis, grand festival celebrations, divine Darshan broadcasts, and sacred rituals",
+  "categories": {
+    "all": "All Videos",
+    "aarti": "Daily Aarti & Rituals",
+    "festivals": "Festivals & Utsav",
+    "bhajans": "Kirtan & Bhajans",
+    "documentary": "Mandir Documentary"
+  },
+  "videos": [
+    {
+      "id": 1,
+      "category": "aarti",
+      "title": "Shri Baikunthnath Pratah Mangal Aarti",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "12:45"
+    },
+    {
+      "id": 2,
+      "category": "festivals",
+      "title": "Grand Shravan Somvar Mahaganga Aarti",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "18:20"
+    },
+    {
+      "id": 3,
+      "category": "aarti",
+      "title": "Sandhya Aarti & Deepotsav at Baikathpur",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "15:10"
+    },
+    {
+      "id": 4,
+      "category": "documentary",
+      "title": "Glory of Shri Gaurishankar Baikunthnath Dham",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "25:30"
+    },
+    {
+      "id": 5,
+      "category": "festivals",
+      "title": "Shri Krishna Janmashtami Midnight Darshan",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "14:15"
+    },
+    {
+      "id": 6,
+      "category": "bhajans",
+      "title": "Divine Harihara Vedic Chanting & Kirtan",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "20:00"
+    }
+  ]
+}

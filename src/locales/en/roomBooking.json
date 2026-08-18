@@ -1,0 +1,57 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Yatri Niwas & Bhakta Nivas ॥",
+  "title": "Yatri Niwas & Dharamshala Room Booking",
+  "subtitle": "Experience peaceful, clean, and spiritual stay facilities right within the holy temple premises on the Ganga banks",
+  "checkinCheckout": {
+    "checkin": "Check-in Time",
+    "checkinVal": "12:00 PM",
+    "checkout": "Check-out Time",
+    "checkoutVal": "11:00 AM",
+    "idProof": "Govt Photo ID Required (Aadhaar / Voter ID / Passport)"
+  },
+  "rooms": [
+    {
+      "id": 1,
+      "name": "AC Deluxe Double Room",
+      "tag": "Deluxe Comfort",
+      "capacity": "2 Devotees",
+      "price": "₹ 1,200 / night",
+      "description": "Air-conditioned premium double room with attached hygienic bathroom, hot water heater, Ganga ghat view, and double bed.",
+      "amenities": ["Air Conditioning", "Hot Water", "Attached Bath", "Free Wi-Fi", "Ganga View"]
+    },
+    {
+      "id": 2,
+      "name": "Non-AC Standard Double Room",
+      "tag": "Budget Friendly",
+      "capacity": "2 Devotees",
+      "price": "₹ 700 / night",
+      "description": "Clean, spacious non-AC room with ceiling fan, attached bathroom, double bed, and peaceful temple atmosphere.",
+      "amenities": ["Ceiling Fan", "Attached Bath", "Clean Linen", "Peaceful Location"]
+    },
+    {
+      "id": 3,
+      "name": "AC Family Suite (4 Bed)",
+      "tag": "Family Stay",
+      "capacity": "4 Devotees",
+      "price": "₹ 2,200 / night",
+      "description": "Spacious air-conditioned family suite featuring 2 double beds, sitting sofa lounge, LED TV, and private balcony overlooking temple courtyard.",
+      "amenities": ["2 Double Beds", "Air Conditioning", "Sofa Lounge", "LED TV", "Private Balcony"]
+    },
+    {
+      "id": 4,
+      "name": "Group Dormitory Hall (10 Beds)",
+      "tag": "Pilgrim Group",
+      "capacity": "10 Devotees",
+      "price": "₹ 150 / bed per night",
+      "description": "Spacious community dormitory hall with individual lockers, clean single beds, shared modern washrooms, and drinking water purifier.",
+      "amenities": ["Individual Bed", "Personal Locker", "Shared Washrooms", "RO Water Purifier"]
+    }
+  ],
+  "rulesTitle": "Important Yatri Niwas Guidelines & Rules",
+  "rules": [
+    "Valid original Government Photo ID (Aadhaar, Voter ID, Driving License, Passport) is mandatory during check-in for all guests.",
+    "Smoking, consumption of alcohol, non-vegetarian food, and narcotics are strictly prohibited inside temple premises.",
+    "Hot water facility is available during morning hours (5:00 AM to 10:00 AM).",
+    "Pre-booking is recommended during peak festivals like Shravan Somvar, Shivratri, and Chhath Puja."
+  ]
+}

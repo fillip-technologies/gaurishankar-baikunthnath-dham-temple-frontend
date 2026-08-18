@@ -1,0 +1,56 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Divine Photo Gallery ॥",
+  "title": "Divine Photo Gallery",
+  "subtitle": "Glance into the divine beauty, sacred sanctum, grand festivals, and holy moments of our temple",
+  "categories": {
+    "all": "All Photos",
+    "sanctum": "Sanctum & Deities",
+    "gangaGhat": "Ganga Ghat & Aarti",
+    "festivals": "Festivals & Celebrations",
+    "architecture": "Temple Architecture"
+  },
+  "photos": [
+    {
+      "id": 1,
+      "category": "sanctum",
+      "title": "Shri Baikunthnath Main Sanctum",
+      "subtitle": "Holy Garbha Griha & Hari-Hara Swaroop",
+      "tag": "Sanctum"
+    },
+    {
+      "id": 2,
+      "category": "festivals",
+      "title": "Grand Shravan Festival & Deepotsav",
+      "subtitle": "Holy Celebrations & Devotee Gatherings",
+      "tag": "Festivals"
+    },
+    {
+      "id": 3,
+      "category": "gangaGhat",
+      "title": "Baikathpur Evening Ganga Aarti",
+      "subtitle": "Divine Light Offering on Holy Ganga Banks",
+      "tag": "Ganga Ghat"
+    },
+    {
+      "id": 4,
+      "category": "architecture",
+      "title": "Vedic Nagara Sandstone Architecture",
+      "subtitle": "Intricately Carved Stone Pillars & Shikhara",
+      "tag": "Architecture"
+    },
+    {
+      "id": 5,
+      "category": "festivals",
+      "title": "Shri Krishna Janmashtami Alankar",
+      "subtitle": "Flower Decoration & Midnight Aarti",
+      "tag": "Festivals"
+    },
+    {
+      "id": 6,
+      "category": "gangaGhat",
+      "title": "Sunset View of Temple & Ganga Promenade",
+      "subtitle": "Serene Landscape of Mother Ganga",
+      "tag": "Ganga Ghat"
+    }
+  ]
+}

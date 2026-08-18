@@ -1,0 +1,37 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Nyas Samiti Trust Members ॥",
+  "title": "Nyas Samiti & Trust Members",
+  "subtitle": "Meet the esteemed trustees, office bearers, and board members of Shri Gaurishankar Baikunthnath Dham Nyas Samiti, Khusrupur Patna",
+  "members": [
+    {
+      "id": 1,
+      "name": "Dr. Vijay Kumar Singh alias Shyam Nath Singh",
+      "designation": "Treasurer (कोषाध्यक्ष)"
+    },
+    {
+      "id": 2,
+      "name": "Raja Ram Singh",
+      "designation": "Secretary (सचिव)"
+    },
+    {
+      "id": 3,
+      "name": "Pt. Shambhuth Nath Shastri",
+      "designation": "Trustee & Senior Patron"
+    },
+    {
+      "id": 4,
+      "name": "Brijesh Kumar Sinha",
+      "designation": "Executive Trustee"
+    },
+    {
+      "id": 5,
+      "name": "Sunil Kumar Gupta",
+      "designation": "Trust Board Member"
+    },
+    {
+      "id": 6,
+      "name": "Prof. Harishchandra Verma",
+      "designation": "Honorary Advisor & Trustee"
+    }
+  ]
+}

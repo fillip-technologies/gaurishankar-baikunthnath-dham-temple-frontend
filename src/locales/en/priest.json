@@ -1,0 +1,43 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Sacred Vedic Acharyas & Priests ॥",
+  "title": "Sacred Priests & Vedic Acharyas",
+  "subtitle": "Meet the learned Acharyas, Mukhya Pujaris, and Vedic scholars who perform daily Nitya Aarti, Rudrabhishek, and sacred rituals at Baikunthnath Dham",
+  "priests": [
+    {
+      "id": 1,
+      "name": "Acharya Pt. Rameshwar Jha Shastri",
+      "title": "Mukhya Pujari (Head Priest)",
+      "experience": "30+ Years Divine Service",
+      "specialization": "Rudrabhishek, Shri Sahasranama Archana, Rajbhog Aarti",
+      "languages": ["Sanskrit", "Hindi", "Bhojpuri"],
+      "bio": "Devoted scholar of Shukla Yajurveda, dedicated to performing sacred daily nitya aartis and Mahaganga Jalabhishek for over three decades at the Hari-Hara Dham."
+    },
+    {
+      "id": 2,
+      "name": "Pt. Vidyanand Pandey Vedacharya",
+      "title": "Senior Vedic Scholar & Hawan Acharya",
+      "experience": "22+ Years Divine Service",
+      "specialization": "Maha Mrityunjaya Jaap, Purnahuti Hawan, Vastu Shanti",
+      "languages": ["Sanskrit", "Hindi"],
+      "bio": "Expert in Samaveda & Rigveda mantras, leading 11,000 Mahamrityunjaya jaap rituals and special festival Yagyas."
+    },
+    {
+      "id": 3,
+      "name": "Pt. Shivkumar Tripathi Jyotishacharya",
+      "title": "Katha Acharya & Ritual Priest",
+      "experience": "18+ Years Divine Service",
+      "specialization": "Satyanarayan Vrat Katha, Navgrah Shanti, Janeu Sanskar",
+      "languages": ["Sanskrit", "Hindi", "English"],
+      "bio": "Renowned for devout recitals of Satyanarayan Swami Katha and guiding pilgrims in traditional Sanskar rituals."
+    },
+    {
+      "id": 4,
+      "name": "Pt. Harivansh Mishra Shastri",
+      "title": "Aarti & Annakshetra Priest",
+      "experience": "15+ Years Divine Service",
+      "specialization": "Evening Ganga Aarti, Annakshetra Bhog, Mangal Aarti",
+      "languages": ["Sanskrit", "Hindi"],
+      "bio": "Leads the daily Mangal Aarti and supervises holy prasadam preparations at temple Annakshetra."
+    }
+  ]
+}

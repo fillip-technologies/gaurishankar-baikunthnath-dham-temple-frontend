@@ -1,0 +1,56 @@
+{
+  "chant": "॥ श्री गौरीशंकर बैकुंठनाथ धाम • अलौकिक वीडियो दीर्घा ॥",
+  "title": "दिव्य वीडियो दीर्घा (गैलरी)",
+  "subtitle": "मां गंगा के तट पर आयोजित पावन महाआरती, उत्सवों एवं दिव्य भजनों का वीडियो दर्शन",
+  "categories": {
+    "all": "सभी वीडियो",
+    "aarti": "नित्य आरती व पूजन",
+    "festivals": "पावन उत्सव व पर्व",
+    "bhajans": "कीर्तन व भजन",
+    "documentary": "मंदिर वृत्तचित्र"
+  },
+  "videos": [
+    {
+      "id": 1,
+      "category": "aarti",
+      "title": "श्री बैकुंठनाथ प्रातः मन्दिर मङ्गल आरती",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "१२:४५"
+    },
+    {
+      "id": 2,
+      "category": "festivals",
+      "title": "पावन श्रावण सोमवार महागंगा आरती",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "१८:२०"
+    },
+    {
+      "id": 3,
+      "category": "aarti",
+      "title": "बै कतपुर संध्या आरती एवं दीपोत्सव",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "१५:१०"
+    },
+    {
+      "id": 4,
+      "category": "documentary",
+      "title": "श्री गौरीशंकर बैकुंठनाथ धाम की पावन महिमा",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "२५:३०"
+    },
+    {
+      "id": 5,
+      "category": "festivals",
+      "title": "श्री कृष्ण जन्माष्टमी अर्धरात्रि महाआरती",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "१४:१५"
+    },
+    {
+      "id": 6,
+      "category": "bhajans",
+      "title": "दिव्य हरि-हर वैदिक मंत्रोच्चार एवं संकीर्तन",
+      "videoUrl": "https://www.youtube.com/embed/pXXBuOyYi6I",
+      "duration": "२०:००"
+    }
+  ]
+}

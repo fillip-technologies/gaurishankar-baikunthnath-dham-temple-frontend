@@ -1,0 +1,41 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Volunteer & Seva Registration ॥",
+  "title": "Become a Temple Volunteer (Sevak)",
+  "subtitle": "Offer your time, skills, and devotion in service of Lord Gaurishankar, Mother Ganga, and visiting pilgrims",
+  "form": {
+    "sectionPersonal": "Personal Information",
+    "sectionSeva": "Area of Volunteer Interest (Select Seva)",
+    "sectionAvailability": "Availability & Time",
+    "fullName": "Full Name",
+    "phone": "Phone / WhatsApp Number",
+    "email": "Email Address",
+    "age": "Age",
+    "gender": "Gender",
+    "cityState": "City & State",
+    "occupation": "Occupation / Profession",
+    "selectGender": "Select Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "sevaAreas": {
+      "crowd": "Festival & Crowd Management Seva",
+      "bhandara": "Annakshetra Bhandara & Prasadam Distribution",
+      "sanitation": "Temple Cleaning & Environment Seva",
+      "digital": "Digital, Media & IT Support",
+      "medical": "Medical & First Aid Support"
+    },
+    "availability": "When can you volunteer?",
+    "availOptions": {
+      "weekends": "Saturdays & Sundays",
+      "festivals": "Special Festivals (Shravan, Shivratri, Chhath)",
+      "monthly": "1-2 Days Every Month",
+      "fulltime": "Full Time / Resident Sevak"
+    },
+    "experience": "Previous Volunteer Experience / Message",
+    "experiencePlaceholder": "Tell us about your background or motivation to join as a temple volunteer...",
+    "submitBtn": "Submit Volunteer Application",
+    "submitting": "Submitting Application...",
+    "successTitle": "Jai Shri Baikunthnath! Application Received Successfully.",
+    "successMsg": "Thank you for registering as a volunteer. Temple Trust coordinators will contact you soon on your registered phone number."
+  }
+}

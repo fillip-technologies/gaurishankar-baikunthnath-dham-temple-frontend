@@ -1,0 +1,45 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham • News & Press Coverage ॥",
+  "title": "Media Coverage & Press",
+  "subtitle": "Explore newspaper reports, television broadcasts, and press features highlighting the holy heritage of Shri Baikunthnath Dham",
+  "categories": {
+    "all": "All Media",
+    "print": "Print Newspapers",
+    "tv": "TV & Video Coverage",
+    "digital": "Digital News"
+  },
+  "articles": [
+    {
+      "id": 1,
+      "category": "print",
+      "source": "Dainik Jagran",
+      "date": "14 August 2026",
+      "title": "Grand Renovation & Sandstone Carvings Unveiled at Baikathpur Dham",
+      "description": "State dignitaries and Vedic scholars gathered at Shri Gaurishankar Baikunthnath Dham for the inauguration of renovated stone mandaps and newly paved Ganga Ghat promenade."
+    },
+    {
+      "id": 2,
+      "category": "tv",
+      "source": "DD Bihar Live",
+      "date": "02 August 2026",
+      "title": "Live Broadcast of Shravani Somvar Deepotsav at Baikathpur Ganga Deck",
+      "description": "Over 50,000 devotees participated in the sacred evening Ganga Aarti broadcast live on national television from Baikathpur."
+    },
+    {
+      "id": 3,
+      "category": "print",
+      "source": "Hindustan Samachar",
+      "date": "20 July 2026",
+      "title": "Historical 16th-Century Heritage of Raja Man Singh Revived",
+      "description": "Historical researchers publish special feature on the ancient Hari-Hara composite deity consecrated during 16th-century royal expedition in Patna district."
+    },
+    {
+      "id": 4,
+      "category": "digital",
+      "source": "Prabhat Khabar Digital",
+      "date": "10 June 2026",
+      "title": "24x7 Live Sanctum Streaming Launched for Global Pilgrims",
+      "description": "Shri Baikunthnath Mandir Trust launches high-definition live streaming portal for NRI devotees across 40 countries."
+    }
+  ]
+}

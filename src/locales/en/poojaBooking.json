@@ -1,0 +1,95 @@
+{
+  "chant": "॥ Shri Gaurishankar Baikunthnath Dham Nyas Samiti • Khusrupur Patna ॥",
+  "title": "Official Pooja Fee Schedule & Guidelines",
+  "subtitle": "Official Rate Card for Sacred Poojas, Sanskar, Vehicle Worship, and Marriage Ceremonies issued by Nyas Samiti",
+  "trustHeader": "Shri Gaurishankar Baikunthnath Dham Nyas Samiti",
+  "trustLocation": "Khusrupur, Patna",
+  "rateCardTitle": "OFFICIAL POOJA FEE SCHEDULE (पूजन शुल्क तालिका)",
+  "categories": {
+    "poojaSanskar": "Pooja & Sanskar (पूजा / संस्कार)",
+    "vehiclePooja": "Vehicle Worship (वाहन पूजा)",
+    "marriage": "Wedding & Marriage (शादी - विवाह)"
+  },
+  "poojaSanskarItems": [
+    {
+      "id": "rudrabhishek",
+      "name": "Rudrabhishek (रुद्राभिषेक)",
+      "description": "Sacred Jalabhishek and Dudhabhishek with Vedic mantra chanting on holy Hari-Hara Shivling",
+      "amount": "₹ 500"
+    },
+    {
+      "id": "mundan",
+      "name": "Mundan Sanskar (मुंडन)",
+      "description": "First tonsure ceremony ritual for children (Per Child / प्रति बच्चा)",
+      "amount": "₹ 75"
+    },
+    {
+      "id": "satyanarayan",
+      "name": "Satyanarayan Katha (सत्यनारायण कथा)",
+      "description": "Traditional Satyanarayan Swami Vrat Katha recital and bhog offering",
+      "amount": "₹ 250"
+    },
+    {
+      "id": "janeu",
+      "name": "Janeu Sanskar (जनेऊ)",
+      "description": "Sacred Upanayana thread ceremony ritual",
+      "amount": "₹ 500"
+    }
+  ],
+  "vehiclePoojaItems": [
+    {
+      "id": "twoWheeler",
+      "name": "Two Wheeler (दो चक्का वाहन)",
+      "description": "Bicycle, Motorcycle, Scooter vehicle blessing ritual",
+      "amount": "₹ 100"
+    },
+    {
+      "id": "threeWheeler",
+      "name": "Three Wheeler (तीन चक्का वाहन)",
+      "description": "Auto Rickshaw, E-Rickshaw blessing ritual",
+      "amount": "₹ 200"
+    },
+    {
+      "id": "fourWheeler",
+      "name": "Four Wheeler (चार चक्का वाहन)",
+      "description": "Car, SUV, Jeep, Van blessing ritual",
+      "amount": "₹ 250"
+    },
+    {
+      "id": "sixWheeler",
+      "name": "Six Wheeler & Commercial (छह चक्का वाहन)",
+      "description": "Truck, Bus, Heavy Commercial vehicle blessing ritual",
+      "amount": "₹ 300"
+    }
+  ],
+  "marriageItems": [
+    {
+      "id": "brideSide",
+      "name": "Bride Side Registration (लड़की पक्ष)",
+      "description": "Official temple venue & ritual registration fee for Bride family",
+      "amount": "₹ 300"
+    },
+    {
+      "id": "groomSide",
+      "name": "Groom Side Registration (लड़का पक्ष)",
+      "description": "Official temple venue & ritual registration fee for Groom family",
+      "amount": "₹ 500"
+    }
+  ],
+  "officials": {
+    "treasurerTitle": "Treasurer (कोषाध्यक्ष)",
+    "treasurerName": "Dr. Vijay Kumar Singh alias Shyam Nath Singh",
+    "secretaryTitle": "Secretary (सचिव)",
+    "secretaryName": "Raja Ram Singh"
+  },
+  "notice": {
+    "title": "Strict Prohibition of Child Marriage (बाल विवाह पर पूर्ण प्रतिबंध)",
+    "rule1": "As per Child Marriage Prohibition Act 2006, child marriage is a punishable criminal offense.",
+    "rule2": "Marriage of girls under 18 years and boys under 21 years of age is strictly illegal.",
+    "rule3": "Child marriage is 100% prohibited in this temple. Anyone conducting or participating in child marriage is punishable with up to 2 years rigorous imprisonment or fine up to ₹ 1,00,000 or both.",
+    "rule4": "Anyone assisting or performing child marriage will face 2 years imprisonment and ₹ 1 Lakh penalty.",
+    "rule5": "To report child marriage immediately contact Helplines: Childline CHL=1098, Women Helpline WHL=181, Emergency Response ERSS=112.",
+    "rule6": "You may also inform District Child Protection Unit, Local Police Station, Gram Panchayat Secretary, Child Development Project Officer & District Program Officer.",
+    "appeal": "Cooperation of all devotees and visiting pilgrims is humbly requested in enforcing this law."
+  }
+}
