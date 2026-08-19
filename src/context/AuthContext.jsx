@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { logOutApi } from '../components/clientApi/allapi';
 
 const AuthContext = createContext(null);
 
@@ -53,15 +54,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    setIsAuthenticated(false);
+  const logout = async () => {
     try {
-      localStorage.removeItem('mandir_admin_user');
-      localStorage.removeItem('mandir_admin_token');
-    } catch (e) {
-      console.error('Failed to clear auth from localStorage', e);
+      // Call backend API to invalidate session and clear cookies
+      await logOutApi();
+    } catch (error) {
+      console.warn('Backend logout response/note:', error.message);
+    } finally {
+      // Always clear local frontend state and storage
+      setUser(null);
+      setToken(null);
+      setIsAuthenticated(false);
+      try {
+        localStorage.removeItem('mandir_admin_user');
+        localStorage.removeItem('mandir_admin_token');
+      } catch (e) {
+        console.error('Failed to clear auth from localStorage', e);
+      }
     }
   };
 

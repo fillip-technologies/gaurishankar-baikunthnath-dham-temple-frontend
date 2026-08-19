@@ -1,11 +1,16 @@
 import api from "./axiosClient";
 
-//Authentication Endpoints
+// ─────────────────────────────────────────────
+// Authentication Endpoints
+// ─────────────────────────────────────────────
 export const LOGIN_URL = "/api/v1/auth/login";
 export const VERIFY_OTP_URL = "/api/v1/auth/verify_login_otp";
 export const RESEND_OTP_URL = "/api/v1/auth/resend-otp";
+export const LOGOUT_URL = "/api/v1/auth/logout";
 
-//Gallery Endpoints
+// ─────────────────────────────────────────────
+// Gallery Endpoints
+// ─────────────────────────────────────────────
 export const GALLERY_UPLOAD_URL = "/api/v1/media/galleryUpload";
 export const GALLERY_GET_URL = "/api/v1/media/gallery";
 export const GALLERY_DELETE_URL = "/api/v1/media/gallery";
@@ -13,9 +18,12 @@ export const GALLERY_DELETE_URL = "/api/v1/media/gallery";
 export const GALLERY_DATATYPE_MAP = {
     PHOTOS: "photos",
     VIDEOS: "videos",
-    WALLPAPERS: "wallpaper", // singular — backend requirement
+    WALLPAPERS: "wallpaper",
 };
 
+// ─────────────────────────────────────────────
+// Authentication API Functions
+// ─────────────────────────────────────────────
 
 /** POST /api/v1/auth/login */
 export const loginApi = ({ email, password }) => {
@@ -32,6 +40,17 @@ export const resendOtpApi = (data) => {
     return api.post(RESEND_OTP_URL, data);
 };
 
+/**
+ * POST /api/v1/auth/logout
+ * Clears refreshToken + sessionId in DB; clears cookies
+ */
+export const logOutApi = () => {
+    return api.post(LOGOUT_URL);
+};
+
+// ─────────────────────────────────────────────
+// Gallery API Functions
+// ─────────────────────────────────────────────
 
 /**
  * POST /api/v1/media/galleryUpload
