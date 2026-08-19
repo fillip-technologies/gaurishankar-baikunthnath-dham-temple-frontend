@@ -39,27 +39,15 @@ export default function UserCreateForm({
           </div>
           <div>
             <h3 className="text-base font-bold text-stone-900">
-              {isEditing
-                ? (isHi ? 'व्यवस्थापक विवरण संपादित करें' : 'Edit Admin Credentials')
-                : (isHi ? 'नया व्यवस्थापक खाता बनाएं' : 'Create Admin Account')}
+              {isHi ? 'नया व्यवस्थापक खाता बनाएं' : 'Create Admin Account'}
             </h3>
-            <p className="text-xs text-stone-500 font-mono">
-              POST /api/v1/auth/create_admin
+            <p className="text-xs text-stone-500">
+              {isHi
+                ? 'व्यवस्थापक की जानकारी और सुरक्षित लॉगिन पासवर्ड दर्ज करें।'
+                : 'Enter the administrator\'s profile information and login credentials.'}
             </p>
           </div>
         </div>
-
-        {!isEditing && (
-          <button
-            type="button"
-            onClick={onFillSample}
-            className="text-[11px] font-bold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100/80 px-2.5 py-1.5 rounded-lg border border-amber-200/80 transition flex items-center gap-1.5"
-            title="Fill sample Jane Doe credentials"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span>{isHi ? 'नमूना डेटा भरें' : 'Fill Sample (Jane Doe)'}</span>
-          </button>
-        )}
       </div>
 
       {apiError && (

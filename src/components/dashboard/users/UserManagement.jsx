@@ -4,17 +4,14 @@ import { CheckCircle2, AlertCircle, RefreshCw, Loader2 } from 'lucide-react';
 import {
   createAdminApi,
   listAdminsApi,
-  getAdminProfileApi,
 } from '../../clientApi/adminApi';
 
 // Subcomponents
 import UserHeaderBanner from './components/UserHeaderBanner';
 import UserCreateForm from './components/UserCreateForm';
-import UserPayloadViewer from './components/UserPayloadViewer';
 import UserFilterBar from './components/UserFilterBar';
 import UserTableView from './components/UserTableView';
 import UserGridView from './components/UserGridView';
-import UserJsonModal from './components/UserJsonModal';
 import UserPasswordModal from './components/UserPasswordModal';
 import UserDeleteModal from './components/UserDeleteModal';
 
@@ -51,7 +48,6 @@ export default function UserManagement() {
   const [toastMessage, setToastMessage] = useState(null);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedUserForView, setSelectedUserForView] = useState(null);
   const [selectedUserForDelete, setSelectedUserForDelete] = useState(null);
 
   const [users, setUsers] = useState([]);
@@ -191,24 +187,6 @@ export default function UserManagement() {
     }
   };
 
-  // 3. View Profile (GET /api/v1/auth/profile/:id)
-  const handleViewUserJson = async (user) => {
-    setSelectedUserForView(user);
-    if (user._id) {
-      try {
-        const res = await getAdminProfileApi(user._id);
-        if (res.data?.success && res.data.data) {
-          setSelectedUserForView({
-            ...user,
-            ...res.data.data,
-          });
-        }
-      } catch (err) {
-        console.warn('getAdminProfileApi note:', err.message);
-      }
-    }
-  };
-
   // Toggle active / inactive status
   const handleToggleStatus = (id) => {
     setUsers((prev) =>
@@ -241,20 +219,6 @@ export default function UserManagement() {
       prev.filter((u) => u.id !== deletedUser.id && u._id !== deletedUser._id)
     );
     await fetchAdmins();
-  };
-
-  // Copy JSON payload
-  const handleCopyPayload = (customPayload = null) => {
-    const payloadToCopy =
-      customPayload || {
-        fullname: formData.fullname || 'Jane Doe',
-        mobile_number: formData.mobile_number || '9876543210',
-        email: formData.email || 'jane@example.com',
-        password: formData.password || 'secret123',
-      };
-
-    navigator.clipboard.writeText(JSON.stringify(payloadToCopy, null, 2));
-    showToast(isHi ? 'API पेलोड कॉपी किया गया' : 'JSON payload copied');
   };
 
   // Filtered Directory List
@@ -303,8 +267,6 @@ export default function UserManagement() {
           setFormErrors({});
         }}
         onOpenPasswordModal={() => setIsPasswordModalOpen(true)}
-        onRefreshAdmins={fetchAdmins}
-        isLoadingAdmins={isLoadingAdmins}
       />
 
       {/* Fetch Error Notice */}
@@ -326,41 +288,19 @@ export default function UserManagement() {
 
       {/* 2. Create User View */}
       {activeSubTab === 'create' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <div className="lg:col-span-2">
-            <UserCreateForm
-              isHi={isHi}
-              formData={formData}
-              setFormData={setFormData}
-              formErrors={formErrors}
-              setFormErrors={setFormErrors}
-              onSubmit={handleSubmitUser}
-              onCancel={() => setActiveSubTab('list')}
-              onFillSample={() => {
-                setFormData({
-                  fullname: 'Jane Doe',
-                  mobile_number: '9876543210',
-                  email: 'jane@example.com',
-                  password: 'secret123',
-                  role: 'Admin',
-                  status: 'Active',
-                });
-                setApiError(null);
-                showToast(isHi ? 'नमूना डेटा लोड किया गया' : 'Filled sample user data');
-              }}
-              onGeneratePassword={handleGeneratePassword}
-              isSubmitting={isSubmitting}
-              apiError={apiError}
-            />
-          </div>
-
-          <div>
-            <UserPayloadViewer
-              isHi={isHi}
-              formData={formData}
-              onCopyPayload={handleCopyPayload}
-            />
-          </div>
+        <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <UserCreateForm
+            isHi={isHi}
+            formData={formData}
+            setFormData={setFormData}
+            formErrors={formErrors}
+            setFormErrors={setFormErrors}
+            onSubmit={handleSubmitUser}
+            onCancel={() => setActiveSubTab('list')}
+            onGeneratePassword={handleGeneratePassword}
+            isSubmitting={isSubmitting}
+            apiError={apiError}
+          />
         </div>
       )}
 
@@ -396,8 +336,6 @@ export default function UserManagement() {
               users={filteredUsers}
               totalUsersCount={users.length}
               onToggleStatus={handleToggleStatus}
-              onViewJson={handleViewUserJson}
-              onCopyPayload={handleCopyPayload}
               onOpenPasswordModal={() => setIsPasswordModalOpen(true)}
               onDeleteUser={handleDeleteUser}
               onAddNewClick={() => {
@@ -418,7 +356,6 @@ export default function UserManagement() {
               isHi={isHi}
               users={filteredUsers}
               onToggleStatus={handleToggleStatus}
-              onCopyPayload={handleCopyPayload}
               onOpenPasswordModal={() => setIsPasswordModalOpen(true)}
               onDeleteUser={handleDeleteUser}
             />
@@ -426,15 +363,7 @@ export default function UserManagement() {
         </div>
       )}
 
-      {/* 4. View JSON Payload Modal */}
-      <UserJsonModal
-        isHi={isHi}
-        user={selectedUserForView}
-        onClose={() => setSelectedUserForView(null)}
-        onCopyPayload={handleCopyPayload}
-      />
-
-      {/* 6. Change Password Modal */}
+      {/* 4. Change Password Modal */}
       <UserPasswordModal
         isHi={isHi}
         isOpen={isPasswordModalOpen}
@@ -442,7 +371,7 @@ export default function UserManagement() {
         onSuccessToast={showToast}
       />
 
-      {/* 7. Remove Admin Modal */}
+      {/* 5. Remove Admin Modal */}
       <UserDeleteModal
         isHi={isHi}
         isOpen={isDeleteModalOpen}

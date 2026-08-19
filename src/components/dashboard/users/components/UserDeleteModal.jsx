@@ -61,8 +61,8 @@ export default function UserDeleteModal({
               <h3 className="text-base font-bold text-stone-900">
                 {isHi ? 'व्यवस्थापक हटाएं' : 'Remove Administrator'}
               </h3>
-              <p className="text-[11px] text-stone-500 font-mono">
-                DELETE /api/v1/auth/remove_admin
+              <p className="text-xs text-stone-500">
+                {isHi ? 'इस व्यवस्थापक खाते को स्थायी रूप से हटाएं' : 'Permanently remove this administrator account'}
               </p>
             </div>
           </div>
@@ -94,7 +94,6 @@ export default function UserDeleteModal({
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
                 {targetUser.role || 'Admin'}
               </span>
-              <span className="text-[10px] text-stone-400 font-mono">ID: {targetUser._id || targetUser.id}</span>
             </div>
           </div>
 
@@ -108,7 +107,7 @@ export default function UserDeleteModal({
           {/* Super Admin Password Field */}
           <div>
             <label className="block text-xs font-bold text-stone-800 mb-1">
-              {isHi ? 'सुपर एडमिन पासवर्ड (superAdminPassword)' : 'Super Admin Password'} *
+              {isHi ? 'सुपर एडमिन पासवर्ड' : 'Super Admin Password'} *
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
@@ -117,7 +116,7 @@ export default function UserDeleteModal({
                 required
                 value={superAdminPassword}
                 onChange={(e) => setSuperAdminPassword(e.target.value)}
-                placeholder="secret123"
+                placeholder="••••••••"
                 className="w-full pl-9 pr-9 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-red-500 focus:bg-white"
               />
               <button

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserPlus, Users, Code, CheckCircle2 } from 'lucide-react';
+import { UserPlus, Users, KeyRound } from 'lucide-react';
 
 export default function UserHeaderBanner({
   isHi,
@@ -8,8 +8,6 @@ export default function UserHeaderBanner({
   totalUsers,
   onResetCreateForm,
   onOpenPasswordModal,
-  onRefreshAdmins,
-  isLoadingAdmins,
 }) {
   return (
     <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950 p-5 text-white shadow-lg border border-slate-700/60 relative overflow-hidden">
@@ -27,8 +25,8 @@ export default function UserHeaderBanner({
           </div>
           <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl font-normal">
             {isHi
-              ? 'नया व्यवस्थापक बनाएं (POST /api/v1/auth/create_admin), पासवर्ड प्रबंधित करें और सर्वर से व्यवस्थापकों की सूची देखें।'
-              : 'Create system admins via API, update credentials, and view registered administrators.'}
+              ? 'नया व्यवस्थापक खाता बनाएं, पासवर्ड प्रबंधित करें और पंजीकृत व्यवस्थापकों की सूची देखें।'
+              : 'Create system administrators, update access credentials, and manage registered admin accounts.'}
           </p>
         </div>
 
@@ -37,9 +35,9 @@ export default function UserHeaderBanner({
           <button
             onClick={onOpenPasswordModal}
             className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-bold text-xs bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-500/30 transition shadow-sm"
-            title="Update Password"
+            title={isHi ? 'पासवर्ड बदलें' : 'Change Password'}
           >
-            <Code className="w-3.5 h-3.5" />
+            <KeyRound className="w-3.5 h-3.5" />
             <span>{isHi ? 'पासवर्ड बदलें' : 'Change Password'}</span>
           </button>
 
@@ -70,23 +68,6 @@ export default function UserHeaderBanner({
             <span>{isHi ? 'व्यवस्थापक सूची' : 'Admins List'} ({totalUsers})</span>
           </button>
         </div>
-      </div>
-
-      {/* Schema / Status Footer */}
-      <div className="mt-4 pt-3 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-300">
-        <div className="flex items-center gap-2 font-mono bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-700">
-          <Code className="w-3.5 h-3.5 text-amber-400" />
-          <span>
-            Schema: <span className="text-amber-300">fullname</span>,{' '}
-            <span className="text-amber-300">mobile_number</span>,{' '}
-            <span className="text-amber-300">email</span>,{' '}
-            <span className="text-amber-300">password</span>
-          </span>
-        </div>
-        <span className="text-emerald-400 font-semibold flex items-center gap-1">
-          <CheckCircle2 className="w-3.5 h-3.5" />
-          {isHi ? 'फ्रंटएंड तैयार - API इंटीग्रेशन हेतु तैयार' : 'Frontend Ready for API Integration'}
-        </span>
       </div>
     </div>
   );

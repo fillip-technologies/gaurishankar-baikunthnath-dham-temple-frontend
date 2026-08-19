@@ -71,8 +71,8 @@ export default function UserPasswordModal({ isHi, isOpen, onClose, onSuccessToas
               <h3 className="text-base font-bold text-stone-900">
                 {isHi ? 'पासवर्ड बदलें' : 'Change Password'}
               </h3>
-              <p className="text-[11px] text-stone-500 font-mono">
-                PATCH /api/v1/auth/update_password
+              <p className="text-xs text-stone-500">
+                {isHi ? 'अपने खाते का पासवर्ड अपडेट करें' : 'Update your administrator password'}
               </p>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function UserPasswordModal({ isHi, isOpen, onClose, onSuccessToas
           {/* Current Password */}
           <div>
             <label className="block text-xs font-bold text-stone-800 mb-1">
-              {isHi ? 'वर्तमान पासवर्ड (current_password)' : 'Current Password'} *
+              {isHi ? 'वर्तमान पासवर्ड' : 'Current Password'} *
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
@@ -121,16 +121,17 @@ export default function UserPasswordModal({ isHi, isOpen, onClose, onSuccessToas
           {/* New Password */}
           <div>
             <label className="block text-xs font-bold text-stone-800 mb-1">
-              {isHi ? 'नया पासवर्ड (newpassword)' : 'New Password'} *
+              {isHi ? 'नया पासवर्ड' : 'New Password'} *
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
               <input
                 type={showNew ? 'text' : 'password'}
                 required
+                minLength={6}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="newpass123"
+                placeholder="••••••••"
                 className="w-full pl-9 pr-9 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
               />
               <button
