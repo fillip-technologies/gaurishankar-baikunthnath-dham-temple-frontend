@@ -1,83 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Maximize2, X, Sparkles, Image as ImageIcon } from 'lucide-react';
-import imgSanctum from '../../../assets/home/herosection-3.png';
-import imgFestival from '../../../assets/home/upcoming-festival.png';
-import imgGanga from '../../../assets/home/herosection-2.png';
-import imgArchitecture from '../../../assets/home/herosection.png';
+import { Maximize2, X, ChevronLeft, ChevronRight, AlertCircle, RefreshCw, Image as ImageIcon } from 'lucide-react';
+import { galleryGetApi, GALLERY_DATATYPE_MAP } from '../../clientApi/allApi';
+
+// Fallback placeholder when no API image
+const PLACEHOLDER = 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&q=60&w=800';
+
+// Skeleton card for loading state
+function SkeletonCard() {
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm animate-pulse">
+      <div className="h-64 sm:h-72 w-full bg-stone-200" />
+    </div>
+  );
+}
 
 export default function PhotosGrid() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'en';
-  const [activeCategory, setActiveCategory] = useState('all');
+  const sectionRef = useRef(null);
+
+  // ── State ───────────────────────────────────────────────────────────────────
+  const [photos, setPhotos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
-  const categories = [
-    { id: 'all', label: t('photosPage.categories.all', 'All Photos') },
-    { id: 'sanctum', label: t('photosPage.categories.sanctum', 'Sanctum & Deities') },
-    { id: 'gangaGhat', label: t('photosPage.categories.gangaGhat', 'Ganga Ghat & Aarti') },
-    { id: 'festivals', label: t('photosPage.categories.festivals', 'Festivals & Celebrations') },
-    { id: 'architecture', label: t('photosPage.categories.architecture', 'Temple Architecture') },
-  ];
+  // ── Fetch ───────────────────────────────────────────────────────────────────
+  const fetchPhotos = async (page) => {
+    setIsLoading(true);
+    setError('');
 
-  const photoList = [
-    {
-      id: 1,
-      category: 'sanctum',
-      image: imgSanctum,
-      title: t('photosPage.photos.0.title', 'Shri Baikunthnath Main Sanctum'),
-      subtitle: t('photosPage.photos.0.subtitle', 'Holy Garbha Griha & Hari-Hara Swaroop'),
-      tag: t('photosPage.photos.0.tag', 'Sanctum')
-    },
-    {
-      id: 2,
-      category: 'festivals',
-      image: imgFestival,
-      title: t('photosPage.photos.1.title', 'Grand Shravan Festival & Deepotsav'),
-      subtitle: t('photosPage.photos.1.subtitle', 'Holy Celebrations & Devotee Gatherings'),
-      tag: t('photosPage.photos.1.tag', 'Festivals')
-    },
-    {
-      id: 3,
-      category: 'gangaGhat',
-      image: imgGanga,
-      title: t('photosPage.photos.2.title', 'Baikathpur Evening Ganga Aarti'),
-      subtitle: t('photosPage.photos.2.subtitle', 'Divine Light Offering on Holy Ganga Banks'),
-      tag: t('photosPage.photos.2.tag', 'Ganga Ghat')
-    },
-    {
-      id: 4,
-      category: 'architecture',
-      image: imgArchitecture,
-      title: t('photosPage.photos.3.title', 'Vedic Nagara Sandstone Architecture'),
-      subtitle: t('photosPage.photos.3.subtitle', 'Intricately Carved Stone Pillars & Shikhara'),
-      tag: t('photosPage.photos.3.tag', 'Architecture')
-    },
-    {
-      id: 5,
-      category: 'festivals',
-      image: imgFestival,
-      title: t('photosPage.photos.4.title', 'Shri Krishna Janmashtami Alankar'),
-      subtitle: t('photosPage.photos.4.subtitle', 'Flower Decoration & Midnight Aarti'),
-      tag: t('photosPage.photos.4.tag', 'Festivals')
-    },
-    {
-      id: 6,
-      category: 'gangaGhat',
-      image: imgSanctum,
-      title: t('photosPage.photos.5.title', 'Sunset View of Temple & Ganga Promenade'),
-      subtitle: t('photosPage.photos.5.subtitle', 'Serene Landscape of Mother Ganga'),
-      tag: t('photosPage.photos.5.tag', 'Ganga Ghat')
+    try {
+      const res = await galleryGetApi({ page, dataType: GALLERY_DATATYPE_MAP.PHOTOS });
+      const items = res?.data?.data ?? [];
+      setPhotos(items);
+      setHasMore(items.length === 20);
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+        (currentLang === 'hi' ? 'छायाचित्र लोड करने में त्रुटि हुई।' : 'Failed to load photos. Please try again.')
+      );
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
 
-  const filteredPhotos = activeCategory === 'all'
-    ? photoList
-    : photoList.filter((item) => item.category === activeCategory);
+  useEffect(() => {
+    fetchPhotos(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1) return;
+    setCurrentPage(newPage);
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
-    <section className="w-full bg-[#f5eee6] py-12 sm:py-16 text-stone-900 font-sans relative overflow-hidden">
-      
+    <section ref={sectionRef} className="w-full bg-[#f5eee6] py-12 sm:py-16 text-stone-900 font-sans relative overflow-hidden">
+
       {/* Background Watermark Accent */}
       <div className="absolute top-0 right-0 w-[420px] h-[420px] opacity-10 pointer-events-none z-0 translate-x-16 -translate-y-16">
         <svg viewBox="0 0 400 400" className="w-full h-full text-[#c28227] fill-current">
@@ -87,66 +72,132 @@ export default function PhotosGrid() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Category Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10">
-          {categories.map((cat) => (
+
+        {/* Error Banner */}
+        {error && (
+          <div className="mb-8 flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+            <p className="flex-1 text-sm font-medium">{error}</p>
             <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
-                activeCategory === cat.id
-                  ? 'bg-[#c28227] text-white shadow-md scale-105'
-                  : 'bg-white text-stone-700 hover:bg-stone-200 border border-stone-300'
-              }`}
+              onClick={() => fetchPhotos(currentPage)}
+              className="inline-flex items-center gap-1 text-xs font-bold text-red-700 hover:text-red-900 transition"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{cat.label}</span>
+              <RefreshCw className="w-3.5 h-3.5" />
+              {currentLang === 'hi' ? 'पुनः प्रयास' : 'Retry'}
             </button>
-          ))}
-        </div>
+          </div>
+        )}
 
         {/* Photos Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredPhotos.map((photo) => (
-            <div
-              key={photo.id}
-              onClick={() => setSelectedPhoto(photo)}
-              className="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between"
-            >
-              <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-stone-950">
-                <img
-                  src={photo.image}
-                  alt={photo.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
-                {/* Center Hover Zoom Button */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-12 h-12 rounded-full bg-[#c28227]/90 text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
-                    <Maximize2 className="w-5 h-5" />
+          {/* Loading skeletons */}
+          {isLoading && Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+
+          {/* Empty state */}
+          {!isLoading && photos.length === 0 && !error && (
+            <div className="col-span-full py-20 flex flex-col items-center justify-center text-center">
+              <ImageIcon className="w-12 h-12 text-stone-300 mb-4" />
+              <p className="text-stone-500 font-medium text-base">
+                {currentLang === 'hi' ? 'अभी कोई छायाचित्र उपलब्ध नहीं है।' : 'No photos available yet.'}
+              </p>
+            </div>
+          )}
+
+          {/* Photo Cards */}
+          {!isLoading && photos.map((photo) => {
+            const id = photo._id || photo.id;
+            const imageUrl = photo.imageUrl || PLACEHOLDER;
+            const title = photo.title || (currentLang === 'hi' ? 'मंदिर छायाचित्र' : 'Temple Photo');
+            const category = photo.category || photo.dataType || '';
+
+            return (
+              <div
+                key={id}
+                onClick={() => setSelectedPhoto({ id, imageUrl, title, category })}
+                className="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+              >
+                <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-stone-950">
+                  <img
+                    src={imageUrl}
+                    alt={title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+
+                  {/* Category badge */}
+                  {category && (
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-bold text-amber-300 border border-amber-500/30 capitalize">
+                        {category}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Center Hover Zoom Button */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-12 h-12 rounded-full bg-[#c28227]/90 text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                      <Maximize2 className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                  {/* Bottom Title */}
+                  <div className="absolute bottom-3 left-4 right-4 text-white">
+                    <h3 className="font-bold text-sm sm:text-base font-hindi text-[#ffd700] truncate">
+                      {title}
+                    </h3>
                   </div>
                 </div>
-
-                {/* Bottom Overlay Title Only */}
-                <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <h3 className="font-bold text-sm sm:text-base font-hindi text-[#ffd700] truncate">
-                    {photo.title}
-                  </h3>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
+        {/* ── Pagination Navigation Controls (Next & Back) ── */}
+        {!isLoading && photos.length > 0 && (
+          <div className="flex items-center justify-center gap-4 mt-12 pt-6 border-t border-stone-300/60">
+            {/* Previous / Back Button */}
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage <= 1 || isLoading}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-sm ${
+                currentPage <= 1
+                  ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
+                  : 'bg-white text-stone-800 hover:bg-[#c28227] hover:text-white border border-stone-300 hover:border-[#c28227] cursor-pointer'
+              }`}
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>{currentLang === 'hi' ? 'पिछला पृष्ठ' : 'Previous'}</span>
+            </button>
+
+            {/* Page Number Badge */}
+            <div className="px-4 py-2 rounded-full bg-[#c28227]/15 border border-[#c28227]/40 text-[#c28227] font-bold text-xs sm:text-sm shadow-xs">
+              <span>{currentLang === 'hi' ? `पृष्ठ ${currentPage}` : `Page ${currentPage}`}</span>
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={!hasMore || isLoading}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-sm ${
+                !hasMore
+                  ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
+                  : 'bg-white text-stone-800 hover:bg-[#c28227] hover:text-white border border-stone-300 hover:border-[#c28227] cursor-pointer'
+              }`}
+            >
+              <span>{currentLang === 'hi' ? 'अगला पृष्ठ' : 'Next'}</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Lightbox Modal */}
       {selectedPhoto && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="relative max-w-4xl w-full bg-stone-900 rounded-3xl overflow-hidden border border-amber-500/30 shadow-2xl">
-            
+
             {/* Close Button */}
             <button
               onClick={() => setSelectedPhoto(null)}
@@ -158,38 +209,34 @@ export default function PhotosGrid() {
             {/* Enlarged Image */}
             <div className="relative max-h-[75vh] overflow-hidden flex items-center justify-center bg-black">
               <img
-                src={selectedPhoto.image}
+                src={selectedPhoto.imageUrl}
                 alt={selectedPhoto.title}
                 className="max-h-[75vh] w-auto object-contain"
               />
             </div>
 
-            {/* Modal Bottom Caption */}
+            {/* Modal Caption */}
             <div className="p-5 sm:p-6 bg-[#2a080d] border-t border-amber-500/20 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div>
-                <span className="text-xs font-bold text-amber-400 font-hindi uppercase tracking-wider block mb-1">
-                  {selectedPhoto.tag}
-                </span>
+                {selectedPhoto.category && (
+                  <span className="text-xs font-bold text-amber-400 font-hindi uppercase tracking-wider block mb-1 capitalize">
+                    {selectedPhoto.category}
+                  </span>
+                )}
                 <h3 className="text-lg sm:text-xl font-bold text-[#ffd700] font-hindi">
                   {selectedPhoto.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-amber-100/80 font-light">
-                  {selectedPhoto.subtitle}
-                </p>
               </div>
-
               <button
                 onClick={() => setSelectedPhoto(null)}
                 className="px-5 py-2 rounded-full bg-[#c28227] hover:bg-[#a66d1e] text-white text-xs font-semibold tracking-wider transition-colors cursor-pointer shrink-0"
               >
-                Close Preview
+                {currentLang === 'hi' ? 'बंद करें' : 'Close Preview'}
               </button>
             </div>
-
           </div>
         </div>
       )}
-
     </section>
   );
 }
