@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 import DashboardSidebar from '../components/dashboard/sidebar/DashboardSidebar';
 import DashboardHeader from '../components/dashboard/header/DashboardHeader';
 import DashboardOverview from '../components/dashboard/overview/DashboardOverview';
@@ -10,12 +11,23 @@ import UserManagement from '../components/dashboard/users/UserManagement';
 import SystemConfig from '../components/dashboard/config/SystemConfig';
 
 export default function AdminDashboardPage() {
+  const { user } = useAuth();
   const { i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
 
-  const [activeTab, setActiveTab] = useState('overview');
+  const userRoleStr = (user?.role || 'Super Admin').toLowerCase().replace(/[\s_-]/g, '');
+  const isSuperAdmin = userRoleStr === 'superadmin';
+
+  const [activeTab, setActiveTab] = useState(() => (isSuperAdmin ? 'overview' : 'pooja-booking'));
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  // Fallback if an admin tries to access non-permitted tabs
+  useEffect(() => {
+    if (!isSuperAdmin && activeTab !== 'pooja-booking' && activeTab !== 'gallery') {
+      setActiveTab('pooja-booking');
+    }
+  }, [isSuperAdmin, activeTab]);
 
   const getTabTitle = () => {
     switch (activeTab) {
@@ -28,7 +40,7 @@ export default function AdminDashboardPage() {
       case 'gallery':
         return isHi ? 'मीडिया एवं गैलरी' : 'Media & Gallery Management';
       case 'users':
-        return isHi ? 'पुजारी, न्यास सदस्य एवं सेवक' : 'Devotees, Priests & Staff';
+        return isHi ? 'उपयोगकर्ता निर्माण एवं प्रबंधन' : 'User Creation & Management';
       case 'config':
         return isHi ? 'मंदिर एवं सिस्टम सेटिंग्स' : 'Mandir Settings & Config';
       default:

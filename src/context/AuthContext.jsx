@@ -83,6 +83,21 @@ export const AuthProvider = ({ children }) => {
     return user.permissions.includes(permission);
   };
 
+  const switchRole = (newRole) => {
+    if (!user) return;
+    const updatedUser = {
+      ...user,
+      role: newRole,
+      permissions: newRole === 'Super Admin' ? ['all'] : ['view_operational', 'manage_bookings', 'manage_gallery', 'manage_donations'],
+    };
+    setUser(updatedUser);
+    try {
+      localStorage.setItem('mandir_admin_user', JSON.stringify(updatedUser));
+    } catch (e) {
+      console.error('Failed to update user role in localStorage', e);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -93,6 +108,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         hasRole,
         hasPermission,
+        switchRole,
       }}
     >
       {children}
