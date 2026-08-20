@@ -134,7 +134,7 @@ export default function Navbar() {
     { key: 'GALLERY', label: t('nav.gallery'), isDropdown: true, subItems: gallerySubItems },
     { key: 'ONLINE_SERVICES', label: t('nav.onlineServices', 'Online Services'), isDropdown: true, subItems: servicesSubItems },
     { key: 'DONATE', label: t('nav.donate'), isDropdown: true, subItems: donateSubItems },
-    { key: 'MEMBERS', label: t('nav.members', 'Members'), isDropdown: true, subItems: membersSubItems },
+    { key: 'MEMBERS', label: t('nav.members', 'Trust'), isDropdown: true, subItems: membersSubItems },
     { key: 'CONTACT', label: t('nav.contact'), sectionId: 'contact-section' },
   ];
 
