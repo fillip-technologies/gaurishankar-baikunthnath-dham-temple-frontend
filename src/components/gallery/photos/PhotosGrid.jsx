@@ -107,20 +107,23 @@ export default function PhotosGrid() {
           {/* Photo Cards */}
           {!isLoading && photos.map((photo) => {
             const id = photo._id || photo.id;
-            const imageUrl = photo.imageUrl || PLACEHOLDER;
+            const thumbUrl = photo.thumbUrl || photo.imageUrl || PLACEHOLDER;
+            const previewUrl = photo.previewUrl || photo.imageUrl || PLACEHOLDER;
             const title = photo.title || (currentLang === 'hi' ? 'मंदिर छायाचित्र' : 'Temple Photo');
             const category = photo.category || photo.dataType || '';
 
             return (
               <div
                 key={id}
-                onClick={() => setSelectedPhoto({ id, imageUrl, title, category })}
+                onClick={() => setSelectedPhoto({ id, imageUrl: previewUrl, title, category })}
                 className="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between"
               >
                 <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-stone-950">
                   <img
-                    src={imageUrl}
+                    src={thumbUrl}
                     alt={title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
                   />

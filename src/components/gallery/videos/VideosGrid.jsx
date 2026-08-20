@@ -102,7 +102,7 @@ export default function VideosGrid() {
 
           {!isLoading && videos.map((video) => {
             const id = video._id || video.id;
-            const thumbUrl = video.imageUrl || PLACEHOLDER;
+            const thumbUrl = video.thumbUrl || video.imageUrl || PLACEHOLDER;
             const title = video.title || (currentLang === 'hi' ? 'मंदिर वीडियो' : 'Temple Video');
             const category = video.category || video.dataType || '';
             const videoUrl = video.videoUrl || video.imageUrl || '';
@@ -117,6 +117,8 @@ export default function VideosGrid() {
                   <img
                     src={thumbUrl}
                     alt={title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
                   />

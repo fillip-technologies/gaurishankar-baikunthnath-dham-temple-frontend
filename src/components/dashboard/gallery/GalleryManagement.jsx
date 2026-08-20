@@ -387,6 +387,7 @@ export default function GalleryManagement() {
             const id = item._id || item.id;
             const title = item.title || item.dataType || '';
             const url = item.imageUrl || item.url || item.mediaUrl || '';
+            const thumbUrl = item.thumbUrl || url;
             const category = item.category || item.dataType || '';
             const views = item.views ?? null;
             const date = item.createdAt
@@ -401,8 +402,10 @@ export default function GalleryManagement() {
                 {/* Media Preview */}
                 <div className="relative h-48 w-full bg-stone-100 overflow-hidden">
                   <img
-                    src={url || 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&q=60&w=400'}
+                    src={thumbUrl || 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&q=60&w=400'}
                     alt={title || 'Media'}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     onError={(e) => {
                       e.target.onerror = null; // prevent infinite loop

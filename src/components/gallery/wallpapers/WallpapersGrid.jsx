@@ -116,18 +116,22 @@ export default function WallpapersGrid() {
           {!isLoading && wallpapers.map((item) => {
             const id = item._id || item.id;
             const imageUrl = item.imageUrl || PLACEHOLDER;
+            const thumbUrl = item.thumbUrl || imageUrl;
+            const previewUrl = item.previewUrl || imageUrl;
             const title = item.title || 'Baikunthnath Dham Wallpaper';
 
             return (
               <div
                 key={id}
-                onClick={() => setSelectedImage({ url: imageUrl, title })}
+                onClick={() => setSelectedImage({ url: previewUrl, downloadUrl: imageUrl, title })}
                 className="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer relative"
               >
                 <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-stone-950">
                   <img
-                    src={imageUrl}
+                    src={thumbUrl}
                     alt={title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
                   />
@@ -224,7 +228,7 @@ export default function WallpapersGrid() {
                 {selectedImage.title}
               </span>
               <button
-                onClick={(e) => handleDownload(e, selectedImage.url, selectedImage.title)}
+                onClick={(e) => handleDownload(e, selectedImage.downloadUrl || selectedImage.url, selectedImage.title)}
                 className="px-5 py-2 rounded-full bg-[#c28227] hover:bg-[#a66d1e] text-white text-xs font-bold tracking-wider transition-colors cursor-pointer flex items-center gap-2 shadow-lg shrink-0 ml-4"
               >
                 <Download className="w-4 h-4" />
