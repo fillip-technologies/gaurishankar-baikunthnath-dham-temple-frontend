@@ -69,15 +69,19 @@ export default function AboutSection() {
               <span>✦</span>
             </div>
 
-            {/* Title with Filigree Brackets */}
-            <div className="flex items-center gap-3">
-              <span className="text-[#c28227] text-lg sm:text-2xl font-hindi">─── ༺ ॐ ༻ ───</span>
-              <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight ${
-                currentLang === 'hi' ? 'font-sans' : 'font-cinzel'
-              }`}>
-                {t('about.title')}
-              </h2>
-              <span className="text-[#c28227] text-lg sm:text-2xl font-hindi">─── ༺ ॐ ༻ ───</span>
+            {/* Title with Full Width Dynamic Sacred Accent Lines */}
+            <div className="w-full flex items-center gap-2.5 sm:gap-4 my-1">
+              <div className="h-[1.5px] sm:h-[2px] flex-1 bg-gradient-to-r from-transparent to-[#c28227] rounded-full" />
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-[#c28227] text-sm sm:text-lg font-hindi select-none">ॐ</span>
+                <h2 className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-stone-900 tracking-tight whitespace-nowrap ${
+                  currentLang === 'hi' ? 'font-sans font-bold' : 'font-cinzel'
+                }`}>
+                  {t('about.title')}
+                </h2>
+                <span className="text-[#c28227] text-sm sm:text-lg font-hindi select-none">ॐ</span>
+              </div>
+              <div className="h-[1.5px] sm:h-[2px] flex-1 bg-gradient-to-l from-transparent to-[#c28227] rounded-full" />
             </div>
 
             {/* Subtitle */}
@@ -101,17 +105,19 @@ export default function AboutSection() {
             </p>
 
             {/* READ MORE Button */}
-            <button className="bg-[#c28227] hover:bg-[#a66d1e] text-white px-6 py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2.5 w-fit mt-2 group cursor-pointer active:scale-95">
-              <span>{t('about.readMore')}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
+            <div className="pt-2 sm:pt-3">
+              <button className="bg-[#c28227] hover:bg-[#a66d1e] text-white px-6 py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2.5 w-fit group cursor-pointer active:scale-95">
+                <span>{t('about.readMore')}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
 
           </div>
 
         </div>
 
         {/* Bottom Deep Burgundy Maroon Purpose Banner */}
-        <div className="mx-4 sm:mx-6 lg:mx-8 bg-[#38060d] rounded-[28px] p-5 sm:p-7 text-white border border-amber-500/20 shadow-2xl relative overflow-hidden -mt-2 sm:-mt-4 lg:-mt-6">
+        <div className="mx-4 sm:mx-6 lg:mx-8 bg-[#38060d] rounded-[28px] p-5 sm:p-7 text-white border border-amber-500/20 shadow-2xl relative overflow-hidden mt-8 sm:mt-10 lg:mt-12">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-10">
             

@@ -145,37 +145,37 @@ export default function Navbar() {
   const isMembersActive = activeNav === 'MEMBERS' || activeNav === 'MEMBERS_PRIEST' || activeNav === 'MEMBERS_TRUST' || activeNav === 'MEMBERS_MANAGEMENT';
 
   return (
-    <nav className="w-full bg-white border-b border-stone-200 shadow-sm py-1.5 sm:py-2 px-2.5 sm:px-6 lg:px-8 font-sans overflow-visible relative z-40">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+    <nav className="w-full bg-white border-b border-stone-200 shadow-sm py-1.5 sm:py-2 px-4 sm:px-8 lg:px-12 xl:px-16 font-sans overflow-visible relative z-40">
+      <div className="max-w-[1720px] mx-auto flex items-center justify-between gap-3 sm:gap-6">
 
         {/* Left: Temple Logo & Branding */}
         <button
           onClick={(e) => handleNavClick(e, 'HOME')}
-          className="flex items-center gap-2 sm:gap-3 group shrink min-w-0 text-left cursor-pointer"
+          className="flex items-center gap-2.5 sm:gap-3.5 group shrink-0 text-left cursor-pointer"
         >
           <img
             src={templeLogo}
             alt="Baikunth Dham Logo"
-            className="h-10 sm:h-14 lg:h-[80px] w-auto object-contain transition-transform duration-200 group-hover:scale-105 shrink-0"
+            className="h-10 sm:h-12 lg:h-[60px] w-auto object-contain transition-transform duration-200 group-hover:scale-105 shrink-0"
           />
 
           {/* Title & Subtitle Stack */}
-          <div className="flex flex-col justify-center py-0.5 min-w-0">
+          <div className="flex flex-col justify-center py-0.5 shrink-0">
             {t('brand.prefix') && (
-              <span className={`text-[9px] sm:text-xs font-bold tracking-wider text-[#c28227] uppercase leading-tight mb-0.5 truncate ${currentLang === 'hi' ? 'font-sans text-[10px] sm:text-sm' : 'font-sans'
+              <span className={`text-[8.5px] sm:text-[10.5px] font-bold tracking-wider text-[#c28227] uppercase leading-tight mb-0.5 whitespace-nowrap ${currentLang === 'hi' ? 'font-sans text-[9px] sm:text-xs' : 'font-sans'
                 }`}>
                 {t('brand.prefix')}
               </span>
             )}
-            <h1 className={`text-sm sm:text-xl lg:text-2xl font-bold tracking-wide text-stone-900 leading-tight truncate ${currentLang === 'hi' ? 'font-sans' : 'font-cinzel'
+            <h1 className={`text-xs sm:text-base md:text-lg lg:text-[18px] xl:text-[19px] font-bold tracking-normal text-stone-900 leading-tight whitespace-nowrap ${currentLang === 'hi' ? 'font-sans font-extrabold' : 'font-cinzel'
               }`}>
               {t('brand.title')}
             </h1>
 
             {/* Golden Horizontal Divider Line */}
-            <div className="w-full h-[1.5px] sm:h-[2px] bg-[#c28227] my-0.5 sm:my-1" />
+            <div className="w-full h-[1.5px] bg-[#c28227] my-0.5" />
 
-            <span className="text-[9px] sm:text-xs font-bold tracking-wider text-stone-700 uppercase font-sans leading-tight mt-0.5 truncate">
+            <span className="text-[8.5px] sm:text-[10px] font-bold tracking-wider text-stone-600 uppercase font-sans leading-tight mt-0.5 whitespace-nowrap">
               {t('brand.subtitle')}
             </span>
           </div>
@@ -183,7 +183,7 @@ export default function Navbar() {
         </button>
 
         {/* Center: Navigation Links */}
-        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+        <div className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6 shrink-0">
           {navLinks.map((link) => {
             if (link.isDropdown) {
               const isOpen = link.key === 'ABOUT' ? isAboutDropdownOpen : link.key === 'GALLERY' ? isGalleryDropdownOpen : link.key === 'ONLINE_SERVICES' ? isServicesDropdownOpen : link.key === 'DONATE' ? isDonateDropdownOpen : isMembersDropdownOpen;
@@ -204,11 +204,11 @@ export default function Navbar() {
                     }}
                     className="flex items-center gap-1 cursor-pointer bg-transparent border-none focus:outline-none"
                   >
-                    <span className={`text-xs xl:text-sm font-medium tracking-wider transition-colors ${isDropdownActive ? 'text-[#c28227] font-semibold' : 'text-stone-700 hover:text-[#c28227]'
+                    <span className={`text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors ${isDropdownActive ? 'text-[#c28227] font-bold' : 'text-stone-800 hover:text-[#c28227]'
                       }`}>
                       {link.label}
                     </span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#c28227]' : 'text-stone-500 group-hover:text-[#c28227]'
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#c28227]' : 'text-stone-600 group-hover:text-[#c28227]'
                       }`} />
                   </button>
 
@@ -252,7 +252,7 @@ export default function Navbar() {
                 onClick={(e) => handleNavClick(e, link.key, link.sectionId)}
                 className="flex flex-col items-center group py-1 cursor-pointer bg-transparent border-none"
               >
-                <span className={`text-xs xl:text-sm font-medium tracking-wider transition-colors ${isActive ? 'text-[#c28227] font-semibold' : 'text-stone-700 hover:text-[#c28227]'
+                <span className={`text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors ${isActive ? 'text-[#c28227] font-bold' : 'text-stone-800 hover:text-[#c28227]'
                   }`}>
                   {link.label}
                 </span>
@@ -357,9 +357,9 @@ export default function Navbar() {
                   <div key={link.key} className="flex flex-col">
                     <button
                       onClick={() => setIsMobileOpen(!isMobileOpen)}
-                      className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium tracking-wider transition-colors text-left w-full ${isDropdownActive
-                        ? 'bg-amber-50 text-[#c28227] font-semibold border-l-4 border-[#c28227]'
-                        : 'text-stone-700 hover:bg-stone-50 hover:text-[#c28227]'
+                      className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full ${isDropdownActive
+                        ? 'bg-amber-50 text-[#c28227] font-bold border-l-4 border-[#c28227]'
+                        : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
                         }`}
                     >
                       <span>{link.label}</span>
@@ -374,9 +374,9 @@ export default function Navbar() {
                               handleNavClick(e, sub.key, sub.sectionId);
                               setIsMobileMenuOpen(false);
                             }}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wider text-left w-full transition-colors ${activeNav === sub.key
-                              ? 'bg-amber-50 text-[#c28227] font-semibold'
-                              : 'text-stone-600 hover:bg-stone-50 hover:text-[#c28227]'
+                            className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide text-left w-full transition-colors ${activeNav === sub.key
+                              ? 'bg-amber-50 text-[#c28227] font-bold'
+                              : 'text-stone-700 hover:bg-stone-50 hover:text-[#c28227]'
                               }`}
                           >
                             <span className="text-[#c28227]">❖</span>
@@ -394,9 +394,9 @@ export default function Navbar() {
                 <button
                   key={link.key}
                   onClick={(e) => handleNavClick(e, link.key, link.sectionId)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium tracking-wider transition-colors text-left w-full ${isActive
-                    ? 'bg-amber-50 text-[#c28227] font-semibold border-l-4 border-[#c28227]'
-                    : 'text-stone-700 hover:bg-stone-50 hover:text-[#c28227]'
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full ${isActive
+                    ? 'bg-amber-50 text-[#c28227] font-bold border-l-4 border-[#c28227]'
+                    : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
                     }`}
                 >
                   <span>{link.label}</span>

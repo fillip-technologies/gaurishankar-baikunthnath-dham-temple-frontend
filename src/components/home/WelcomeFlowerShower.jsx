@@ -64,27 +64,30 @@ export default function WelcomeFlowerShower() {
       <style>{`
         @keyframes flowerTopToDown {
           0% {
-            transform: translateY(-90px) rotate(0deg) scale(0.6);
+            transform: translateY(-120px) rotate(0deg) scale(0.6);
             opacity: 0;
           }
-          12% {
-            opacity: 1;
+          10% {
+            opacity: 0.95;
           }
           85% {
-            opacity: 1;
+            opacity: 0.95;
           }
           100% {
-            transform: translateY(105vh) rotate(420deg) scale(1.1);
+            transform: translateY(105vh) rotate(360deg) scale(1.05);
             opacity: 0;
           }
         }
 
         @keyframes flowerSwayMotion {
-          0%, 100% {
-            transform: translateX(0px);
+          0% {
+            transform: translateX(-15px) rotate(-10deg);
           }
           50% {
-            transform: translateX(35px);
+            transform: translateX(20px) rotate(15deg);
+          }
+          100% {
+            transform: translateX(-15px) rotate(-10deg);
           }
         }
       `}</style>
@@ -106,20 +109,23 @@ export default function WelcomeFlowerShower() {
       </div>
 
       {/* Bulk Falling Flowers Container */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {flowers.map((flower) => (
           <div
             key={flower.id}
-            className="absolute top-0"
+            className="absolute pointer-events-none"
             style={{
+              top: '-120px',
               left: `${flower.leftPos}%`,
-              animation: `flowerTopToDown ${flower.duration}s linear infinite`,
-              animationDelay: `${flower.delay}s`,
+              opacity: 0,
+              animation: `flowerTopToDown ${flower.duration}s linear ${flower.delay}s infinite both`,
+              willChange: 'transform, opacity',
             }}
           >
             <div
               style={{
-                animation: `flowerSwayMotion ${flower.swayDuration}s ease-in-out infinite alternate`,
+                animation: `flowerSwayMotion ${flower.swayDuration}s ease-in-out infinite both`,
+                willChange: 'transform',
               }}
             >
               <img
@@ -129,7 +135,8 @@ export default function WelcomeFlowerShower() {
                   width: `${flower.size}px`,
                   height: `${flower.size}px`,
                 }}
-                className="object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
+                className="object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] select-none pointer-events-none"
+                loading="eager"
               />
             </div>
           </div>

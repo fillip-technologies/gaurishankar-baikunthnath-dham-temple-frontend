@@ -6,8 +6,8 @@ export default function TopNavbar() {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-[#a86e1e] text-white border-b border-[#8c5914] text-[11px] sm:text-xs py-1.5 px-2.5 sm:px-8 font-sans overflow-hidden">
-      <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+    <div className="bg-[#a86e1e] text-white border-b border-[#8c5914] text-[11px] sm:text-xs py-1.5 px-4 sm:px-8 lg:px-12 xl:px-16 font-sans overflow-hidden">
+      <div className="max-w-[1720px] mx-auto flex flex-wrap justify-between items-center gap-2">
         
         {/* Left Info - Aarti Timings */}
         <div className="flex items-center gap-2 sm:gap-4 font-medium text-amber-100 shrink-0">
