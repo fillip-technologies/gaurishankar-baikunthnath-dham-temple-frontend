@@ -7,6 +7,7 @@ import AboutUsPage from './pages/AboutUsPage';
 import HistoryPage from './pages/HistoryPage';
 import ConstructionPage from './pages/ConstructionPage';
 import DarshanPage from './pages/DarshanPage';
+import PoojaAartiPage from './pages/PoojaAartiPage';
 import PhotosPage from './pages/PhotosPage';
 import VideosPage from './pages/VideosPage';
 import WallpapersPage from './pages/WallpapersPage';
@@ -51,7 +52,11 @@ function AppRoutes() {
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/construction" element={<ConstructionPage />} />
+        
+        {/* Darshan Routes */}
         <Route path="/darshan" element={<DarshanPage />} />
+        <Route path="/darshan/live-darshan" element={<DarshanPage />} />
+        <Route path="/darshan/pooja-aarti" element={<PoojaAartiPage />} />
 
         <Route path="/gallery/photos" element={<PhotosPage />} />
         <Route path="/gallery/videos" element={<VideosPage />} />

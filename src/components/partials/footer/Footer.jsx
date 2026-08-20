@@ -80,9 +80,15 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/darshan" className="hover:text-white text-amber-100 transition-colors duration-200 flex items-center gap-2">
+                <Link to="/darshan/live-darshan" className="hover:text-white text-amber-100 transition-colors duration-200 flex items-center gap-2">
                   <span className="text-amber-200">❖</span>
-                  <span>{t('nav.darshan', 'Live Darshan')}</span>
+                  <span>{t('nav.liveDarshan', 'Live Darshan')}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/darshan/pooja-aarti" className="hover:text-white text-amber-100 transition-colors duration-200 flex items-center gap-2">
+                  <span className="text-amber-200">❖</span>
+                  <span>{t('nav.poojaAarti', 'Pooja & Aarti')}</span>
                 </Link>
               </li>
               <li>

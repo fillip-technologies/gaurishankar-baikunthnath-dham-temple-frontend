@@ -42,7 +42,7 @@ export default function VirtualTourBlock() {
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
           <div className="flex items-center justify-center gap-2 text-[#c28227] text-xs font-hindi tracking-widest">
             <Compass className="w-4 h-4 text-[#c28227]" />
-            <span>॥ आभासी मन्दिर परिक्रमा • ३६०° टूर ॥</span>
+            <span>॥ आभासी मन्दिर परिक्रमा • 360° टूर ॥</span>
             <Compass className="w-4 h-4 text-[#c28227]" />
           </div>
 
@@ -110,7 +110,7 @@ export default function VirtualTourBlock() {
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="bg-black/50 backdrop-blur-md px-5 py-3 rounded-full border border-amber-400/40 text-amber-200 text-xs sm:text-sm font-hindi flex items-center gap-2 shadow-2xl animate-pulse">
                 <RotateCw className="w-4 h-4 text-amber-400" />
-                <span>खींचें या स्पर्श करके ३६०° देखें</span>
+                <span>खींचें या स्पर्श करके 360° देखें</span>
               </div>
             </div>
 

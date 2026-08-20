@@ -1,0 +1,152 @@
+{
+  "chant": "॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥",
+  "title": "Pooja & Daily Aarti Schedule",
+  "subtitle": "Immerse in the timeless Vedic rituals and sacred five daily Aartis celebrated at Shri Gaurishankar Baikunthnath Dham",
+  "liveStreamBadge": "24x7 Sanctum Stream Available",
+  "aartiSection": {
+    "title": "Five Daily Nitya Aartis",
+    "subtitle": "Witness the divine sequence of daily offerings and sacred lamps lit for Lord Hari-Hara",
+    "items": [
+      {
+        "id": "mangala",
+        "name": "Mangala / Pratah Aarti",
+        "time": "05:30 AM",
+        "period": "Brahma Muhurta",
+        "description": "The auspicious morning awakening ritual. The sanctum doors open with the divine conch shell blowing, followed by holy snan and mangala deepam.",
+        "rituals": "Conch blowing, Snan offering, Mangala Deepam, Vedic Stutis",
+        "deity": "Lord Hari-Hara (Gaurishankar & Baikunthnath)"
+      },
+      {
+        "id": "shringar",
+        "name": "Shringar Aarti",
+        "time": "08:30 AM",
+        "period": "Morning",
+        "description": "Sacred ornamentation ceremony. The deity is adorned with fresh fragrant flowers, chandan tilak, sacred silks, and morning bhog offerings.",
+        "rituals": "Floral ornamentation, Chandan alankaram, Incense offering, Stuti chant",
+        "deity": "Divine Floral Shringar"
+      },
+      {
+        "id": "bhog",
+        "name": "Madhyahna Bhog Aarti",
+        "time": "12:00 PM",
+        "period": "Afternoon",
+        "description": "Royal noon offering of pure sattvic Mahaprasad prepared in the temple kitchen with holy Ganga jal, followed by Madhyahna Aarti.",
+        "rituals": "Rajbhog offering, Naivedyam, Aarti of 5 wicks, Sanctum midday rest",
+        "deity": "Maha Naivedyam"
+      },
+      {
+        "id": "sandhya",
+        "name": "Sandhya Maha Aarti",
+        "time": "06:30 PM",
+        "period": "Evening (Ganga Deck)",
+        "description": "The grandeur evening Maha Aarti with 108 sacred lamps on the Ganga Ghat promenade accompanied by traditional bells, drums, and Vedic hymns.",
+        "rituals": "108 Deepam Maha Aarti, Ganga Deep Daan, Damru & Bell resonance",
+        "deity": "Ganga Ghat Promenade & Sanctum"
+      },
+      {
+        "id": "shayan",
+        "name": "Shayan Aarti",
+        "time": "08:45 PM",
+        "period": "Night",
+        "description": "The concluding night aarti with soothing lullaby stotras. The sanctum is prepared for night rest and temple gates close at 09:00 PM.",
+        "rituals": "Chamara seva, Shayan stotra recitation, Final sanctum darshan",
+        "deity": "Night Rest of the Deity"
+      }
+    ]
+  },
+  "poojaSection": {
+    "title": "Sacred Vedic Poojas & Anushthan",
+    "subtitle": "Book personalized Vedic Poojas performed by learned temple priests according to your Gotra and Sankalp",
+    "bookButton": "Book This Pooja",
+    "viewDetails": "View Details",
+    "items": [
+      {
+        "id": "rudrabhishek",
+        "name": "Shri Rudrabhishek Mahapooja",
+        "category": "Lord Shiva Seva",
+        "duration": "90 mins",
+        "idealDay": "Mondays, Pradosh & Shivratri",
+        "description": "Elaborate abhishek of the sacred Hari-Hara composite Shivling with 11 holy dravyas including Ganga jal, cow milk, honey, sugarcane juice, and panchamrit amidst Rudra Suktam chantings.",
+        "benefits": "Removes negative planetary influences, brings peace, health, and spiritual upliftment."
+      },
+      {
+        "id": "ganga-aarti",
+        "name": "Ganga Maha Aarti & Deep Daan",
+        "category": "Ganga Seva",
+        "duration": "60 mins",
+        "idealDay": "Daily Evening & Purnima",
+        "description": "Participate in personalized evening Ganga Aarti on the newly paved stone ghats with holy sankalp, 108-lamp deepotsav, and floating floral diyas.",
+        "benefits": "Purifies karma, blesses the family with divine light, prosperity, and mental tranquility."
+      },
+      {
+        "id": "mahamrityunjaya",
+        "name": "Maha Mrityunjaya Anushthan",
+        "category": "Health & Protection",
+        "duration": "120 mins",
+        "idealDay": "Any auspicious day",
+        "description": "Sacred recitation of 1,100 Maha Mrityunjaya mantras with special havan oblations for health, longevity, and liberation from chronic obstacles.",
+        "benefits": "Bestows divine healing, vitality, and invincible spiritual protection."
+      },
+      {
+        "id": "satyanarayan",
+        "name": "Shri Satyanarayan Vrat Katha",
+        "category": "Lord Vishnu Seva",
+        "duration": "75 mins",
+        "idealDay": "Purnima, Ekadashi & Thursdays",
+        "description": "Traditional Vedic recitation of the five chapters of Sri Satyanarayan Katha with panchamrit, banana prasad, panjiri, and Vishnu Sahasranama archana.",
+        "benefits": "Brings familial harmony, financial abundance, and fulfillment of heartfelt wishes."
+      },
+      {
+        "id": "navagraha",
+        "name": "Navagraha Shanti & Havan",
+        "category": "Astrological Peace",
+        "duration": "100 mins",
+        "idealDay": "Saturdays / Planetary transit days",
+        "description": "Sacred Vedic fire ritual appeasing the nine cosmic deities (Navagrahas) with specific samagri, ghee oblations, and planetary stotras.",
+        "benefits": "Neutralizes planetary doshas, brings professional success, and clears obstacles."
+      },
+      {
+        "id": "hari-hara-archana",
+        "name": "Hari-Hara Sahasranama Archana",
+        "category": "Special Deity Archana",
+        "duration": "45 mins",
+        "idealDay": "Daily morning & festivals",
+        "description": "Continuous chanting of 1,008 divine names of Lord Shiva and Lord Vishnu offered with sacred bilva leaves, fresh tulsi, and chandan.",
+        "benefits": "Unifies the blessings of both Hari (Vishnu) and Hara (Shiva) for holistic wellbeing."
+      }
+    ]
+  },
+  "guidelines": {
+    "title": "Temple Offerings & Devotee Guidelines",
+    "subtitle": "Important guidance to ensure a spiritually enriching pilgrimage",
+    "offerings": [
+      {
+        "title": "Sacred Offerings for Hari-Hara",
+        "items": [
+          "Fresh Bilva (Belpatra) leaves & Dhatura for Lord Shiva",
+          "Fragrant Tulsi leaves & yellow flowers for Lord Vishnu",
+          "Pure Ganga jal, cow milk, and organic honey",
+          "Chandan (Sandalwood paste), Itra, and pure Camphor"
+        ]
+      },
+      {
+        "title": "Pooja Timings & Protocol",
+        "items": [
+          "Morning Sanctum Darshan: 05:00 AM – 12:30 PM",
+          "Evening Sanctum Darshan: 04:00 PM – 09:00 PM",
+          "Devotees attending special Abhishek should arrive 15 minutes before scheduled time",
+          "Prior online booking is recommended for Rudrabhishek & Havan"
+        ]
+      },
+      {
+        "title": "Dress Code & Sanctity",
+        "items": [
+          "Traditional Indian attire (Dhoti/Kurta or Pyjama for men; Saree/Salwar for women)",
+          "Devotees entering the inner sanctum must observe ceremonial snan purity",
+          "Mobile phones must be switched to silent mode inside the sanctum mandap",
+          "Photography of the inner sanctum during ongoing Aarti is prohibited"
+        ]
+      }
+    ]
+  }
+}

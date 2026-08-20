@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, ChevronRight, ChevronDown, Languages } from 'lucide-react';
@@ -11,6 +11,8 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(true);
+  const [isDarshanDropdownOpen, setIsDarshanDropdownOpen] = useState(false);
+  const [isMobileDarshanOpen, setIsMobileDarshanOpen] = useState(true);
   const [isGalleryDropdownOpen, setIsGalleryDropdownOpen] = useState(false);
   const [isMobileGalleryOpen, setIsMobileGalleryOpen] = useState(true);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
@@ -27,11 +29,32 @@ export default function Navbar() {
     i18n.changeLanguage(lng);
   };
 
+  // Sync activeNav with current location
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/about-us') setActiveNav('ABOUT_US');
+    else if (path === '/history') setActiveNav('HISTORY');
+    else if (path === '/construction') setActiveNav('CONSTRUCTION');
+    else if (path === '/darshan' || path === '/darshan/live-darshan') setActiveNav('DARSHAN_LIVE');
+    else if (path === '/darshan/pooja-aarti') setActiveNav('DARSHAN_POOJA_AARTI');
+    else if (path === '/gallery/photos') setActiveNav('GALLERY_PHOTOS');
+    else if (path === '/gallery/videos') setActiveNav('GALLERY_VIDEOS');
+    else if (path === '/gallery/wallpapers') setActiveNav('GALLERY_WALLPAPERS');
+    else if (path.startsWith('/gallery/media')) setActiveNav('GALLERY_MEDIA');
+    else if (path === '/online-services/pooja-booking') setActiveNav('SERVICES_POOJA');
+    else if (path === '/online-services/room-booking') setActiveNav('SERVICES_ROOM');
+    else if (path === '/online-services/volunteers') setActiveNav('SERVICES_VOLUNTEERS');
+    else if (path === '/members/priest') setActiveNav('MEMBERS_PRIEST');
+    else if (path === '/members/trust-members') setActiveNav('MEMBERS_TRUST');
+    else if (path === '/') setActiveNav('HOME');
+  }, [location.pathname]);
+
   const handleNavClick = (e, key, sectionId) => {
     if (e) e.preventDefault();
     setActiveNav(key);
     setIsMobileMenuOpen(false);
     setIsAboutDropdownOpen(false);
+    setIsDarshanDropdownOpen(false);
     setIsGalleryDropdownOpen(false);
     setIsServicesDropdownOpen(false);
     setIsMembersDropdownOpen(false);
@@ -46,8 +69,11 @@ export default function Navbar() {
     } else if (key === 'CONSTRUCTION') {
       navigate('/construction');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'DARSHAN') {
-      navigate('/darshan');
+    } else if (key === 'DARSHAN_LIVE' || key === 'DARSHAN') {
+      navigate('/darshan/live-darshan');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (key === 'DARSHAN_POOJA_AARTI') {
+      navigate('/darshan/pooja-aarti');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (key === 'GALLERY_PHOTOS') {
       navigate('/gallery/photos');
@@ -103,6 +129,11 @@ export default function Navbar() {
     { key: 'CONSTRUCTION', label: t('nav.construction', 'Construction'), sectionId: 'construction-section' },
   ];
 
+  const darshanSubItems = [
+    { key: 'DARSHAN_LIVE', label: t('nav.liveDarshan', 'Live Darshan'), sectionId: 'live-darshan-section' },
+    { key: 'DARSHAN_POOJA_AARTI', label: t('nav.poojaAarti', 'Pooja & Aarti'), sectionId: 'pooja-aarti-section' },
+  ];
+
   const gallerySubItems = [
     { key: 'GALLERY_PHOTOS', label: t('nav.galleryPhotos', 'Photos'), sectionId: 'gallery-photos-section' },
     { key: 'GALLERY_VIDEOS', label: t('nav.galleryVideos', 'Videos'), sectionId: 'gallery-videos-section' },
@@ -130,7 +161,7 @@ export default function Navbar() {
   const navLinks = [
     { key: 'HOME', label: t('nav.home'), sectionId: 'hero-section' },
     { key: 'ABOUT', label: t('nav.about'), isDropdown: true, subItems: aboutSubItems },
-    { key: 'DARSHAN', label: t('nav.darshan', 'Darshan'), sectionId: 'live-darshan-section' },
+    { key: 'DARSHAN', label: t('nav.darshan', 'Darshan'), isDropdown: true, subItems: darshanSubItems },
     { key: 'GALLERY', label: t('nav.gallery'), isDropdown: true, subItems: gallerySubItems },
     { key: 'ONLINE_SERVICES', label: t('nav.onlineServices', 'Online Services'), isDropdown: true, subItems: servicesSubItems },
     { key: 'DONATE', label: t('nav.donate'), isDropdown: true, subItems: donateSubItems },
@@ -139,10 +170,31 @@ export default function Navbar() {
   ];
 
   const isAboutActive = activeNav === 'ABOUT' || activeNav === 'ABOUT_US' || activeNav === 'HISTORY' || activeNav === 'CONSTRUCTION';
+  const isDarshanActive = activeNav === 'DARSHAN' || activeNav === 'DARSHAN_LIVE' || activeNav === 'DARSHAN_POOJA_AARTI';
   const isGalleryActive = activeNav === 'GALLERY' || activeNav === 'GALLERY_PHOTOS' || activeNav === 'GALLERY_VIDEOS' || activeNav === 'GALLERY_WALLPAPERS' || activeNav === 'GALLERY_MEDIA';
   const isServicesActive = activeNav === 'ONLINE_SERVICES' || activeNav === 'SERVICES_POOJA' || activeNav === 'SERVICES_ROOM' || activeNav === 'SERVICES_VOLUNTEERS';
   const isDonateActive = activeNav === 'DONATE' || activeNav === 'DONATE_ONLINE' || activeNav === 'DONATE_SEVA';
   const isMembersActive = activeNav === 'MEMBERS' || activeNav === 'MEMBERS_PRIEST' || activeNav === 'MEMBERS_TRUST' || activeNav === 'MEMBERS_MANAGEMENT';
+
+  const getDropdownState = (key) => {
+    if (key === 'ABOUT') return [isAboutDropdownOpen, setIsAboutDropdownOpen, isAboutActive];
+    if (key === 'DARSHAN') return [isDarshanDropdownOpen, setIsDarshanDropdownOpen, isDarshanActive];
+    if (key === 'GALLERY') return [isGalleryDropdownOpen, setIsGalleryDropdownOpen, isGalleryActive];
+    if (key === 'ONLINE_SERVICES') return [isServicesDropdownOpen, setIsServicesDropdownOpen, isServicesActive];
+    if (key === 'DONATE') return [isDonateDropdownOpen, setIsDonateDropdownOpen, isDonateActive];
+    if (key === 'MEMBERS') return [isMembersDropdownOpen, setIsMembersDropdownOpen, isMembersActive];
+    return [false, () => {}, false];
+  };
+
+  const getMobileDropdownState = (key) => {
+    if (key === 'ABOUT') return [isMobileAboutOpen, setIsMobileAboutOpen, isAboutActive];
+    if (key === 'DARSHAN') return [isMobileDarshanOpen, setIsMobileDarshanOpen, isDarshanActive];
+    if (key === 'GALLERY') return [isMobileGalleryOpen, setIsMobileGalleryOpen, isGalleryActive];
+    if (key === 'ONLINE_SERVICES') return [isMobileServicesOpen, setIsMobileServicesOpen, isServicesActive];
+    if (key === 'DONATE') return [isMobileDonateOpen, setIsMobileDonateOpen, isDonateActive];
+    if (key === 'MEMBERS') return [isMobileMembersOpen, setIsMobileMembersOpen, isMembersActive];
+    return [false, () => {}, false];
+  };
 
   return (
     <nav className="w-full bg-white border-b border-stone-200 shadow-sm py-1.5 sm:py-2 px-4 sm:px-8 lg:px-12 xl:px-16 font-sans overflow-visible relative z-40">
@@ -186,9 +238,7 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6 shrink-0">
           {navLinks.map((link) => {
             if (link.isDropdown) {
-              const isOpen = link.key === 'ABOUT' ? isAboutDropdownOpen : link.key === 'GALLERY' ? isGalleryDropdownOpen : link.key === 'ONLINE_SERVICES' ? isServicesDropdownOpen : link.key === 'DONATE' ? isDonateDropdownOpen : isMembersDropdownOpen;
-              const setIsOpen = link.key === 'ABOUT' ? setIsAboutDropdownOpen : link.key === 'GALLERY' ? setIsGalleryDropdownOpen : link.key === 'ONLINE_SERVICES' ? setIsServicesDropdownOpen : link.key === 'DONATE' ? setIsDonateDropdownOpen : setIsMembersDropdownOpen;
-              const isDropdownActive = link.key === 'ABOUT' ? isAboutActive : link.key === 'GALLERY' ? isGalleryActive : link.key === 'ONLINE_SERVICES' ? isServicesActive : link.key === 'DONATE' ? isDonateActive : isMembersActive;
+              const [isOpen, setIsOpen, isDropdownActive] = getDropdownState(link.key);
 
               return (
                 <div
@@ -349,9 +399,7 @@ export default function Navbar() {
 
             {navLinks.map((link) => {
               if (link.isDropdown) {
-                const isMobileOpen = link.key === 'ABOUT' ? isMobileAboutOpen : link.key === 'GALLERY' ? isMobileGalleryOpen : link.key === 'ONLINE_SERVICES' ? isMobileServicesOpen : link.key === 'DONATE' ? isMobileDonateOpen : isMobileMembersOpen;
-                const setIsMobileOpen = link.key === 'ABOUT' ? setIsMobileAboutOpen : link.key === 'GALLERY' ? setIsMobileGalleryOpen : link.key === 'ONLINE_SERVICES' ? setIsMobileServicesOpen : link.key === 'DONATE' ? setIsMobileDonateOpen : setIsMobileMembersOpen;
-                const isDropdownActive = link.key === 'ABOUT' ? isAboutActive : link.key === 'GALLERY' ? isGalleryActive : link.key === 'ONLINE_SERVICES' ? isServicesActive : link.key === 'DONATE' ? isDonateActive : isMembersActive;
+                const [isMobileOpen, setIsMobileOpen, isDropdownActive] = getMobileDropdownState(link.key);
 
                 return (
                   <div key={link.key} className="flex flex-col">

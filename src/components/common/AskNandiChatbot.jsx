@@ -51,7 +51,7 @@ export default function AskNandiChatbot() {
       key: 'vehicle',
       label: currentLang === 'hi' ? '🚗 वाहन पूजा दर' : '🚗 Vehicle Worship Fees',
       answer: currentLang === 'hi'
-        ? 'वाहन पूजन शुल्क (न्याय समिति स्वीकृत):\n• २ चक्का (बाइक/स्कूटर): ₹ 100\n• ३ चक्का (ऑटो): ₹ 200\n• ४ चक्का (कार/जीप): ₹ 250\n• ६ चक्का (ट्रक/बस): ₹ 300'
+        ? 'वाहन पूजन शुल्क (न्याय समिति स्वीकृत):\n• 2 चक्का (बाइक/स्कूटर): ₹ 100\n• 3 चक्का (ऑटो): ₹ 200\n• 4 चक्का (कार/जीप): ₹ 250\n• 6 चक्का (ट्रक/बस): ₹ 300'
         : 'Vehicle Blessing Rates:\n• 2-Wheeler (Bike/Scooter): ₹ 100\n• 3-Wheeler (Auto): ₹ 200\n• 4-Wheeler (Car/SUV): ₹ 250\n• 6-Wheeler (Heavy Commercial): ₹ 300'
     },
     {
