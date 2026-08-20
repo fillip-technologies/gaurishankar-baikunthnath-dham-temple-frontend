@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Maximize2, X, ChevronLeft, ChevronRight, AlertCircle, RefreshCw, Image as ImageIcon } from 'lucide-react';
+import { Maximize2, X, ChevronLeft, ChevronRight, AlertCircle, RefreshCw, Image as ImageIcon, ArrowLeft, Folder } from 'lucide-react';
 import { galleryGetApi, GALLERY_DATATYPE_MAP } from '../../clientApi/allApi';
 
 // Fallback placeholder when no API image
@@ -15,7 +15,7 @@ function SkeletonCard() {
   );
 }
 
-export default function PhotosGrid() {
+export default function PhotosGrid({ folder, onBack }) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'en';
   const sectionRef = useRef(null);
@@ -34,7 +34,7 @@ export default function PhotosGrid() {
     setError('');
 
     try {
-      const res = await galleryGetApi({ page, dataType: GALLERY_DATATYPE_MAP.PHOTOS });
+      const res = await galleryGetApi({ page, dataType: GALLERY_DATATYPE_MAP.PHOTOS, folder });
       const items = res?.data?.data ?? [];
       setPhotos(items);
       setHasMore(items.length === 20);
@@ -72,6 +72,25 @@ export default function PhotosGrid() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Back to folders + current folder name */}
+        {onBack && (
+          <div className="mb-8 flex flex-wrap items-center gap-3">
+            <button
+              onClick={onBack}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-stone-800 hover:bg-[#c28227] hover:text-white border border-stone-300 hover:border-[#c28227] shadow-sm transition cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{currentLang === 'hi' ? 'सभी फ़ोल्डर' : 'All Albums'}</span>
+            </button>
+            {folder && (
+              <div className="inline-flex items-center gap-2 text-stone-800">
+                <Folder className="w-4 h-4 text-[#c28227]" />
+                <span className="font-extrabold text-sm sm:text-base truncate max-w-xs">{folder}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Error Banner */}
         {error && (

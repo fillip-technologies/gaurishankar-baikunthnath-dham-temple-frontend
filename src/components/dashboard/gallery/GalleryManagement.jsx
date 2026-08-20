@@ -19,16 +19,18 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Folder,
 } from 'lucide-react';
 import {
   galleryGetApi,
+  galleryFoldersApi,
   galleryUploadApi,
   galleryDeleteApi,
   GALLERY_DATATYPE_MAP,
 } from '../../clientApi/allApi';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_MB = 500; // must match backend multer limit
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 const ITEMS_PER_PAGE = 20; // matches backend pagination
 
@@ -45,6 +47,50 @@ function SkeletonCard() {
           <div className="h-3 bg-stone-100 rounded w-8" />
         </div>
       </div>
+    </div>
+  );
+}
+
+// ─── Circular Upload Progress (WhatsApp-style ring) ─────────────────────────────
+function ProgressRing({ progress = 0, size = 104, stroke = 8 }) {
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const clamped = Math.max(0, Math.min(100, progress));
+  const offset = circumference - (clamped / 100) * circumference;
+  const complete = clamped >= 100;
+
+  return (
+    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="-rotate-90">
+        {/* Track */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={stroke}
+          className="text-stone-200"
+        />
+        {/* Progress */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          className="text-[#c28227] transition-[stroke-dashoffset] duration-200 ease-out"
+        />
+      </svg>
+      <span className="absolute flex flex-col items-center text-stone-800">
+        {complete
+          ? <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+          : <span className="text-lg font-extrabold">{clamped}%</span>}
+      </span>
     </div>
   );
 }
@@ -68,6 +114,7 @@ export default function GalleryManagement() {
   const [isLoading, setIsLoading] = useState(false);       // initial / tab-switch fetch
   const [isLoadingMore, setIsLoadingMore] = useState(false); // "Load More" fetch
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);  // 0-100 during upload
   const [deletingId, setDeletingId] = useState(null);       // id currently being deleted
   const [error, setError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
@@ -78,15 +125,23 @@ export default function GalleryManagement() {
     title: '',
     type: 'PHOTOS',
     category: 'Darshan',
+    folder: '',       // album/folder name (combobox: existing or new)
     file: null,       // File object
     filePreview: '',  // local object URL for preview
     fileError: '',    // client-side validation message
   });
 
+  // Existing folder names for the current media type — powers the datalist combobox
+  const [folderOptions, setFolderOptions] = useState([]);
+
+  // ── Folder filter state ─────────────────────────────────────────────────────
+  const [folderFilter, setFolderFilter] = useState('');     // '' = all folders
+  const [filterFolders, setFilterFolders] = useState([]);   // [{ folder, count }] for active tab
+
   // ─────────────────────────────────────────────────────────────────────────────
-  // Fetch gallery items whenever the active tab or page changes
+  // Fetch gallery items whenever the active tab, page, or folder filter changes
   // ─────────────────────────────────────────────────────────────────────────────
-  const fetchGallery = useCallback(async (type, page) => {
+  const fetchGallery = useCallback(async (type, page, folder = '') => {
     const apiDataType = GALLERY_DATATYPE_MAP[type];
     if (!apiDataType) return;
 
@@ -94,7 +149,7 @@ export default function GalleryManagement() {
     setError('');
 
     try {
-      const res = await galleryGetApi({ page, dataType: apiDataType });
+      const res = await galleryGetApi({ page, dataType: apiDataType, folder: folder || undefined });
       const items = res?.data?.data ?? [];
       setMediaItems(items);
       setHasMore(items.length === ITEMS_PER_PAGE);
@@ -109,17 +164,58 @@ export default function GalleryManagement() {
     }
   }, [isHi]);
 
-  // Tab switch: reset page to 1 & fetch
+  // Load the folder list for the active tab — powers the folder filter dropdown.
+  const loadFilterFolders = useCallback(async (type) => {
+    const apiDataType = GALLERY_DATATYPE_MAP[type];
+    if (!apiDataType) return;
+    try {
+      const res = await galleryFoldersApi({ dataType: apiDataType });
+      setFilterFolders(res?.data?.data ?? []);
+    } catch {
+      setFilterFolders([]);
+    }
+  }, []);
+
+  // Tab switch: reset page + folder filter, then fetch items & folder list
   useEffect(() => {
     setCurrentPage(1);
-    fetchGallery(activeType, 1);
+    setFolderFilter('');
+    fetchGallery(activeType, 1, '');
+    loadFilterFolders(activeType);
   }, [activeType]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Folder filter change: reset to page 1 & refetch
+  const handleFolderFilterChange = (folder) => {
+    setFolderFilter(folder);
+    setCurrentPage(1);
+    fetchGallery(activeType, 1, folder);
+  };
+
+  // Load existing folder names whenever the upload modal opens or its media
+  // type changes — these feed the datalist so admins can reuse a folder.
+  useEffect(() => {
+    if (!isUploadModalOpen) return;
+    let active = true;
+    (async () => {
+      try {
+        const apiDataType = GALLERY_DATATYPE_MAP[formData.type];
+        const res = await galleryFoldersApi({ dataType: apiDataType });
+        const names = (res?.data?.data ?? [])
+          .map((f) => f.folder)
+          .filter((name) => name && name !== 'Uncategorized');
+        if (active) setFolderOptions(names);
+      } catch {
+        if (active) setFolderOptions([]);
+      }
+    })();
+    return () => { active = false; };
+  }, [isUploadModalOpen, formData.type]);
 
   // Page change
   const handlePageChange = (newPage) => {
     if (newPage < 1) return;
     setCurrentPage(newPage);
-    fetchGallery(activeType, newPage);
+    fetchGallery(activeType, newPage, folderFilter);
   };
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -176,15 +272,33 @@ export default function GalleryManagement() {
     if (formData.title.trim()) {
       fd.append('title', formData.title.trim());
     }
+    if (formData.folder.trim()) {
+      fd.append('folder', formData.folder.trim());
+    }
 
     setIsUploading(true);
+    setUploadProgress(0);
     try {
-      const res = await galleryUploadApi(fd);
+      const res = await galleryUploadApi(fd, {
+        onUploadProgress: (evt) => {
+          if (evt.total) {
+            setUploadProgress(Math.round((evt.loaded / evt.total) * 100));
+          }
+        },
+      });
       const newItem = res?.data?.data;
 
-      // Prepend the returned item if it matches the current tab
+      // Prepend the returned item if it matches the current tab AND folder filter
       if (newItem && GALLERY_DATATYPE_MAP[activeType] === apiDataType) {
-        setMediaItems((prev) => [newItem, ...prev]);
+        const itemFolder = newItem.folder || '';
+        const matchesFilter =
+          folderFilter === '' ||
+          (folderFilter === 'Uncategorized' ? itemFolder === '' : itemFolder === folderFilter);
+        if (matchesFilter) {
+          setMediaItems((prev) => [newItem, ...prev]);
+        }
+        // A brand-new folder may have been created — refresh the filter dropdown
+        loadFilterFolders(activeType);
       }
 
       setUploadSuccess(
@@ -194,7 +308,7 @@ export default function GalleryManagement() {
 
       // Reset form
       if (formData.filePreview) URL.revokeObjectURL(formData.filePreview);
-      setFormData({ title: '', type: 'PHOTOS', category: 'Darshan', file: null, filePreview: '', fileError: '' });
+      setFormData({ title: '', type: 'PHOTOS', category: 'Darshan', folder: '', file: null, filePreview: '', fileError: '' });
       if (fileInputRef.current) fileInputRef.current.value = '';
 
       setTimeout(() => {
@@ -230,6 +344,8 @@ export default function GalleryManagement() {
 
     try {
       await galleryDeleteApi(id);
+      // A folder may now be empty — refresh the filter dropdown counts
+      loadFilterFolders(activeType);
     } catch (err) {
       // Rollback on failure
       setMediaItems(snapshot);
@@ -246,10 +362,12 @@ export default function GalleryManagement() {
   // Close modal & cleanup object URL
   // ─────────────────────────────────────────────────────────────────────────────
   const handleCloseModal = () => {
+    if (isUploading) return; // don't allow closing mid-upload
     if (formData.filePreview) URL.revokeObjectURL(formData.filePreview);
-    setFormData({ title: '', type: 'PHOTOS', category: 'Darshan', file: null, filePreview: '', fileError: '' });
+    setFormData({ title: '', type: 'PHOTOS', category: 'Darshan', folder: '', file: null, filePreview: '', fileError: '' });
     if (fileInputRef.current) fileInputRef.current.value = '';
     setUploadSuccess('');
+    setUploadProgress(0);
     setIsUploadModalOpen(false);
   };
 
@@ -309,7 +427,7 @@ export default function GalleryManagement() {
           <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
           <div className="flex-1 text-xs font-medium">{error}</div>
           <button
-            onClick={() => { setError(''); fetchGallery(activeType, 1, false); }}
+            onClick={() => { setError(''); setCurrentPage(1); fetchGallery(activeType, 1, folderFilter); }}
             className="inline-flex items-center gap-1 text-xs font-bold text-red-700 hover:text-red-900 transition shrink-0"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -341,16 +459,37 @@ export default function GalleryManagement() {
           })}
         </div>
 
-        {/* Search */}
-        <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={isHi ? 'शीर्षक या श्रेणी खोजें...' : 'Search by title or category...'}
-            className="w-full pl-9 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#c28227] focus:bg-white transition"
-          />
+        {/* Folder filter + Search */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          {/* Folder Filter */}
+          <div className="relative w-full sm:w-52">
+            <Folder className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+            <select
+              value={folderFilter}
+              onChange={(e) => handleFolderFilterChange(e.target.value)}
+              className="w-full pl-9 pr-8 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white transition appearance-none cursor-pointer"
+            >
+              <option value="">{isHi ? 'सभी फ़ोल्डर' : 'All folders'}</option>
+              {filterFolders.map((f) => (
+                <option key={f.folder} value={f.folder}>
+                  {f.folder} ({f.count})
+                </option>
+              ))}
+            </select>
+            <ChevronRight className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-stone-400 pointer-events-none" />
+          </div>
+
+          {/* Search */}
+          <div className="relative w-full sm:w-72">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={isHi ? 'शीर्षक या श्रेणी खोजें...' : 'Search by title or category...'}
+              className="w-full pl-9 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#c28227] focus:bg-white transition"
+            />
+          </div>
         </div>
       </div>
 
@@ -389,6 +528,7 @@ export default function GalleryManagement() {
             const url = item.imageUrl || item.url || item.mediaUrl || '';
             const thumbUrl = item.thumbUrl || url;
             const category = item.category || item.dataType || '';
+            const folder = item.folder || '';
             const views = item.views ?? null;
             const date = item.createdAt
               ? new Date(item.createdAt).toLocaleDateString('en-IN')
@@ -438,6 +578,12 @@ export default function GalleryManagement() {
                     <h3 className="text-sm font-bold text-stone-900 group-hover:text-[#c28227] transition line-clamp-2">
                       {title || (isHi ? 'शीर्षक नहीं' : 'Untitled')}
                     </h3>
+                    {folder && (
+                      <span className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-[10px] font-bold text-[#965f16]">
+                        <FileImage className="w-3 h-3" />
+                        {folder}
+                      </span>
+                    )}
                     <div className="text-[11px] text-stone-500 mt-1 flex items-center justify-between font-medium">
                       <span>{isHi ? 'अपलोड:' : 'Uploaded:'} {date}</span>
                       <span className="font-mono text-[#965f16] font-bold text-[10px] truncate max-w-[80px]">{id}</span>
@@ -591,19 +737,44 @@ export default function GalleryManagement() {
                 </div>
               </div>
 
+              {/* Folder / Album — combobox: pick an existing folder or type a new one */}
+              <div>
+                <label className="block text-stone-700 font-bold mb-1">
+                  {isHi ? 'फ़ोल्डर / एल्बम' : 'Folder / Album'}
+                  <span className="text-stone-400 font-normal ml-1">
+                    ({isHi ? 'मौजूदा चुनें या नया लिखें' : 'pick existing or type new'})
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  list="gallery-folders"
+                  value={formData.folder}
+                  onChange={(e) => setFormData({ ...formData, folder: e.target.value })}
+                  placeholder={isHi ? 'जैसे: दीपावली 2025' : 'e.g. Diwali 2025'}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white transition"
+                />
+                <datalist id="gallery-folders">
+                  {folderOptions.map((name) => (
+                    <option key={name} value={name} />
+                  ))}
+                </datalist>
+              </div>
+
               {/* File Picker */}
               <div>
                 <label className="block text-stone-700 font-bold mb-1">
                   {isHi ? 'फ़ाइल चुनें' : 'Select File'} *
                   <span className="text-stone-400 font-normal ml-1">
-                    ({isHi ? 'अधिकतम 5MB' : 'max 5 MB'})
+                    ({isHi ? 'अधिकतम 500MB' : 'max 500 MB'})
                   </span>
                 </label>
 
                 {/* Drop zone / file trigger */}
                 <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`relative cursor-pointer w-full rounded-xl border-2 border-dashed transition flex flex-col items-center justify-center py-6 px-4 text-center ${
+                  onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
+                  className={`relative w-full rounded-xl border-2 border-dashed transition flex flex-col items-center justify-center py-6 px-4 text-center ${
+                    isUploading ? 'cursor-default' : 'cursor-pointer'
+                  } ${
                     formData.fileError
                       ? 'border-red-300 bg-red-50'
                       : formData.file
@@ -611,6 +782,17 @@ export default function GalleryManagement() {
                       : 'border-stone-200 bg-stone-50 hover:border-[#c28227] hover:bg-amber-50/30'
                   }`}
                 >
+                  {/* Upload progress overlay (WhatsApp-style ring) */}
+                  {isUploading && (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-white/90 backdrop-blur-sm rounded-xl">
+                      <ProgressRing progress={uploadProgress} />
+                      <p className="text-[11px] font-bold text-stone-600">
+                        {uploadProgress >= 100
+                          ? (isHi ? 'प्रोसेस हो रहा है…' : 'Processing…')
+                          : (isHi ? 'अपलोड हो रहा है…' : 'Uploading…')}
+                      </p>
+                    </div>
+                  )}
                   {formData.filePreview ? (
                     <img
                       src={formData.filePreview}
@@ -668,7 +850,11 @@ export default function GalleryManagement() {
                   {isUploading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>{isHi ? 'अपलोड हो रहा है...' : 'Uploading...'}</span>
+                      <span>
+                        {uploadProgress >= 100
+                          ? (isHi ? 'प्रोसेस हो रहा है...' : 'Processing...')
+                          : `${isHi ? 'अपलोड' : 'Uploading'} ${uploadProgress}%`}
+                      </span>
                     </>
                   ) : (
                     <>

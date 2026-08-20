@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Play, X, ChevronLeft, ChevronRight, AlertCircle, RefreshCw, Video as VideoIcon } from 'lucide-react';
+import { Play, X, ChevronLeft, ChevronRight, AlertCircle, RefreshCw, Video as VideoIcon, Settings } from 'lucide-react';
 import { galleryGetApi, GALLERY_DATATYPE_MAP } from '../../clientApi/allApi';
 
 const PLACEHOLDER = 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=60&w=800';
@@ -23,8 +23,42 @@ export default function VideosGrid() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [quality, setQuality] = useState('Auto');   // selected playback quality
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
+  const videoRef = useRef(null);
+
+  // Open a video in the modal, resetting quality to Auto
+  const openVideo = (video) => {
+    setQuality('Auto');
+    setSelectedVideo(video);
+  };
+
+  // Current source URL for the selected quality (falls back to the default url)
+  const currentSourceUrl =
+    selectedVideo?.videoSources?.find((s) => s.label === quality)?.url ||
+    selectedVideo?.videoUrl ||
+    '';
+
+  // Switch quality while preserving playback position & play state
+  const handleQualityChange = (newQuality) => {
+    const v = videoRef.current;
+    const time = v?.currentTime ?? 0;
+    const wasPlaying = v ? !v.paused : true;
+    setQuality(newQuality);
+
+    requestAnimationFrame(() => {
+      const vid = videoRef.current;
+      if (!vid) return;
+      const restore = () => {
+        try { vid.currentTime = time; } catch { /* seek before metadata */ }
+        if (wasPlaying) vid.play().catch(() => {});
+        vid.removeEventListener('loadedmetadata', restore);
+      };
+      vid.addEventListener('loadedmetadata', restore);
+      vid.load();
+    });
+  };
 
   // ── Fetch ───────────────────────────────────────────────────────────────────
   const fetchVideos = async (page) => {
@@ -106,11 +140,12 @@ export default function VideosGrid() {
             const title = video.title || (currentLang === 'hi' ? 'मंदिर वीडियो' : 'Temple Video');
             const category = video.category || video.dataType || '';
             const videoUrl = video.videoUrl || video.imageUrl || '';
+            const videoSources = (video.videoSources || []).filter((s) => s?.url);
 
             return (
               <div
                 key={id}
-                onClick={() => setSelectedVideo({ id, thumbUrl, title, category, videoUrl })}
+                onClick={() => openVideo({ id, thumbUrl, title, category, videoUrl, videoSources })}
                 className="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between"
               >
                 <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-stone-950">
@@ -204,10 +239,11 @@ export default function VideosGrid() {
             </button>
 
             {/* Video Player */}
-            <div className="w-full aspect-video bg-black flex items-center justify-center">
-              {selectedVideo.videoUrl ? (
+            <div className="relative w-full aspect-video bg-black flex items-center justify-center">
+              {currentSourceUrl ? (
                 <video
-                  src={selectedVideo.videoUrl}
+                  ref={videoRef}
+                  src={currentSourceUrl}
                   controls
                   autoPlay
                   className="w-full h-full object-contain"
@@ -217,6 +253,25 @@ export default function VideosGrid() {
                 </video>
               ) : (
                 <img src={selectedVideo.thumbUrl} alt={selectedVideo.title} className="max-h-full object-contain" />
+              )}
+
+              {/* Quality selector (only when the backend provided variants) */}
+              {selectedVideo.videoSources?.length > 0 && (
+                <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-black/70 backdrop-blur-md rounded-full pl-2.5 pr-1 py-1 border border-white/15">
+                  <Settings className="w-3.5 h-3.5 text-amber-300" />
+                  <select
+                    value={quality}
+                    onChange={(e) => handleQualityChange(e.target.value)}
+                    className="bg-transparent text-white text-xs font-semibold focus:outline-none cursor-pointer pr-1 [&>option]:text-stone-900"
+                    title={currentLang === 'hi' ? 'वीडियो गुणवत्ता' : 'Video quality'}
+                  >
+                    {selectedVideo.videoSources.map((s) => (
+                      <option key={s.label} value={s.label}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               )}
             </div>
 

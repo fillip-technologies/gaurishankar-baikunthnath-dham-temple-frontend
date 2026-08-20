@@ -13,6 +13,7 @@ export const LOGOUT_URL = "/api/v1/auth/logout";
 // ─────────────────────────────────────────────
 export const GALLERY_UPLOAD_URL = "/api/v1/media/galleryUpload";
 export const GALLERY_GET_URL = "/api/v1/media/gallery";
+export const GALLERY_FOLDERS_URL = "/api/v1/media/gallery/folders";
 export const GALLERY_DELETE_URL = "/api/v1/media/gallery";
 
 export const GALLERY_DATATYPE_MAP = {
@@ -56,21 +57,36 @@ export const logOutApi = () => {
  * POST /api/v1/media/galleryUpload
  * Upload a media file to Cloudinary via the backend.
  * @param {FormData} formData — must contain: file (File), dataType, title (optional ≥3 chars)
+ * @param {{ onUploadProgress?: (progressEvent: any) => void }} [config] — axios upload hooks
  */
-export const galleryUploadApi = (formData) => {
+export const galleryUploadApi = (formData, { onUploadProgress } = {}) => {
     return api.post(GALLERY_UPLOAD_URL, formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
     });
 };
 
 /**
  * GET /api/v1/media/gallery
  * Fetch paginated gallery items (public — no auth needed).
- * @param {{ page: number, dataType: string }} params
+ * Pass `folder` to restrict results to a single folder.
+ * @param {{ page: number, dataType: string, folder?: string }} params
  */
-export const galleryGetApi = ({ page = 1, dataType }) => {
+export const galleryGetApi = ({ page = 1, dataType, folder }) => {
     return api.get(GALLERY_GET_URL, {
-        params: { page, dataType },
+        params: { page, dataType, ...(folder ? { folder } : {}) },
+    });
+};
+
+/**
+ * GET /api/v1/media/gallery/folders
+ * Fetch the list of folders for a dataType (public — no auth needed).
+ * Returns [{ folder, count, coverThumbUrl }].
+ * @param {{ dataType: string }} params
+ */
+export const galleryFoldersApi = ({ dataType }) => {
+    return api.get(GALLERY_FOLDERS_URL, {
+        params: { dataType },
     });
 };
 
