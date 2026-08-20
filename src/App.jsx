@@ -11,6 +11,7 @@ import PhotosPage from './pages/PhotosPage';
 import VideosPage from './pages/VideosPage';
 import WallpapersPage from './pages/WallpapersPage';
 import MediaPage from './pages/MediaPage';
+import MediaDetailPage from './pages/MediaDetailPage';
 import PoojaBookingPage from './pages/PoojaBookingPage';
 import RoomBookingPage from './pages/RoomBookingPage';
 import VolunteersPage from './pages/VolunteersPage';
@@ -56,6 +57,7 @@ function AppRoutes() {
         <Route path="/gallery/videos" element={<VideosPage />} />
         <Route path="/gallery/wallpapers" element={<WallpapersPage />} />
         <Route path="/gallery/media" element={<MediaPage />} />
+        <Route path="/gallery/media/:id" element={<MediaDetailPage />} />
 
         <Route path="/online-services/pooja-booking" element={<PoojaBookingPage />} />
         <Route path="/online-services/room-booking" element={<RoomBookingPage />} />

@@ -7,6 +7,7 @@ import DashboardOverview from '../components/dashboard/overview/DashboardOvervie
 import PoojaBookingManagement from '../components/dashboard/pooja-booking/PoojaBookingManagement';
 import DonationManagement from '../components/dashboard/donation/DonationManagement';
 import GalleryManagement from '../components/dashboard/gallery/GalleryManagement';
+import MediaCoverageManagement from '../components/dashboard/media-coverage/MediaCoverageManagement';
 import UserManagement from '../components/dashboard/users/UserManagement';
 import SystemConfig from '../components/dashboard/config/SystemConfig';
 
@@ -24,7 +25,7 @@ export default function AdminDashboardPage() {
 
   // Fallback if an admin tries to access non-permitted tabs
   useEffect(() => {
-    if (!isSuperAdmin && activeTab !== 'pooja-booking' && activeTab !== 'gallery') {
+    if (!isSuperAdmin && activeTab !== 'pooja-booking' && activeTab !== 'gallery' && activeTab !== 'media-coverage') {
       setActiveTab('pooja-booking');
     }
   }, [isSuperAdmin, activeTab]);
@@ -38,7 +39,9 @@ export default function AdminDashboardPage() {
       case 'donation':
         return isHi ? 'दान एवं सेवा प्रबंधन' : 'Donations & Seva Funds';
       case 'gallery':
-        return isHi ? 'मीडिया एवं गैलरी' : 'Media & Gallery Management';
+        return isHi ? 'फोटो एवं वीडियो' : 'Photos & Videos Management';
+      case 'media-coverage':
+        return isHi ? 'मीडिया कवरेज प्रबंधन' : 'Media Coverage & Press';
       case 'users':
         return isHi ? 'उपयोगकर्ता निर्माण एवं प्रबंधन' : 'User Creation & Management';
       case 'config':
@@ -78,6 +81,7 @@ export default function AdminDashboardPage() {
           {activeTab === 'pooja-booking' && <PoojaBookingManagement />}
           {activeTab === 'donation' && <DonationManagement />}
           {activeTab === 'gallery' && <GalleryManagement />}
+          {activeTab === 'media-coverage' && <MediaCoverageManagement />}
           {activeTab === 'users' && <UserManagement />}
           {activeTab === 'config' && <SystemConfig />}
         </main>
