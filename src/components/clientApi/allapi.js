@@ -23,6 +23,11 @@ export const GALLERY_DATATYPE_MAP = {
 };
 
 // ─────────────────────────────────────────────
+// Media Coverage Endpoints
+// ─────────────────────────────────────────────
+export const MEDIA_URL = "/api/v1/media/mediaCoverage";
+
+// ─────────────────────────────────────────────
 // Authentication API Functions
 // ─────────────────────────────────────────────
 
@@ -98,6 +103,49 @@ export const galleryFoldersApi = ({ dataType }) => {
  */
 export const galleryDeleteApi = (id) => {
     return api.delete(`${GALLERY_DELETE_URL}/${id}`);
+};
+
+// ─────────────────────────────────────────────
+// Media Coverage API Functions
+// ─────────────────────────────────────────────
+
+/**
+ * POST /api/v1/media/mediaCoverage
+ * Create a media coverage article (multipart: file + fields). Auth required.
+ * @param {FormData} formData
+ * @param {{ onUploadProgress?: (e: any) => void }} [config]
+ */
+export const mediaCreateApi = (formData, { onUploadProgress } = {}) => {
+    return api.post(MEDIA_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
+
+/**
+ * PATCH /api/v1/media/mediaCoverage/:id
+ * Update an article (multipart: optional new file + changed fields). Auth required.
+ */
+export const mediaUpdateApi = (id, formData, { onUploadProgress } = {}) => {
+    return api.patch(`${MEDIA_URL}/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
+
+/** GET /api/v1/media/mediaCoverage — all articles (public). */
+export const mediaGetAllApi = () => {
+    return api.get(MEDIA_URL);
+};
+
+/** GET /api/v1/media/mediaCoverage/:id — single article (public). */
+export const mediaGetApi = (id) => {
+    return api.get(`${MEDIA_URL}/${id}`);
+};
+
+/** DELETE /api/v1/media/mediaCoverage?id=<id> — delete article. Auth required. */
+export const mediaDeleteApi = (id) => {
+    return api.delete(MEDIA_URL, { params: { id } });
 };
 
 export default api;

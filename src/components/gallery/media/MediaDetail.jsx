@@ -1,31 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Newspaper, 
-  Clock, 
-  MapPin, 
-  Share2, 
-  Check, 
-  Sparkles, 
+import {
+  ArrowLeft,
+  Calendar,
+  Newspaper,
+  Clock,
+  MapPin,
+  Share2,
+  Check,
+  Sparkles,
   ExternalLink,
   ChevronRight,
   BookOpen,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from 'lucide-react';
-import { getMediaArticles } from './mediaData';
+import { mediaGetApi, mediaGetAllApi } from '../../clientApi/allApi';
+import { formatMediaDate } from '../../clientApi/format';
+
+const PLACEHOLDER = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=60&w=800';
+
+const categoryLabel = (category, lang) => {
+  if (category === 'tv') return lang === 'hi' ? 'टीवी प्रसारण' : 'TV Broadcast';
+  if (category === 'digital') return lang === 'hi' ? 'डिजिटल न्यूज़' : 'Digital News';
+  return lang === 'hi' ? 'प्रिंट मीडिया' : 'Print News';
+};
 
 export default function MediaDetail({ articleId }) {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const currentLang = i18n.language || 'en';
   const [copied, setCopied] = useState(false);
 
-  const articles = getMediaArticles(t, currentLang);
-  const article = articles.find((item) => item.id === parseInt(articleId, 10)) || articles[0];
-  const relatedArticles = articles.filter((item) => item.id !== article.id);
+  const [article, setArticle] = useState(null);
+  const [relatedArticles, setRelatedArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      setIsLoading(true);
+      setNotFound(false);
+      try {
+        const [detailRes, allRes] = await Promise.all([
+          mediaGetApi(articleId),
+          mediaGetAllApi().catch(() => null),
+        ]);
+        if (!active) return;
+        const found = detailRes?.data?.data;
+        if (!found) { setNotFound(true); setArticle(null); }
+        else setArticle(found);
+        const all = allRes?.data?.data ?? [];
+        setRelatedArticles(all.filter((a) => a._id !== articleId));
+      } catch {
+        if (active) { setNotFound(true); setArticle(null); }
+      } finally {
+        if (active) setIsLoading(false);
+      }
+    })();
+    return () => { active = false; };
+  }, [articleId]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -46,7 +82,16 @@ export default function MediaDetail({ articleId }) {
     }
   };
 
-  if (!article) {
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-[#f5eee6] text-stone-700 px-4 py-16">
+        <Loader2 className="w-8 h-8 animate-spin text-[#c28227] mb-3" />
+        <p className="text-sm font-medium">{currentLang === 'hi' ? 'आलेख लोड हो रहा है…' : 'Loading article…'}</p>
+      </div>
+    );
+  }
+
+  if (notFound || !article) {
     return (
       <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-[#f5eee6] text-stone-900 px-4 py-16">
         <h2 className="text-2xl font-bold mb-4">
@@ -61,6 +106,8 @@ export default function MediaDetail({ articleId }) {
       </div>
     );
   }
+
+  const displayDate = formatMediaDate(article.publicationDate, currentLang);
 
   return (
     <article className="w-full bg-[#f5eee6] min-h-screen text-stone-900 font-sans relative overflow-hidden pb-16 sm:pb-24">
@@ -110,20 +157,25 @@ export default function MediaDetail({ articleId }) {
               </span>
 
               <span className="bg-stone-100 text-stone-700 font-semibold px-3 py-1 rounded-full border border-stone-200 uppercase tracking-wider text-[10px]">
-                {article.category === 'print' ? (currentLang === 'hi' ? 'प्रिंट मीडिया' : 'Print News') : article.category === 'tv' ? (currentLang === 'hi' ? 'टीवी प्रसारण' : 'TV Broadcast') : (currentLang === 'hi' ? 'डिजिटल न्यूज़' : 'Digital News')}
+                {categoryLabel(article.category, currentLang)}
               </span>
 
-              <span className="text-stone-500 font-medium flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-stone-400" />
-                <span>{article.date}</span>
-              </span>
+              {displayDate && (
+                <span className="text-stone-500 font-medium flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-stone-400" />
+                  <span>{displayDate}</span>
+                </span>
+              )}
 
-              <span className="text-stone-400 hidden sm:inline">•</span>
-
-              <span className="text-stone-500 font-medium flex items-center gap-1 hidden sm:flex">
-                <Clock className="w-3.5 h-3.5 text-stone-400" />
-                <span>{article.readTime}</span>
-              </span>
+              {article.readTime && (
+                <>
+                  <span className="text-stone-400 hidden sm:inline">•</span>
+                  <span className="text-stone-500 font-medium flex items-center gap-1 hidden sm:flex">
+                    <Clock className="w-3.5 h-3.5 text-stone-400" />
+                    <span>{article.readTime}</span>
+                  </span>
+                </>
+              )}
             </div>
 
             {/* Main Headline */}
@@ -134,11 +186,13 @@ export default function MediaDetail({ articleId }) {
             {/* Author & Location Bar */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-2 text-xs text-stone-500 border-t border-stone-100">
               <div className="flex items-center gap-4">
-                <span className="font-semibold text-stone-700">{article.author}</span>
-                <span className="flex items-center gap-1 text-stone-500">
-                  <MapPin className="w-3.5 h-3.5 text-[#c28227]" />
-                  <span>{article.location}</span>
-                </span>
+                {article.author && <span className="font-semibold text-stone-700">{article.author}</span>}
+                {article.location && (
+                  <span className="flex items-center gap-1 text-stone-500">
+                    <MapPin className="w-3.5 h-3.5 text-[#c28227]" />
+                    <span>{article.location}</span>
+                  </span>
+                )}
               </div>
 
               {/* Social Share Group */}
@@ -196,9 +250,10 @@ export default function MediaDetail({ articleId }) {
           {/* Featured Image */}
           <div className="relative w-full h-72 sm:h-96 lg:h-[460px] bg-stone-950 overflow-hidden">
             <img
-              src={article.image}
+              src={article.imageUrl || PLACEHOLDER}
               alt={article.title}
               className="w-full h-full object-cover"
+              onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             
@@ -323,28 +378,32 @@ export default function MediaDetail({ articleId }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
               {relatedArticles.slice(0, 3).map((rel) => (
                 <div
-                  key={rel.id}
+                  key={rel._id}
                   onClick={() => {
-                    navigate(`/gallery/media/${rel.id}`);
+                    navigate(`/gallery/media/${rel._id}`);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className="bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col group"
                 >
                   <div className="h-44 w-full relative overflow-hidden bg-stone-950">
                     <img
-                      src={rel.image}
+                      src={rel.imageUrl || PLACEHOLDER}
                       alt={rel.title}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
                     />
-                    <div className="absolute top-3 left-3 bg-[#c28227] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow">
-                      {rel.source}
-                    </div>
+                    {rel.source && (
+                      <div className="absolute top-3 left-3 bg-[#c28227] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow">
+                        {rel.source}
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 space-y-2.5">
                     <span className="text-[11px] text-stone-500 flex items-center gap-1">
                       <Calendar className="w-3 h-3 text-stone-400" />
-                      <span>{rel.date}</span>
+                      <span>{formatMediaDate(rel.publicationDate, currentLang)}</span>
                     </span>
 
                     <h4 className="text-sm font-bold text-stone-900 group-hover:text-[#c28227] transition-colors leading-snug line-clamp-2">
