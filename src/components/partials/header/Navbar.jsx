@@ -37,6 +37,7 @@ export default function Navbar() {
     else if (path === '/construction') setActiveNav('CONSTRUCTION');
     else if (path === '/darshan' || path === '/darshan/live-darshan') setActiveNav('DARSHAN_LIVE');
     else if (path === '/darshan/pooja-aarti') setActiveNav('DARSHAN_POOJA_AARTI');
+    else if (path === '/darshan/panchang' || path === '/panchang') setActiveNav('DARSHAN_PANCHANG');
     else if (path === '/gallery/photos') setActiveNav('GALLERY_PHOTOS');
     else if (path === '/gallery/videos') setActiveNav('GALLERY_VIDEOS');
     else if (path === '/gallery/wallpapers') setActiveNav('GALLERY_WALLPAPERS');
@@ -74,6 +75,9 @@ export default function Navbar() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (key === 'DARSHAN_POOJA_AARTI') {
       navigate('/darshan/pooja-aarti');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (key === 'DARSHAN_PANCHANG') {
+      navigate('/darshan/panchang');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (key === 'GALLERY_PHOTOS') {
       navigate('/gallery/photos');
@@ -132,6 +136,7 @@ export default function Navbar() {
   const darshanSubItems = [
     { key: 'DARSHAN_LIVE', label: t('nav.liveDarshan', 'Live Darshan'), sectionId: 'live-darshan-section' },
     { key: 'DARSHAN_POOJA_AARTI', label: t('nav.poojaAarti', 'Pooja & Aarti'), sectionId: 'pooja-aarti-section' },
+    { key: 'DARSHAN_PANCHANG', label: t('nav.panchang', 'Vedic Panchang'), sectionId: 'panchang-section' },
   ];
 
   const gallerySubItems = [
@@ -170,7 +175,7 @@ export default function Navbar() {
   ];
 
   const isAboutActive = activeNav === 'ABOUT' || activeNav === 'ABOUT_US' || activeNav === 'HISTORY' || activeNav === 'CONSTRUCTION';
-  const isDarshanActive = activeNav === 'DARSHAN' || activeNav === 'DARSHAN_LIVE' || activeNav === 'DARSHAN_POOJA_AARTI';
+  const isDarshanActive = activeNav === 'DARSHAN' || activeNav === 'DARSHAN_LIVE' || activeNav === 'DARSHAN_POOJA_AARTI' || activeNav === 'DARSHAN_PANCHANG';
   const isGalleryActive = activeNav === 'GALLERY' || activeNav === 'GALLERY_PHOTOS' || activeNav === 'GALLERY_VIDEOS' || activeNav === 'GALLERY_WALLPAPERS' || activeNav === 'GALLERY_MEDIA';
   const isServicesActive = activeNav === 'ONLINE_SERVICES' || activeNav === 'SERVICES_POOJA' || activeNav === 'SERVICES_ROOM' || activeNav === 'SERVICES_VOLUNTEERS';
   const isDonateActive = activeNav === 'DONATE' || activeNav === 'DONATE_ONLINE' || activeNav === 'DONATE_SEVA';

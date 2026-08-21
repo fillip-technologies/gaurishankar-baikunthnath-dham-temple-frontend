@@ -13,6 +13,7 @@ import enVolunteers from './locales/en/volunteers.json';
 import enPriest from './locales/en/priest.json';
 import enTrustMembers from './locales/en/trustMembers.json';
 import enPoojaAarti from './locales/en/poojaAarti.json';
+import enPanchang from './locales/en/panchang.json';
 import hiTranslation from './locales/hi/translation.json';
 import hiConstruction from './locales/hi/construction.json';
 import hiPhotos from './locales/hi/photos.json';
@@ -25,6 +26,7 @@ import hiVolunteers from './locales/hi/volunteers.json';
 import hiPriest from './locales/hi/priest.json';
 import hiTrustMembers from './locales/hi/trustMembers.json';
 import hiPoojaAarti from './locales/hi/poojaAarti.json';
+import hiPanchang from './locales/hi/panchang.json';
 
 const resources = {
   en: {
@@ -40,7 +42,8 @@ const resources = {
       volunteersPage: enVolunteers,
       priestPage: enPriest,
       trustMembersPage: enTrustMembers,
-      poojaAartiPage: enPoojaAarti
+      poojaAartiPage: enPoojaAarti,
+      panchangPage: enPanchang
     }
   },
   hi: {
@@ -56,7 +59,8 @@ const resources = {
       volunteersPage: hiVolunteers,
       priestPage: hiPriest,
       trustMembersPage: hiTrustMembers,
-      poojaAartiPage: hiPoojaAarti
+      poojaAartiPage: hiPoojaAarti,
+      panchangPage: hiPanchang
     }
   }
 };
