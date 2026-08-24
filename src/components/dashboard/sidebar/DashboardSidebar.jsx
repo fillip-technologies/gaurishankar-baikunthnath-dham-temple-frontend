@@ -17,7 +17,8 @@ import {
   Flame,
   Globe,
   Bell,
-  Home
+  Home,
+  Flower2
 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import templeLogo from '../../../assets/logo.png';
@@ -34,6 +35,13 @@ export default function DashboardSidebar({ activeTab, setActiveTab, isCollapsed,
       labelHi: 'डैशबोर्ड ओवरव्यू',
       icon: LayoutDashboard,
       roles: ['Super Admin'], // Super Admin Only
+    },
+    {
+      id: 'daily-shringar',
+      labelEn: 'Daily Shringar',
+      labelHi: 'दैनिक शृंगार दर्शन',
+      icon: Flower2,
+      roles: ['Super Admin', 'Admin'],
     },
     {
       id: 'pooja-booking',

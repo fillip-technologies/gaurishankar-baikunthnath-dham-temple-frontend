@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import DashboardSidebar from '../components/dashboard/sidebar/DashboardSidebar';
 import DashboardHeader from '../components/dashboard/header/DashboardHeader';
 import DashboardOverview from '../components/dashboard/overview/DashboardOverview';
+import DailyShringarManagement from '../components/dashboard/daily-shringar/DailyShringarManagement';
 import PoojaBookingManagement from '../components/dashboard/pooja-booking/PoojaBookingManagement';
 import DonationManagement from '../components/dashboard/donation/DonationManagement';
 import GalleryManagement from '../components/dashboard/gallery/GalleryManagement';
@@ -19,14 +20,15 @@ export default function AdminDashboardPage() {
   const userRoleStr = (user?.role || 'Super Admin').toLowerCase().replace(/[\s_-]/g, '');
   const isSuperAdmin = userRoleStr === 'superadmin';
 
-  const [activeTab, setActiveTab] = useState(() => (isSuperAdmin ? 'overview' : 'pooja-booking'));
+  const [activeTab, setActiveTab] = useState(() => (isSuperAdmin ? 'overview' : 'daily-shringar'));
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // Fallback if an admin tries to access non-permitted tabs
   useEffect(() => {
-    if (!isSuperAdmin && activeTab !== 'pooja-booking' && activeTab !== 'gallery' && activeTab !== 'media-coverage') {
-      setActiveTab('pooja-booking');
+    const permittedAdminTabs = ['daily-shringar', 'pooja-booking', 'gallery', 'media-coverage'];
+    if (!isSuperAdmin && !permittedAdminTabs.includes(activeTab)) {
+      setActiveTab('daily-shringar');
     }
   }, [isSuperAdmin, activeTab]);
 
@@ -34,6 +36,8 @@ export default function AdminDashboardPage() {
     switch (activeTab) {
       case 'overview':
         return isHi ? 'डैशबोर्ड सारांश' : 'Dashboard Overview';
+      case 'daily-shringar':
+        return isHi ? 'दैनिक शृंगार दर्शन प्रबंधन' : 'Daily Shringar Management';
       case 'pooja-booking':
         return isHi ? 'पूजा एवं अनुष्ठान बुकिंग' : 'Pooja Bookings';
       case 'donation':
@@ -78,6 +82,7 @@ export default function AdminDashboardPage() {
         {/* Dynamic Tab Body */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 relative z-10 max-w-7xl w-full mx-auto">
           {activeTab === 'overview' && <DashboardOverview setActiveTab={setActiveTab} />}
+          {activeTab === 'daily-shringar' && <DailyShringarManagement />}
           {activeTab === 'pooja-booking' && <PoojaBookingManagement />}
           {activeTab === 'donation' && <DonationManagement />}
           {activeTab === 'gallery' && <GalleryManagement />}

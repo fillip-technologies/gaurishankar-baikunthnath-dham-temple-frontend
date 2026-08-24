@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
   Flower2, 
@@ -16,44 +16,68 @@ import {
 
 import todayShringarImg from '../../../assets/home/herosection-3.png';
 
+const STORAGE_KEY = 'baikunth_daily_shringar_list';
+
 export default function AajKaShringar() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'en';
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [activeRecord, setActiveRecord] = useState(null);
 
-  const todayDateFormatted = new Date().toLocaleDateString(currentLang === 'hi' ? 'hi-IN' : 'en-US', {
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const list = JSON.parse(saved);
+        const active = list.find((item) => item.isTodayActive) || list[0];
+        if (active) {
+          setActiveRecord(active);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not read saved shringar data:', err);
+    }
+  }, []);
+
+  const todayDateFormatted = new Date(activeRecord?.date || Date.now()).toLocaleDateString(currentLang === 'hi' ? 'hi-IN' : 'en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
   });
 
   const shringarData = {
-    title: currentLang === 'hi' ? 'आज का शृंगार' : 'Aaj Ka Shringar',
-    subtitle: currentLang === 'hi' ? 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार' : 'Daily Morning Adornment of Lord Hari-Hara',
-    timeSlot: currentLang === 'hi' ? 'प्रातः 08:30 बजे' : '08:30 AM',
-    image: todayShringarImg,
-    chant: currentLang === 'hi' ? '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥' : '॥ Om Namah Shivaya • Om Namo Bhagavate Vasudevaya ॥',
+    title: currentLang === 'hi'
+      ? (activeRecord?.titleHi || 'आज का शृंगार')
+      : (activeRecord?.titleEn || 'Aaj Ka Shringar'),
+    subtitle: currentLang === 'hi'
+      ? (activeRecord?.subtitleHi || 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार')
+      : (activeRecord?.subtitleEn || 'Daily Morning Adornment of Lord Hari-Hara'),
+    timeSlot: currentLang === 'hi'
+      ? (activeRecord?.timeSlot ? `प्रातः ${activeRecord.timeSlot}` : 'प्रातः 08:30 बजे')
+      : (activeRecord?.timeSlot || '08:30 AM'),
+    image: activeRecord?.image || todayShringarImg,
+    chant: activeRecord?.chant || (currentLang === 'hi' ? '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥' : '॥ Om Namah Shivaya • Om Namo Bhagavate Vasudevaya ॥'),
     description: currentLang === 'hi'
-      ? 'आज प्रातः काल भगवान श्री गौरीशंकर (शिव) और भगवान बैकुंठनाथ (विष्णु) का पावन गंगाजल व पंचामृत से महाभिषेक संपन्न हुआ। इसके उपरांत प्रभु को मलयागिरि के सुगंधित केसरिया चंदन, ताजे कमल पुष्प, १०८ बेलपत्र, तुलसी दल एवं विशेष पीतांबर रेशमी वस्त्रों से अलौकिक रूप से सुसज्जित किया गया है।'
-      : 'This morning, sacred snan and abhishek of Lord Gaurishankar & Lord Baikunthnath was performed with holy Ganga water and Panchamrit. The sanctum deity is divinely adorned with Malayagiri saffron sandalwood paste, fresh lotus blossoms, 108 Bilva leaves, Tulsi, and auspicious golden silks.',
+      ? (activeRecord?.descriptionHi || 'आज प्रातः काल भगवान श्री गौरीशंकर (शिव) और भगवान बैकुंठनाथ (विष्णु) का पावन गंगाजल व पंचामृत से महाभिषेक संपन्न हुआ। इसके उपरांत प्रभु को मलयागिरि के सुगंधित केसरिया चंदन, ताजे कमल पुष्प, १०८ बेलपत्र, तुलसी दल एवं विशेष पीतांबर रेशमी वस्त्रों से अलौकिक रूप से सुसज्जित किया गया है।')
+      : (activeRecord?.descriptionEn || 'This morning, sacred snan and abhishek of Lord Gaurishankar & Lord Baikunthnath was performed with holy Ganga water and Panchamrit. The sanctum deity is divinely adorned with Malayagiri saffron sandalwood paste, fresh lotus blossoms, 108 Bilva leaves, Tulsi, and auspicious golden silks.'),
     details: [
       {
         label: currentLang === 'hi' ? 'पावन पुष्प' : 'Sacred Flowers',
-        val: currentLang === 'hi' ? 'कमल, श्वेत मंदार, गेंदा एवं तुलसी दल' : 'Lotus, Jasmine, Marigold & Tulsi'
+        val: activeRecord?.flowers || (currentLang === 'hi' ? 'कमल, श्वेत मंदार, गेंदा एवं तुलसी दल' : 'Lotus, Jasmine, Marigold & Tulsi')
       },
       {
         label: currentLang === 'hi' ? 'चंदन व तिलक' : 'Chandan & Tilak',
-        val: currentLang === 'hi' ? 'शुद्ध मलयागिरि केसरिया चंदन एवं भस्म' : 'Pure Saffron Sandalwood & Bhasma'
+        val: activeRecord?.chandan || (currentLang === 'hi' ? 'शुद्ध मलयागिरि केसरिया चंदन एवं भस्म' : 'Pure Saffron Sandalwood & Bhasma')
       },
       {
         label: currentLang === 'hi' ? 'दिव्य परिधान' : 'Holy Silks',
-        val: currentLang === 'hi' ? 'पीतांबर रेशमी वस्त्र व स्वर्ण मुकुट' : 'Pitambar Golden Silks & Sacred Crown'
+        val: activeRecord?.silks || (currentLang === 'hi' ? 'पीतांबर रेशमी वस्त्र व स्वर्ण मुकुट' : 'Pitambar Golden Silks & Sacred Crown')
       },
       {
         label: currentLang === 'hi' ? 'दर्शन समय' : 'Darshan Hours',
-        val: currentLang === 'hi' ? 'प्रातः 05:00 - 12:30 | सायं 04:00 - 09:00' : '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM'
+        val: activeRecord?.darshanHours || (currentLang === 'hi' ? 'प्रातः 05:00 - 12:30 | सायं 04:00 - 09:00' : '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM')
       }
     ]
   };
@@ -98,83 +122,114 @@ export default function AajKaShringar() {
         <div className="bg-white rounded-3xl border border-stone-200 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
           
           {/* Left: Single Daily Shringar Image (7 cols - Wider & Sleek Height) */}
-          <div className="lg:col-span-7 relative h-[260px] sm:h-[320px] lg:h-full min-h-[300px] lg:min-h-[360px] max-h-[420px] bg-stone-950 overflow-hidden group">
-            
+          <div className="lg:col-span-7 relative group overflow-hidden bg-stone-900 flex items-center justify-center min-h-[380px] lg:min-h-[460px]">
             <img
               src={shringarData.image}
               alt={shringarData.title}
-              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-full object-cover object-center max-h-[520px] transition-transform duration-700 group-hover:scale-105"
             />
+            
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-            {/* Subtle Gradient Shadow */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 z-10" />
-
-            {/* Bottom Overlay Info & Controls */}
-            <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between z-20">
-              
-              <div className="text-white">
-                <span className="text-[11px] font-semibold text-amber-300 block flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  <span>{todayDateFormatted}</span>
-                </span>
-                <span className="text-xs font-bold text-white drop-shadow">
-                  {currentLang === 'hi' ? 'श्री गौरीशंकर बैकुंठनाथ धाम' : 'Shri Baikunthnath Sanctum'}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setLightboxOpen(true)}
-                  className="w-8 h-8 rounded-full bg-black/60 hover:bg-[#c28227] backdrop-blur-md text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-md"
-                  title="Fullscreen View"
-                >
-                  <Maximize2 className="w-3.5 h-3.5" />
-                </button>
-
-                <button
-                  onClick={handleDownload}
-                  className="w-8 h-8 rounded-full bg-black/60 hover:bg-[#c28227] backdrop-blur-md text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-md"
-                  title="Download HD Photo"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
+            {/* Top Left: Live Adornment Pill */}
+            <div className="absolute top-4 left-4 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#c28227] text-white text-xs font-bold shadow-md">
+                <Flower2 className="w-3.5 h-3.5" />
+                <span>{currentLang === 'hi' ? 'दैनिक दिव्य शृंगार' : 'Daily Divya Shringar'}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md text-amber-200 text-xs font-medium border border-white/20">
+                <Clock className="w-3.5 h-3.5 text-amber-400" />
+                <span>{shringarData.timeSlot}</span>
+              </span>
             </div>
 
+            {/* Top Right: Lightbox & Fullscreen Icon */}
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setLightboxOpen(true)}
+                className="p-2 rounded-full bg-black/50 backdrop-blur-md text-white hover:bg-[#c28227] transition shadow-md cursor-pointer border border-white/20"
+                title={currentLang === 'hi' ? 'बड़ी तस्वीर देखें' : 'View Fullscreen'}
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Bottom Overlay: Sacred Chant and Date on Image */}
+            <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
+              <div className="flex items-center gap-2 text-amber-300 text-xs font-semibold">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>{todayDateFormatted}</span>
+              </div>
+              <p className="text-xs sm:text-sm font-medium tracking-wide text-stone-200 font-hindi drop-shadow-md">
+                {shringarData.chant}
+              </p>
+            </div>
           </div>
 
-          {/* Right: Description & Shringar Details (5 cols) */}
-          <div className="lg:col-span-5 p-6 sm:p-7 lg:p-8 flex flex-col justify-center space-y-4 bg-gradient-to-b from-white to-amber-50/20">
+          {/* Right: Concise Details & Actions (5 cols) */}
+          <div className="lg:col-span-5 p-6 sm:p-7 flex flex-col justify-between space-y-4 bg-white">
             
-            {/* Title */}
-            <div>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-stone-900 tracking-tight leading-tight">
-                {shringarData.title}
-              </h2>
-              <div className="w-16 h-[2px] bg-[#c28227] mt-2 mb-3" />
-            </div>
+            {/* Header info */}
+            <div className="space-y-3">
+              <div>
+                <div className="flex items-center gap-1.5 text-[#c28227] text-xs font-bold uppercase tracking-wider mb-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>{currentLang === 'hi' ? 'श्री गौरीशंकर बैकुंठनाथ धाम' : 'Gaurishankar Baikunthnath Dham'}</span>
+                </div>
+                
+                <h3 className={`text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight leading-tight ${
+                  currentLang === 'hi' ? 'font-sans' : 'font-cinzel'
+                }`}>
+                  {shringarData.title}
+                </h3>
+                
+                <p className="text-xs text-[#c28227] font-semibold mt-0.5 font-hindi">
+                  {shringarData.subtitle}
+                </p>
+              </div>
 
-            {/* Description */}
-            <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
-              {shringarData.description}
-            </p>
+              {/* Short Spiritual Description */}
+              <p className="text-xs sm:text-[13px] text-stone-600 leading-relaxed font-normal">
+                {shringarData.description}
+              </p>
 
-            {/* Highlights Table / Specification */}
-            <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 space-y-2.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#c28227]" />
-                <span>{currentLang === 'hi' ? 'शृंगार विवरण' : 'Adornment Details'}</span>
-              </span>
-
-              <div className="space-y-2 pt-1">
-                {shringarData.details.map((detail, idx) => (
-                  <div key={idx} className="flex items-start justify-between text-xs border-b border-stone-200/60 last:border-0 pb-1.5 last:pb-0 gap-2">
-                    <span className="text-stone-500 font-medium shrink-0">{detail.label}:</span>
-                    <span className="text-stone-900 font-semibold text-right">{detail.val}</span>
+              {/* Key Shringar Highlights Compact 2-col Grid */}
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-stone-100">
+                {shringarData.details.map((item, idx) => (
+                  <div key={idx} className="bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/70">
+                    <span className="text-[11px] font-bold text-stone-500 block uppercase tracking-wider">
+                      {item.label}
+                    </span>
+                    <span className="text-xs font-semibold text-stone-800 line-clamp-2 mt-0.5">
+                      {item.val}
+                    </span>
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Bottom Actions: Download HD Darshan & Share */}
+            <div className="pt-3 border-t border-stone-100 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleDownload}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-[#c28227] hover:bg-[#a66d1e] text-white font-bold text-xs shadow-md transition cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>{currentLang === 'hi' ? 'HD दर्शन डाउनलोड' : 'Download Photo'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleShare}
+                className="px-3.5 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs transition cursor-pointer border border-stone-200 flex items-center gap-1.5"
+                title="Share"
+              >
+                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+                <span>{copied ? (currentLang === 'hi' ? 'कॉपी हुआ!' : 'Copied!') : (currentLang === 'hi' ? 'शेयर' : 'Share')}</span>
+              </button>
             </div>
 
           </div>
@@ -183,48 +238,28 @@ export default function AajKaShringar() {
 
       </div>
 
-      {/* Fullscreen Lightbox Modal */}
+      {/* Lightbox / Fullscreen Modal */}
       {lightboxOpen && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
           onClick={() => setLightboxOpen(false)}
         >
-          {/* Close Button */}
           <button
+            type="button"
             onClick={() => setLightboxOpen(false)}
-            className="absolute top-5 right-5 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-colors cursor-pointer z-50"
-            title="Close"
+            className="absolute top-4 right-4 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
 
-          {/* Download Button in Lightbox */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDownload();
-            }}
-            className="absolute top-5 left-5 text-white/80 hover:text-white bg-white/10 hover:bg-[#c28227] px-3.5 py-2 rounded-full transition-colors cursor-pointer z-50 flex items-center gap-2 text-xs font-bold"
-            title="Download Photo"
-          >
-            <Download className="w-4 h-4" />
-            <span>{currentLang === 'hi' ? 'डाउनलोड' : 'Download'}</span>
-          </button>
-
-          <div 
-            className="max-w-4xl max-h-[85vh] relative rounded-2xl overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="max-w-4xl max-h-[85vh] overflow-hidden rounded-2xl border border-white/20 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <img
               src={shringarData.image}
               alt={shringarData.title}
-              className="w-full h-full max-h-[78vh] object-contain mx-auto"
+              className="w-full h-full object-contain max-h-[80vh]"
             />
-            <div className="bg-stone-900/90 p-4 text-center text-white border-t border-stone-800">
-              <span className="text-xs font-bold text-[#c28227] uppercase tracking-wider block">
-                {todayDateFormatted} • {shringarData.timeSlot}
-              </span>
-              <h3 className="text-base sm:text-lg font-bold text-[#ffd700] mt-0.5">{shringarData.title}</h3>
+            <div className="bg-stone-900/90 text-white p-3 text-center text-xs">
+              <span className="font-bold">{shringarData.title}</span> • {todayDateFormatted} • {shringarData.timeSlot}
             </div>
           </div>
         </div>

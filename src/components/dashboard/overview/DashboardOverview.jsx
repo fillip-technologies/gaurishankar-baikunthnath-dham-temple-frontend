@@ -342,12 +342,18 @@ export default function DashboardOverview({ setActiveTab }) {
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-100">
+          <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+            <button
+              onClick={() => setActiveTab('daily-shringar')}
+              className="flex-1 py-1.5 px-3 rounded-lg bg-[#c28227] hover:bg-[#a66d1e] text-white text-xs font-bold transition text-center shadow-xs cursor-pointer"
+            >
+              {isHi ? 'दैनिक शृंगार अपडेट' : 'Update Daily Shringar'}
+            </button>
             <button
               onClick={() => setActiveTab('config')}
-              className="w-full py-1.5 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200 transition text-center"
+              className="py-1.5 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200 transition text-center cursor-pointer"
             >
-              {isHi ? 'आरती समय सम्पादित करें' : 'Edit Mandir Timings'}
+              {isHi ? 'समय' : 'Timings'}
             </button>
           </div>
         </div>
