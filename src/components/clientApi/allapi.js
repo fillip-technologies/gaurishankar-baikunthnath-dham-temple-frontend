@@ -157,7 +157,6 @@ export const mediaDeleteApi = (id) => {
 };
 
 // ─────────────────────────────────────────────
-<<<<<<< HEAD
 // Shringar API Functions
 // ─────────────────────────────────────────────
 
@@ -171,7 +170,10 @@ export const mediaDeleteApi = (id) => {
  */
 export const shringarCreateApi = (formData, { onUploadProgress } = {}) => {
     return api.post(SHRINGAR_CREATE_URL, formData, {
-=======
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
 // Pooja Booking Endpoints
 // ─────────────────────────────────────────────
 export const POOJA_LIST_URL = "/api/v1/pooja/poojas";
@@ -246,7 +248,6 @@ export const getAllPoojaBookingsApi = (params = {}) => {
  */
 export const addPoojaApi = (formData, { onUploadProgress } = {}) => {
     return api.post(POOJA_ADD_URL, formData, {
->>>>>>> 5266551353979f1b752b1552b1d6e4ddcbb51938
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress,
     });
@@ -280,11 +281,11 @@ export const shringarGetAllApi = () => {
  */
 export const shringarGetByIdApi = (id) => {
     return api.get(`${SHRINGAR_GET_URL}/${id}`);
-=======
- * PATCH /api/v1/pooja/update/:id
- * Admin-only: update a catalogue pooja (multipart: optional new image + changed
- * fields). At least one field/file must be present. Requires auth + valid session.
- */
+};
+/* PATCH /api/v1/pooja/update/:id
+* Admin-only: update a catalogue pooja (multipart: optional new image + changed
+* fields). At least one field/file must be present. Requires auth + valid session.
+*/
 export const updatePoojaApi = (id, formData, { onUploadProgress } = {}) => {
     return api.patch(`${POOJA_UPDATE_URL}/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -546,7 +547,6 @@ export const PAYMENT_ALL_URL = "/api/v1/payments/all";
  */
 export const getAllPaymentsApi = () => {
     return api.get(PAYMENT_ALL_URL);
->>>>>>> 5266551353979f1b752b1552b1d6e4ddcbb51938
 };
 
 export default api;
