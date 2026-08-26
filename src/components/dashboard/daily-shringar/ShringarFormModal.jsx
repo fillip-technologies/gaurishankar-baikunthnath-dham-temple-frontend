@@ -22,34 +22,40 @@ export default function ShringarFormModal({ isOpen, onClose, onSave, editingItem
   const [formData, setFormData] = useState({
     date: new Date().toISOString().slice(0, 10),
     timeSlot: '08:30 AM',
-    titleEn: 'Aaj Ka Divya Shringar',
-    titleHi: 'आज का दिव्य शृंगार',
-    subtitleEn: 'Daily Morning Adornment of Lord Hari-Hara',
-    subtitleHi: 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार',
-    chant: '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥',
-    descriptionEn: 'This morning, sacred snan and abhishek of Lord Gaurishankar & Lord Baikunthnath was performed with holy Ganga water and Panchamrit. The sanctum deity is divinely adorned with Malayagiri saffron sandalwood paste, fresh lotus blossoms, 108 Bilva leaves, Tulsi, and auspicious golden silks.',
-    descriptionHi: 'आज प्रातः काल भगवान श्री गौरीशंकर (शिव) और भगवान बैकुंठनाथ (विष्णु) का पावन गंगाजल व पंचामृत से महाभिषेक संपन्न हुआ। इसके उपरांत प्रभु को मलयागिरि के सुगंधित केसरिया चंदन, ताजे कमल पुष्प, १०८ बेलपत्र, तुलसी दल एवं विशेष पीतांबर रेशमी वस्त्रों से अलौकिक रूप से सुसज्जित किया गया है।',
-    flowers: 'Lotus, Jasmine, Marigold & Tulsi (कमल, श्वेत मंदार, गेंदा एवं तुलसी दल)',
-    chandan: 'Pure Saffron Sandalwood & Bhasma (शुद्ध मलयागिरि केसरिया चंदन एवं भस्म)',
-    silks: 'Pitambar Golden Silks & Sacred Crown (पीतांबर रेशमी वस्त्र व स्वर्ण मुकुट)',
+    title: '',
+    titleEn: '',
+    titleHi: '',
+    subtitleEn: '',
+    subtitleHi: '',
+    chant: '',
+    descriptionEn: '',
+    descriptionHi: '',
+    flowers: '',
+    chandan: '',
+    silks: '',
     darshanHours: '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM',
-    priestName: 'Pt. Ramakant Pandey (मुख्य पुजारी)',
+    priestName: '',
     status: 'Published',
-    image: todayShringarImg,
+    image: '',
     imagePreview: '',
     imageError: '',
+    titleError: '',
+    file: null,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (editingItem) {
+      const primaryTitle = editingItem.title || editingItem.titleEn || editingItem.titleHi || '';
       setFormData({
-        id: editingItem.id,
-        date: editingItem.date || new Date().toISOString().slice(0, 10),
+        id: editingItem._id || editingItem.id,
+        date: editingItem.date || (editingItem.createdAt ? new Date(editingItem.createdAt).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10)),
         timeSlot: editingItem.timeSlot || '08:30 AM',
-        titleEn: editingItem.titleEn || '',
-        titleHi: editingItem.titleHi || '',
+        title: primaryTitle,
+        titleEn: editingItem.titleEn || primaryTitle,
+        titleHi: editingItem.titleHi || primaryTitle,
         subtitleEn: editingItem.subtitleEn || '',
         subtitleHi: editingItem.subtitleHi || '',
         chant: editingItem.chant || '',
@@ -61,32 +67,38 @@ export default function ShringarFormModal({ isOpen, onClose, onSave, editingItem
         darshanHours: editingItem.darshanHours || '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM',
         priestName: editingItem.priestName || '',
         status: editingItem.status || 'Published',
-        image: editingItem.image || todayShringarImg,
-        imagePreview: editingItem.image || '',
+        image: editingItem.file || editingItem.image || editingItem.imageUrl || todayShringarImg,
+        imagePreview: editingItem.file || editingItem.image || editingItem.imageUrl || todayShringarImg,
         imageError: '',
+        titleError: '',
+        file: null,
       });
     } else {
       setFormData({
         date: new Date().toISOString().slice(0, 10),
         timeSlot: '08:30 AM',
-        titleEn: 'Aaj Ka Divya Shringar',
-        titleHi: 'आज का दिव्य शृंगार',
-        subtitleEn: 'Daily Morning Adornment of Lord Hari-Hara',
-        subtitleHi: 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार',
+        title: '',
+        titleEn: '',
+        titleHi: '',
+        subtitleEn: '',
+        subtitleHi: '',
         chant: '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥',
         descriptionEn: 'This morning, sacred snan and abhishek of Lord Gaurishankar & Lord Baikunthnath was performed with holy Ganga water and Panchamrit. The sanctum deity is divinely adorned with Malayagiri saffron sandalwood paste, fresh lotus blossoms, 108 Bilva leaves, Tulsi, and auspicious golden silks.',
         descriptionHi: 'आज प्रातः काल भगवान श्री गौरीशंकर (शिव) और भगवान बैकुंठनाथ (विष्णु) का पावन गंगाजल व पंचामृत से महाभिषेक संपन्न हुआ। इसके उपरांत प्रभु को मलयागिरि के सुगंधित केसरिया चंदन, ताजे कमल पुष्प, १०८ बेलपत्र, तुलसी दल एवं विशेष पीतांबर रेशमी वस्त्रों से अलौकिक रूप से सुसज्जित किया गया है।',
-        flowers: 'Lotus, Jasmine, Marigold & Tulsi (कमल, श्वेत मंदार, गेंदा एवं तुलसी दल)',
-        chandan: 'Pure Saffron Sandalwood & Bhasma (शुद्ध मलयागिरि केसरिया चंदन एवं भस्म)',
-        silks: 'Pitambar Golden Silks & Sacred Crown (पीतांबर रेशमी वस्त्र व स्वर्ण मुकुट)',
+        flowers: 'Lotus, Jasmine, Marigold & Tulsi',
+        chandan: 'Pure Saffron Sandalwood & Bhasma',
+        silks: 'Pitambar Golden Silks & Sacred Crown',
         darshanHours: '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM',
-        priestName: 'Pt. Ramakant Pandey (मुख्य पुजारी)',
+        priestName: 'Pt. Ramakant Pandey',
         status: 'Published',
-        image: todayShringarImg,
-        imagePreview: todayShringarImg,
+        image: '',
+        imagePreview: '',
         imageError: '',
+        titleError: '',
+        file: null,
       });
     }
+    setErrorMessage('');
   }, [editingItem, isOpen]);
 
   if (!isOpen) return null;
@@ -134,23 +146,45 @@ export default function ShringarFormModal({ isOpen, onClose, onSave, editingItem
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.titleEn && !formData.titleHi) {
-      alert(isHi ? 'कृपया शृंगार शीर्षक दर्ज करें।' : 'Please provide Shringar Title.');
+    setErrorMessage('');
+
+    // If creating, file is required (POST /api/v1/shringar/create)
+    if (!editingItem && !formData.file) {
+      setFormData((prev) => ({
+        ...prev,
+        imageError: isHi ? 'कृपया मुख्य शृंगार छवि फाइल चुनें।' : 'Please select a Shringar image file to upload.'
+      }));
+      return;
+    }
+
+    // Title validation: Optional, but if provided, must be >= 3 characters
+    const effectiveTitle = (formData.titleEn || formData.titleHi || formData.title || '').trim();
+    if (effectiveTitle && effectiveTitle.length < 3) {
+      setFormData((prev) => ({
+        ...prev,
+        titleError: isHi ? 'शीर्षक कम से कम 3 वर्णों का होना चाहिए।' : 'Title must be at least 3 characters long.'
+      }));
       return;
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      onSave({
+    try {
+      await onSave({
         ...formData,
-        id: formData.id || Date.now().toString(),
-        updatedAt: new Date().toISOString()
+        title: effectiveTitle,
+        titleEn: formData.titleEn ? formData.titleEn.trim() : effectiveTitle,
+        titleHi: formData.titleHi ? formData.titleHi.trim() : (formData.titleEn ? formData.titleEn.trim() : effectiveTitle),
       });
       setIsSubmitting(false);
       onClose();
-    }, 400);
+    } catch (err) {
+      console.error('Save Shringar Error:', err);
+      const serverMsg = err?.response?.data?.message || err?.message || 'Failed to upload/save Shringar.';
+      setErrorMessage(serverMsg);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -180,6 +214,12 @@ export default function ShringarFormModal({ isOpen, onClose, onSave, editingItem
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6 max-h-[80vh] overflow-y-auto">
+          {errorMessage && (
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
           
           {/* Section 1: Image Upload Zone */}
           <div className="space-y-2">
@@ -310,10 +350,24 @@ export default function ShringarFormModal({ isOpen, onClose, onSave, editingItem
               <input
                 type="text"
                 value={formData.titleEn}
-                onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFormData((prev) => ({
+                    ...prev,
+                    titleEn: val,
+                    title: val || prev.titleHi || '',
+                    titleError: ''
+                  }));
+                }}
                 placeholder="Aaj Ka Divya Shringar"
                 className="w-full bg-white border border-stone-300 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-stone-900 focus:outline-none focus:border-[#c28227]"
               />
+              {formData.titleError && (
+                <p className="text-xs text-rose-600 font-semibold mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {formData.titleError}
+                </p>
+              )}
             </div>
 
             <div>
@@ -323,7 +377,15 @@ export default function ShringarFormModal({ isOpen, onClose, onSave, editingItem
               <input
                 type="text"
                 value={formData.titleHi}
-                onChange={(e) => setFormData({ ...formData, titleHi: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFormData((prev) => ({
+                    ...prev,
+                    titleHi: val,
+                    title: prev.titleEn || val || '',
+                    titleError: ''
+                  }));
+                }}
                 placeholder="आज का दिव्य शृंगार"
                 className="w-full bg-white border border-stone-300 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-stone-900 focus:outline-none focus:border-[#c28227]"
               />

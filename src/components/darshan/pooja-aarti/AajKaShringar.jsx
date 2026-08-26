@@ -14,6 +14,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 
+import { shringarGetAllApi } from '../../clientApi/allapi';
 import todayShringarImg from '../../../assets/home/herosection-3.png';
 
 const STORAGE_KEY = 'baikunth_daily_shringar_list';
@@ -27,18 +28,42 @@ export default function AajKaShringar() {
   const [activeRecord, setActiveRecord] = useState(null);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const list = JSON.parse(saved);
-        const active = list.find((item) => item.isTodayActive) || list[0];
-        if (active) {
-          setActiveRecord(active);
+    // 1. First attempt to fetch live from API (GET /api/v1/shringar/all)
+    const loadShringar = async () => {
+      try {
+        const res = await shringarGetAllApi();
+        if (res.status === 200 && Array.isArray(res.data?.data) && res.data.data.length > 0) {
+          const first = res.data.data[0];
+          setActiveRecord({
+            ...first,
+            title: first.title || 'Aaj Ka Divya Shringar',
+            titleEn: first.title || first.titleEn || 'Aaj Ka Divya Shringar',
+            titleHi: first.titleHi || first.title || 'आज का दिव्य शृंगार',
+            image: first.file || first.url || first.secure_url || first.imageUrl || first.image || todayShringarImg,
+            date: first.createdAt || first.date || new Date().toISOString()
+          });
+          return;
         }
+      } catch (err) {
+        console.warn('Could not fetch live shringar, falling back to cache:', err);
       }
-    } catch (err) {
-      console.warn('Could not read saved shringar data:', err);
-    }
+
+      // 2. Fallback to localStorage
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const list = JSON.parse(saved);
+          const active = list.find((item) => item.isTodayActive) || list[0];
+          if (active) {
+            setActiveRecord(active);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not read saved shringar data:', err);
+      }
+    };
+
+    loadShringar();
   }, []);
 
   const todayDateFormatted = new Date(activeRecord?.date || Date.now()).toLocaleDateString(currentLang === 'hi' ? 'hi-IN' : 'en-US', {
@@ -49,11 +74,11 @@ export default function AajKaShringar() {
 
   const shringarData = {
     title: currentLang === 'hi'
-      ? (activeRecord?.titleHi || 'आज का शृंगार')
-      : (activeRecord?.titleEn || 'Aaj Ka Shringar'),
+      ? (activeRecord?.titleHi || activeRecord?.title || 'आज का दिव्य शृंगार')
+      : (activeRecord?.titleEn || activeRecord?.title || 'Aaj Ka Divya Shringar'),
     subtitle: currentLang === 'hi'
-      ? (activeRecord?.subtitleHi || 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार')
-      : (activeRecord?.subtitleEn || 'Daily Morning Adornment of Lord Hari-Hara'),
+      ? (activeRecord?.subtitleHi || activeRecord?.subtitleEn || 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार')
+      : (activeRecord?.subtitleEn || activeRecord?.subtitleHi || 'Daily Morning Adornment of Lord Hari-Hara'),
     timeSlot: currentLang === 'hi'
       ? (activeRecord?.timeSlot ? `प्रातः ${activeRecord.timeSlot}` : 'प्रातः 08:30 बजे')
       : (activeRecord?.timeSlot || '08:30 AM'),

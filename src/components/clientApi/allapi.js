@@ -28,6 +28,14 @@ export const GALLERY_DATATYPE_MAP = {
 export const MEDIA_URL = "/api/v1/media/mediaCoverage";
 
 // ─────────────────────────────────────────────
+// Shringar Endpoints
+// ─────────────────────────────────────────────
+export const SHRINGAR_CREATE_URL = "/api/v1/shringar/create";
+export const SHRINGAR_REMOVE_URL = "/api/v1/shringar/remove"; // /api/v1/shringar/remove/:id
+export const SHRINGAR_ALL_URL = "/api/v1/shringar/all";
+export const SHRINGAR_GET_URL = "/api/v1/shringar"; // /api/v1/shringar/:id
+
+// ─────────────────────────────────────────────
 // Authentication API Functions
 // ─────────────────────────────────────────────
 
@@ -146,6 +154,54 @@ export const mediaGetApi = (id) => {
 /** DELETE /api/v1/media/mediaCoverage?id=<id> — delete article. Auth required. */
 export const mediaDeleteApi = (id) => {
     return api.delete(MEDIA_URL, { params: { id } });
+};
+
+// ─────────────────────────────────────────────
+// Shringar API Functions
+// ─────────────────────────────────────────────
+
+/**
+ * POST /api/v1/shringar/create
+ * Adds a shringar (deity adornment) image uploaded to Cloudinary.
+ * Access: Auth + Session
+ * Content-Type: multipart/form-data
+ * @param {FormData} formData - must contain `file` (File, required) and optional `title` (string >= 3 chars)
+ * @param {{ onUploadProgress?: (progressEvent: any) => void }} [config]
+ */
+export const shringarCreateApi = (formData, { onUploadProgress } = {}) => {
+    return api.post(SHRINGAR_CREATE_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
+
+/**
+ * DELETE /api/v1/shringar/remove/:id
+ * Remove a shringar document and delete its image from Cloudinary.
+ * Access: Auth + Session
+ * @param {string} id - Shringar document _id
+ */
+export const shringarDeleteApi = (id) => {
+    return api.delete(`${SHRINGAR_REMOVE_URL}/${id}`);
+};
+
+/**
+ * GET /api/v1/shringar/all
+ * Fetch all shringar records (newest first).
+ * Access: Public
+ */
+export const shringarGetAllApi = () => {
+    return api.get(SHRINGAR_ALL_URL);
+};
+
+/**
+ * GET /api/v1/shringar/:id
+ * Fetch shringar by id (returns the shringar / most recent).
+ * Access: Public
+ * @param {string} id - Required path param
+ */
+export const shringarGetByIdApi = (id) => {
+    return api.get(`${SHRINGAR_GET_URL}/${id}`);
 };
 
 export default api;

@@ -56,7 +56,7 @@ export default function ShringarPreviewModal({ isOpen, onClose, shringarItem, is
             <div className="lg:col-span-7 relative group overflow-hidden bg-stone-900 flex items-center justify-center min-h-[380px] lg:min-h-[460px]">
               <img
                 src={shringarItem.image}
-                alt={shringarItem.titleEn || 'Aaj Ka Shringar'}
+                alt={shringarItem.title || shringarItem.titleEn || 'Aaj Ka Shringar'}
                 className="w-full h-full object-cover object-center max-h-[520px]"
               />
 
@@ -99,7 +99,9 @@ export default function ShringarPreviewModal({ isOpen, onClose, shringarItem, is
                   </div>
 
                   <h3 className="text-2xl sm:text-3xl font-extrabold text-stone-900 font-cinzel tracking-tight leading-tight">
-                    {isHi ? shringarItem.titleHi || shringarItem.titleEn : shringarItem.titleEn}
+                    {isHi
+                      ? shringarItem.titleHi || shringarItem.title || shringarItem.titleEn
+                      : shringarItem.titleEn || shringarItem.title || shringarItem.titleHi}
                   </h3>
 
                   <p className="text-xs text-[#c28227] font-semibold mt-1 font-hindi">
