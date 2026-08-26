@@ -1,7 +1,6 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { ShieldAlert, ArrowLeft, Lock } from 'lucide-react';
+import { ArrowLeft, Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function ProtectedRoute({ allowedRoles, requiredPermission }) {
@@ -37,13 +36,13 @@ export default function ProtectedRoute({ allowedRoles, requiredPermission }) {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href="/admin/dashboard"
+            <Link
+              to="/admin"
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#c28227] to-amber-600 text-stone-950 font-semibold hover:brightness-110 transition shadow-lg text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               {isHi ? 'डैशबोर्ड ओवरव्यू पर जाएं' : 'Back to Overview'}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

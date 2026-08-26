@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import DashboardSidebar from '../components/dashboard/sidebar/DashboardSidebar';
@@ -6,31 +7,47 @@ import DashboardHeader from '../components/dashboard/header/DashboardHeader';
 import DashboardOverview from '../components/dashboard/overview/DashboardOverview';
 import DailyShringarManagement from '../components/dashboard/daily-shringar/DailyShringarManagement';
 import PoojaBookingManagement from '../components/dashboard/pooja-booking/PoojaBookingManagement';
+import RoomBookingManagement from '../components/dashboard/room-booking/RoomBookingManagement';
+import PrasadBookingManagement from '../components/dashboard/prasad-booking/PrasadBookingManagement';
+import CatalogueManagement from '../components/dashboard/pooja-catalogue/CatalogueManagement';
 import DonationManagement from '../components/dashboard/donation/DonationManagement';
 import GalleryManagement from '../components/dashboard/gallery/GalleryManagement';
 import MediaCoverageManagement from '../components/dashboard/media-coverage/MediaCoverageManagement';
 import UserManagement from '../components/dashboard/users/UserManagement';
 import SystemConfig from '../components/dashboard/config/SystemConfig';
 
+// Every section the dashboard can render, and which roles may see it. The tab
+// id doubles as the URL segment (/admin/<id>).
+const ALL_TABS = ['overview', 'daily-shringar', 'pooja-booking', 'room-booking', 'prasad-booking', 'pooja-catalogue', 'donation', 'gallery', 'media-coverage', 'users', 'config'];
+const ADMIN_TABS = ['daily-shringar', 'pooja-booking', 'room-booking', 'prasad-booking', 'pooja-catalogue', 'gallery', 'media-coverage'];
+
 export default function AdminDashboardPage() {
   const { user } = useAuth();
   const { i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
+  const { tab } = useParams();
+  const navigate = useNavigate();
 
   const userRoleStr = (user?.role || 'Super Admin').toLowerCase().replace(/[\s_-]/g, '');
   const isSuperAdmin = userRoleStr === 'superadmin';
 
-  const [activeTab, setActiveTab] = useState(() => (isSuperAdmin ? 'overview' : 'daily-shringar'));
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Fallback if an admin tries to access non-permitted tabs
-  useEffect(() => {
-    const permittedAdminTabs = ['daily-shringar', 'pooja-booking', 'gallery', 'media-coverage'];
-    if (!isSuperAdmin && !permittedAdminTabs.includes(activeTab)) {
-      setActiveTab('daily-shringar');
-    }
-  }, [isSuperAdmin, activeTab]);
+  const defaultTab = isSuperAdmin ? 'overview' : 'daily-shringar';
+  const permittedTabs = isSuperAdmin ? ALL_TABS : ADMIN_TABS;
+
+  // The active section is derived from the URL, so a refresh (and browser
+  // back/forward) keeps you where you were. `/admin` with no tab, an unknown
+  // tab, or a tab this role can't see all fall back to the default section.
+  const activeTab = tab || defaultTab;
+  if (!permittedTabs.includes(activeTab)) {
+    return <Navigate to={`/admin/${defaultTab}`} replace />;
+  }
+
+  // Selecting a section navigates to its route; passed to the sidebar and the
+  // overview's shortcut cards in place of the old setState so they keep working.
+  const setActiveTab = (tabId) => navigate(`/admin/${tabId}`);
 
   const getTabTitle = () => {
     switch (activeTab) {
@@ -40,6 +57,12 @@ export default function AdminDashboardPage() {
         return isHi ? 'दैनिक शृंगार दर्शन प्रबंधन' : 'Daily Shringar Management';
       case 'pooja-booking':
         return isHi ? 'पूजा एवं अनुष्ठान बुकिंग' : 'Pooja Bookings';
+      case 'room-booking':
+        return isHi ? 'कक्ष बुकिंग' : 'Room Bookings';
+      case 'prasad-booking':
+        return isHi ? 'प्रसाद बुकिंग' : 'Prasad Bookings';
+      case 'pooja-catalogue':
+        return isHi ? 'कैटलॉग' : 'Catalogue';
       case 'donation':
         return isHi ? 'दान एवं सेवा प्रबंधन' : 'Donations & Seva Funds';
       case 'gallery':
@@ -84,6 +107,9 @@ export default function AdminDashboardPage() {
           {activeTab === 'overview' && <DashboardOverview setActiveTab={setActiveTab} />}
           {activeTab === 'daily-shringar' && <DailyShringarManagement />}
           {activeTab === 'pooja-booking' && <PoojaBookingManagement />}
+          {activeTab === 'room-booking' && <RoomBookingManagement />}
+          {activeTab === 'prasad-booking' && <PrasadBookingManagement />}
+          {activeTab === 'pooja-catalogue' && <CatalogueManagement />}
           {activeTab === 'donation' && <DonationManagement />}
           {activeTab === 'gallery' && <GalleryManagement />}
           {activeTab === 'media-coverage' && <MediaCoverageManagement />}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard,
@@ -11,6 +11,7 @@ import {
   Sliders,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   LogOut,
   Sparkles,
   ShieldCheck,
@@ -18,7 +19,9 @@ import {
   Globe,
   Bell,
   Home,
-  Flower2
+  Flower2,
+  BedDouble,
+  Gift,
 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import templeLogo from '../../../assets/logo.png';
@@ -44,10 +47,38 @@ export default function DashboardSidebar({ activeTab, setActiveTab, isCollapsed,
       roles: ['Super Admin', 'Admin'],
     },
     {
-      id: 'pooja-booking',
-      labelEn: 'Pooja Bookings',
-      labelHi: 'पूजा बुकिंग',
+      // A collapsible group (not a tab itself) — expands to the booking types.
+      id: 'booking',
+      labelEn: 'Booking',
+      labelHi: 'बुकिंग',
       icon: CalendarCheck,
+      roles: ['Super Admin', 'Admin'],
+      children: [
+        {
+          id: 'pooja-booking',
+          labelEn: 'Pooja Booking',
+          labelHi: 'पूजा बुकिंग',
+          icon: Sparkles,
+        },
+        {
+          id: 'room-booking',
+          labelEn: 'Room Booking',
+          labelHi: 'कक्ष बुकिंग',
+          icon: BedDouble,
+        },
+        {
+          id: 'prasad-booking',
+          labelEn: 'Prasad Booking',
+          labelHi: 'प्रसाद बुकिंग',
+          icon: Gift,
+        },
+      ],
+    },
+    {
+      id: 'pooja-catalogue',
+      labelEn: 'Catalogue',
+      labelHi: 'कैटलॉग',
+      icon: Flame,
       roles: ['Super Admin', 'Admin'],
     },
     {
@@ -98,6 +129,54 @@ export default function DashboardSidebar({ activeTab, setActiveTab, isCollapsed,
   const handleSelect = (tabId) => {
     setActiveTab(tabId);
     if (setIsMobileOpen) setIsMobileOpen(false);
+  };
+
+  // Collapsible groups (e.g. "Booking"). A group is open if the user toggled it,
+  // otherwise it defaults to open whenever one of its children is the active tab
+  // (so a deep-link to /admin/room-booking shows the group already expanded).
+  const [openGroups, setOpenGroups] = useState({});
+  const isGroupOpen = (item) =>
+    openGroups[item.id] ?? item.children.some((c) => c.id === activeTab);
+  const toggleGroup = (item) =>
+    setOpenGroups((prev) => ({ ...prev, [item.id]: !isGroupOpen(item) }));
+
+  // Renders a single clickable tab button (used for both top-level leaf items and
+  // the children inside a collapsible group).
+  const renderLeaf = (item, isActive) => {
+    const Icon = item.icon;
+    return (
+      <button
+        key={item.id}
+        onClick={() => handleSelect(item.id)}
+        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-xs transition-all duration-150 group relative ${
+          isActive
+            ? 'bg-slate-800/90 text-white font-bold border border-slate-700 shadow-xs'
+            : 'text-white hover:text-white hover:bg-slate-800/70 border border-transparent'
+        }`}
+        title={isCollapsed ? (isHi ? item.labelHi : item.labelEn) : undefined}
+      >
+        <Icon
+          className={`w-4 h-4 transition shrink-0 ${
+            isActive ? 'text-amber-400' : 'text-slate-300 group-hover:text-amber-300'
+          }`}
+        />
+
+        {!isCollapsed && (
+          <div className="flex-1 flex items-center justify-between min-w-0">
+            <span className="truncate text-white">{isHi ? item.labelHi : item.labelEn}</span>
+            {item.roles?.length === 1 && (
+              <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                Super
+              </span>
+            )}
+          </div>
+        )}
+
+        {isActive && (
+          <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-amber-400 rounded-r" />
+        )}
+      </button>
+    );
   };
 
   return (
@@ -164,42 +243,44 @@ export default function DashboardSidebar({ activeTab, setActiveTab, isCollapsed,
             </div>
 
             {visibleMenuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
+              // ── Collapsible group (e.g. "Booking") ──────────────────────────
+              if (item.children) {
+                const GroupIcon = item.icon;
+                const open = isGroupOpen(item);
+                const hasActiveChild = item.children.some((c) => c.id === activeTab);
 
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleSelect(item.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-xs transition-all duration-150 group relative ${
-                    isActive
-                      ? 'bg-slate-800/90 text-white font-bold border border-slate-700 shadow-xs'
-                      : 'text-white hover:text-white hover:bg-slate-800/70 border border-transparent'
-                  }`}
-                  title={isCollapsed ? (isHi ? item.labelHi : item.labelEn) : undefined}
-                >
-                  <Icon
-                    className={`w-4 h-4 transition shrink-0 ${
-                      isActive ? 'text-amber-400' : 'text-slate-300 group-hover:text-amber-300'
-                    }`}
-                  />
+                // When the rail is collapsed there's no room for a dropdown, so
+                // render each child as its own icon button instead.
+                if (isCollapsed) {
+                  return item.children.map((child) => renderLeaf(child, activeTab === child.id));
+                }
 
-                  {!isCollapsed && (
-                    <div className="flex-1 flex items-center justify-between min-w-0">
-                      <span className="truncate text-white">{isHi ? item.labelHi : item.labelEn}</span>
-                      {item.roles?.length === 1 && (
-                        <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                          Super
-                        </span>
-                      )}
-                    </div>
-                  )}
+                return (
+                  <div key={item.id}>
+                    <button
+                      onClick={() => toggleGroup(item)}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-xs transition-all duration-150 group relative ${
+                        hasActiveChild
+                          ? 'text-white font-bold'
+                          : 'text-white hover:bg-slate-800/70'
+                      }`}
+                    >
+                      <GroupIcon className={`w-4 h-4 transition shrink-0 ${hasActiveChild ? 'text-amber-400' : 'text-slate-300 group-hover:text-amber-300'}`} />
+                      <span className="flex-1 truncate text-left text-white">{isHi ? item.labelHi : item.labelEn}</span>
+                      <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+                    </button>
 
-                  {isActive && (
-                    <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-amber-400 rounded-r" />
-                  )}
-                </button>
-              );
+                    {open && (
+                      <div className="mt-1 ml-4 pl-2 border-l border-slate-800 space-y-1">
+                        {item.children.map((child) => renderLeaf(child, activeTab === child.id))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // ── Leaf item ───────────────────────────────────────────────────
+              return renderLeaf(item, activeTab === item.id);
             })}
           </nav>
         </div>

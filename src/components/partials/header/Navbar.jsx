@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, ChevronRight, ChevronDown, Languages } from 'lucide-react';
 import templeLogo from '../../../assets/logo.png';
@@ -21,7 +21,6 @@ export default function Navbar() {
   const [isMobileMembersOpen, setIsMobileMembersOpen] = useState(true);
   const [isDonateDropdownOpen, setIsDonateDropdownOpen] = useState(false);
   const [isMobileDonateOpen, setIsMobileDonateOpen] = useState(true);
-  const [activeNav, setActiveNav] = useState('HOME');
 
   const currentLang = i18n.language || 'en';
 
@@ -29,30 +28,7 @@ export default function Navbar() {
     i18n.changeLanguage(lng);
   };
 
-  // Sync activeNav with current location
-  useEffect(() => {
-    const path = location.pathname;
-    if (path === '/about-us') setActiveNav('ABOUT_US');
-    else if (path === '/history') setActiveNav('HISTORY');
-    else if (path === '/construction') setActiveNav('CONSTRUCTION');
-    else if (path === '/darshan' || path === '/darshan/live-darshan') setActiveNav('DARSHAN_LIVE');
-    else if (path === '/darshan/pooja-aarti') setActiveNav('DARSHAN_POOJA_AARTI');
-    else if (path === '/darshan/panchang' || path === '/panchang') setActiveNav('DARSHAN_PANCHANG');
-    else if (path === '/gallery/photos') setActiveNav('GALLERY_PHOTOS');
-    else if (path === '/gallery/videos') setActiveNav('GALLERY_VIDEOS');
-    else if (path === '/gallery/wallpapers') setActiveNav('GALLERY_WALLPAPERS');
-    else if (path.startsWith('/gallery/media')) setActiveNav('GALLERY_MEDIA');
-    else if (path === '/online-services/pooja-booking') setActiveNav('SERVICES_POOJA');
-    else if (path === '/online-services/room-booking') setActiveNav('SERVICES_ROOM');
-    else if (path === '/online-services/volunteers') setActiveNav('SERVICES_VOLUNTEERS');
-    else if (path === '/members/priest') setActiveNav('MEMBERS_PRIEST');
-    else if (path === '/members/trust-members') setActiveNav('MEMBERS_TRUST');
-    else if (path === '/') setActiveNav('HOME');
-  }, [location.pathname]);
-
-  const handleNavClick = (e, key, sectionId) => {
-    if (e) e.preventDefault();
-    setActiveNav(key);
+  const closeAllMenus = () => {
     setIsMobileMenuOpen(false);
     setIsAboutDropdownOpen(false);
     setIsDarshanDropdownOpen(false);
@@ -60,96 +36,53 @@ export default function Navbar() {
     setIsServicesDropdownOpen(false);
     setIsMembersDropdownOpen(false);
     setIsDonateDropdownOpen(false);
+  };
 
-    if (key === 'ABOUT_US') {
-      navigate('/about-us');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'HISTORY') {
-      navigate('/history');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'CONSTRUCTION') {
-      navigate('/construction');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'DARSHAN_LIVE' || key === 'DARSHAN') {
-      navigate('/darshan/live-darshan');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'DARSHAN_POOJA_AARTI') {
-      navigate('/darshan/pooja-aarti');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'DARSHAN_PANCHANG') {
-      navigate('/darshan/panchang');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'GALLERY_PHOTOS') {
-      navigate('/gallery/photos');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'GALLERY_VIDEOS') {
-      navigate('/gallery/videos');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'GALLERY_WALLPAPERS') {
-      navigate('/gallery/wallpapers');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'GALLERY_MEDIA') {
-      navigate('/gallery/media');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'SERVICES_POOJA') {
-      navigate('/online-services/pooja-booking');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'SERVICES_ROOM') {
-      navigate('/online-services/room-booking');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'SERVICES_VOLUNTEERS') {
-      navigate('/online-services/volunteers');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'MEMBERS_PRIEST') {
-      navigate('/members/priest');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'MEMBERS_TRUST') {
-      navigate('/members/trust-members');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (key === 'HOME') {
-      if (location.pathname !== '/') {
-        navigate('/');
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (sectionId) {
-      if (location.pathname !== '/') {
-        navigate('/');
-        setTimeout(() => {
-          const element = document.getElementById(sectionId);
-          if (element) element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      } else {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
+  // Route navigation (via NavLink): close any open menus and reset scroll.
+  const handleRouteNav = () => {
+    closeAllMenus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Scroll-only targets live as sections on the home page. From any other
+  // route we must navigate home first, then scroll once the section mounts.
+  const scrollToSection = (sectionId) => {
+    closeAllMenus();
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const aboutSubItems = [
-    { key: 'ABOUT_US', label: t('nav.aboutUs', 'About Us'), sectionId: 'about-section' },
-    { key: 'HISTORY', label: t('nav.history', 'History'), sectionId: 'history-section' },
-    { key: 'CONSTRUCTION', label: t('nav.construction', 'Construction'), sectionId: 'construction-section' },
+    { key: 'ABOUT_US', label: t('nav.aboutUs', 'About Us'), to: '/about-us' },
+    { key: 'HISTORY', label: t('nav.history', 'History'), to: '/history' },
+    { key: 'CONSTRUCTION', label: t('nav.construction', 'Construction'), to: '/construction' },
   ];
 
   const darshanSubItems = [
-    { key: 'DARSHAN_LIVE', label: t('nav.liveDarshan', 'Live Darshan'), sectionId: 'live-darshan-section' },
-    { key: 'DARSHAN_POOJA_AARTI', label: t('nav.poojaAarti', 'Pooja & Aarti'), sectionId: 'pooja-aarti-section' },
-    { key: 'DARSHAN_PANCHANG', label: t('nav.panchang', 'Vedic Panchang'), sectionId: 'panchang-section' },
+    { key: 'DARSHAN_LIVE', label: t('nav.liveDarshan', 'Live Darshan'), to: '/darshan/live-darshan', aliases: ['/darshan'] },
+    { key: 'DARSHAN_POOJA_AARTI', label: t('nav.poojaAarti', 'Pooja & Aarti'), to: '/darshan/pooja-aarti' },
+    { key: 'DARSHAN_PANCHANG', label: t('nav.panchang', 'Vedic Panchang'), to: '/darshan/panchang', aliases: ['/panchang'] },
   ];
 
   const gallerySubItems = [
-    { key: 'GALLERY_PHOTOS', label: t('nav.galleryPhotos', 'Photos'), sectionId: 'gallery-photos-section' },
-    { key: 'GALLERY_VIDEOS', label: t('nav.galleryVideos', 'Videos'), sectionId: 'gallery-videos-section' },
-    { key: 'GALLERY_WALLPAPERS', label: t('nav.galleryWallpapers', 'Wallpapers'), sectionId: 'gallery-wallpapers-section' },
-    { key: 'GALLERY_MEDIA', label: t('nav.galleryMedia', 'Media Coverage'), sectionId: 'gallery-media-section' },
+    { key: 'GALLERY_PHOTOS', label: t('nav.galleryPhotos', 'Photos'), to: '/gallery/photos' },
+    { key: 'GALLERY_VIDEOS', label: t('nav.galleryVideos', 'Videos'), to: '/gallery/videos' },
+    { key: 'GALLERY_WALLPAPERS', label: t('nav.galleryWallpapers', 'Wallpapers'), to: '/gallery/wallpapers' },
+    { key: 'GALLERY_MEDIA', label: t('nav.galleryMedia', 'Media Coverage'), to: '/gallery/media' },
   ];
 
   const servicesSubItems = [
-    { key: 'SERVICES_POOJA', label: t('nav.servicePoojaBooking', 'Pooja Booking'), sectionId: 'pooja-booking-section' },
-    { key: 'SERVICES_ROOM', label: t('nav.serviceRoomBooking', 'Room Booking'), sectionId: 'room-booking-section' },
-    { key: 'SERVICES_VOLUNTEERS', label: t('nav.serviceVolunteers', 'Volunteers'), sectionId: 'volunteers-section' },
+    { key: 'SERVICES_POOJA', label: t('nav.servicePoojaBooking', 'Pooja Booking'), to: '/online-services/pooja-booking' },
+    { key: 'SERVICES_ROOM', label: t('nav.serviceRoomBooking', 'Room Booking'), to: '/online-services/room-booking' },
+    { key: 'SERVICES_VOLUNTEERS', label: t('nav.serviceVolunteers', 'Volunteers'), to: '/online-services/volunteers' },
   ];
 
   const donateSubItems = [
@@ -158,13 +91,13 @@ export default function Navbar() {
   ];
 
   const membersSubItems = [
-    { key: 'MEMBERS_PRIEST', label: t('nav.memberPriest', 'Priest'), sectionId: 'priest-section' },
-    { key: 'MEMBERS_TRUST', label: t('nav.memberTrust', 'Trust Members'), sectionId: 'trust-members-section' },
+    { key: 'MEMBERS_PRIEST', label: t('nav.memberPriest', 'Priest'), to: '/members/priest' },
+    { key: 'MEMBERS_TRUST', label: t('nav.memberTrust', 'Trust Members'), to: '/members/trust-members' },
     { key: 'MEMBERS_MANAGEMENT', label: t('nav.memberManagement', 'Management'), sectionId: 'management-section' },
   ];
 
   const navLinks = [
-    { key: 'HOME', label: t('nav.home'), sectionId: 'hero-section' },
+    { key: 'HOME', label: t('nav.home'), to: '/' },
     { key: 'ABOUT', label: t('nav.about'), isDropdown: true, subItems: aboutSubItems },
     { key: 'DARSHAN', label: t('nav.darshan', 'Darshan'), isDropdown: true, subItems: darshanSubItems },
     { key: 'GALLERY', label: t('nav.gallery'), isDropdown: true, subItems: gallerySubItems },
@@ -174,31 +107,34 @@ export default function Navbar() {
     { key: 'CONTACT', label: t('nav.contact'), sectionId: 'contact-section' },
   ];
 
-  const isAboutActive = activeNav === 'ABOUT' || activeNav === 'ABOUT_US' || activeNav === 'HISTORY' || activeNav === 'CONSTRUCTION';
-  const isDarshanActive = activeNav === 'DARSHAN' || activeNav === 'DARSHAN_LIVE' || activeNav === 'DARSHAN_POOJA_AARTI' || activeNav === 'DARSHAN_PANCHANG';
-  const isGalleryActive = activeNav === 'GALLERY' || activeNav === 'GALLERY_PHOTOS' || activeNav === 'GALLERY_VIDEOS' || activeNav === 'GALLERY_WALLPAPERS' || activeNav === 'GALLERY_MEDIA';
-  const isServicesActive = activeNav === 'ONLINE_SERVICES' || activeNav === 'SERVICES_POOJA' || activeNav === 'SERVICES_ROOM' || activeNav === 'SERVICES_VOLUNTEERS';
-  const isDonateActive = activeNav === 'DONATE' || activeNav === 'DONATE_ONLINE' || activeNav === 'DONATE_SEVA';
-  const isMembersActive = activeNav === 'MEMBERS' || activeNav === 'MEMBERS_PRIEST' || activeNav === 'MEMBERS_TRUST' || activeNav === 'MEMBERS_MANAGEMENT';
+  // A routed sub-item is active when the current path matches its `to`
+  // (or nested under it), or exactly equals one of its aliases.
+  const isSubActive = (sub) =>
+    !!sub.to &&
+    (location.pathname === sub.to ||
+      location.pathname.startsWith(sub.to + '/') ||
+      (sub.aliases?.includes(location.pathname) ?? false));
+
+  const isDropdownActive = (link) => link.subItems?.some(isSubActive) ?? false;
 
   const getDropdownState = (key) => {
-    if (key === 'ABOUT') return [isAboutDropdownOpen, setIsAboutDropdownOpen, isAboutActive];
-    if (key === 'DARSHAN') return [isDarshanDropdownOpen, setIsDarshanDropdownOpen, isDarshanActive];
-    if (key === 'GALLERY') return [isGalleryDropdownOpen, setIsGalleryDropdownOpen, isGalleryActive];
-    if (key === 'ONLINE_SERVICES') return [isServicesDropdownOpen, setIsServicesDropdownOpen, isServicesActive];
-    if (key === 'DONATE') return [isDonateDropdownOpen, setIsDonateDropdownOpen, isDonateActive];
-    if (key === 'MEMBERS') return [isMembersDropdownOpen, setIsMembersDropdownOpen, isMembersActive];
-    return [false, () => {}, false];
+    if (key === 'ABOUT') return [isAboutDropdownOpen, setIsAboutDropdownOpen];
+    if (key === 'DARSHAN') return [isDarshanDropdownOpen, setIsDarshanDropdownOpen];
+    if (key === 'GALLERY') return [isGalleryDropdownOpen, setIsGalleryDropdownOpen];
+    if (key === 'ONLINE_SERVICES') return [isServicesDropdownOpen, setIsServicesDropdownOpen];
+    if (key === 'DONATE') return [isDonateDropdownOpen, setIsDonateDropdownOpen];
+    if (key === 'MEMBERS') return [isMembersDropdownOpen, setIsMembersDropdownOpen];
+    return [false, () => {}];
   };
 
   const getMobileDropdownState = (key) => {
-    if (key === 'ABOUT') return [isMobileAboutOpen, setIsMobileAboutOpen, isAboutActive];
-    if (key === 'DARSHAN') return [isMobileDarshanOpen, setIsMobileDarshanOpen, isDarshanActive];
-    if (key === 'GALLERY') return [isMobileGalleryOpen, setIsMobileGalleryOpen, isGalleryActive];
-    if (key === 'ONLINE_SERVICES') return [isMobileServicesOpen, setIsMobileServicesOpen, isServicesActive];
-    if (key === 'DONATE') return [isMobileDonateOpen, setIsMobileDonateOpen, isDonateActive];
-    if (key === 'MEMBERS') return [isMobileMembersOpen, setIsMobileMembersOpen, isMembersActive];
-    return [false, () => {}, false];
+    if (key === 'ABOUT') return [isMobileAboutOpen, setIsMobileAboutOpen];
+    if (key === 'DARSHAN') return [isMobileDarshanOpen, setIsMobileDarshanOpen];
+    if (key === 'GALLERY') return [isMobileGalleryOpen, setIsMobileGalleryOpen];
+    if (key === 'ONLINE_SERVICES') return [isMobileServicesOpen, setIsMobileServicesOpen];
+    if (key === 'DONATE') return [isMobileDonateOpen, setIsMobileDonateOpen];
+    if (key === 'MEMBERS') return [isMobileMembersOpen, setIsMobileMembersOpen];
+    return [false, () => {}];
   };
 
   return (
@@ -206,8 +142,9 @@ export default function Navbar() {
       <div className="max-w-[1720px] mx-auto flex items-center justify-between gap-3 sm:gap-6">
 
         {/* Left: Temple Logo & Branding */}
-        <button
-          onClick={(e) => handleNavClick(e, 'HOME')}
+        <Link
+          to="/"
+          onClick={handleRouteNav}
           className="flex items-center gap-2.5 sm:gap-3.5 group shrink-0 text-left cursor-pointer"
         >
           <img
@@ -237,13 +174,14 @@ export default function Navbar() {
             </span>
           </div>
 
-        </button>
+        </Link>
 
         {/* Center: Navigation Links */}
         <div className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-6 shrink-0">
           {navLinks.map((link) => {
             if (link.isDropdown) {
-              const [isOpen, setIsOpen, isDropdownActive] = getDropdownState(link.key);
+              const [isOpen, setIsOpen] = getDropdownState(link.key);
+              const dropActive = isDropdownActive(link);
 
               return (
                 <div
@@ -259,7 +197,7 @@ export default function Navbar() {
                     }}
                     className="flex items-center gap-1 cursor-pointer bg-transparent border-none focus:outline-none"
                   >
-                    <span className={`text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors ${isDropdownActive ? 'text-[#c28227] font-bold' : 'text-stone-800 hover:text-[#c28227]'
+                    <span className={`text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors ${dropActive ? 'text-[#c28227] font-bold' : 'text-stone-800 hover:text-[#c28227]'
                       }`}>
                       {link.label}
                     </span>
@@ -268,7 +206,7 @@ export default function Navbar() {
                   </button>
 
                   {/* Underline Bar for Active State */}
-                  <span className={`h-[2px] w-full bg-[#c28227] mt-1 block transition-all duration-200 ${isDropdownActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
+                  <span className={`h-[2px] w-full bg-[#c28227] mt-1 block transition-all duration-200 ${dropActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
                     }`} />
 
                   {/* Dropdown Card with Top-to-Bottom Fold Animation */}
@@ -276,18 +214,31 @@ export default function Navbar() {
                     <div className="absolute top-full left-0 mt-0.5 w-56 bg-white rounded-b-xl shadow-2xl border border-stone-200/90 border-t-2 border-t-[#c28227] z-50 overflow-hidden animate-fold-down origin-top">
                       <div className="flex flex-col divide-y divide-stone-200/80">
                         {link.subItems.map((sub) => {
-                          const isSubActive = activeNav === sub.key;
+                          const subItemClass = (active) =>
+                            `w-full text-left px-5 py-3 text-xs sm:text-sm font-semibold tracking-wide transition-all flex items-center justify-between cursor-pointer ${active
+                              ? 'bg-amber-50 text-[#c28227] font-bold'
+                              : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
+                            }`;
+
+                          if (sub.to) {
+                            const aliasActive = sub.aliases?.includes(location.pathname) ?? false;
+                            return (
+                              <NavLink
+                                key={sub.key}
+                                to={sub.to}
+                                onClick={handleRouteNav}
+                                className={({ isActive }) => subItemClass(isActive || aliasActive)}
+                              >
+                                <span>{sub.label}</span>
+                              </NavLink>
+                            );
+                          }
+
                           return (
                             <button
                               key={sub.key}
-                              onClick={(e) => {
-                                handleNavClick(e, sub.key, sub.sectionId);
-                                setIsOpen(false);
-                              }}
-                              className={`w-full text-left px-5 py-3 text-xs sm:text-sm font-semibold tracking-wide transition-all flex items-center justify-between cursor-pointer ${isSubActive
-                                ? 'bg-amber-50 text-[#c28227] font-bold'
-                                : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
-                                }`}
+                              onClick={() => scrollToSection(sub.sectionId)}
+                              className={subItemClass(false)}
                             >
                               <span>{sub.label}</span>
                             </button>
@@ -300,21 +251,41 @@ export default function Navbar() {
               );
             }
 
-            const isActive = activeNav === link.key;
+            if (link.to) {
+              return (
+                <NavLink
+                  key={link.key}
+                  to={link.to}
+                  end
+                  onClick={handleRouteNav}
+                  className="flex flex-col items-center group py-1 cursor-pointer"
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className={`text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors ${isActive ? 'text-[#c28227] font-bold' : 'text-stone-800 hover:text-[#c28227]'
+                        }`}>
+                        {link.label}
+                      </span>
+                      <span className={`h-[2px] w-full bg-[#c28227] mt-1 transition-all duration-200 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
+                        }`} />
+                    </>
+                  )}
+                </NavLink>
+              );
+            }
+
             return (
               <button
                 key={link.key}
-                onClick={(e) => handleNavClick(e, link.key, link.sectionId)}
+                onClick={() => scrollToSection(link.sectionId)}
                 className="flex flex-col items-center group py-1 cursor-pointer bg-transparent border-none"
               >
-                <span className={`text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors ${isActive ? 'text-[#c28227] font-bold' : 'text-stone-800 hover:text-[#c28227]'
-                  }`}>
+                <span className="text-xs xl:text-[14px] font-semibold tracking-wide whitespace-nowrap transition-colors text-stone-800 hover:text-[#c28227]">
                   {link.label}
                 </span>
 
-                {/* Underline Bar for Active State */}
-                <span className={`h-[2px] w-full bg-[#c28227] mt-1 transition-all duration-200 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
-                  }`} />
+                {/* Underline Bar (hover only — scroll targets have no persistent route) */}
+                <span className="h-[2px] w-full bg-[#c28227] mt-1 transition-all duration-200 opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100" />
               </button>
             );
           })}
@@ -404,13 +375,14 @@ export default function Navbar() {
 
             {navLinks.map((link) => {
               if (link.isDropdown) {
-                const [isMobileOpen, setIsMobileOpen, isDropdownActive] = getMobileDropdownState(link.key);
+                const [isMobileOpen, setIsMobileOpen] = getMobileDropdownState(link.key);
+                const dropActive = isDropdownActive(link);
 
                 return (
                   <div key={link.key} className="flex flex-col">
                     <button
                       onClick={() => setIsMobileOpen(!isMobileOpen)}
-                      className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full ${isDropdownActive
+                      className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full ${dropActive
                         ? 'bg-amber-50 text-[#c28227] font-bold border-l-4 border-[#c28227]'
                         : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
                         }`}
@@ -420,37 +392,68 @@ export default function Navbar() {
                     </button>
                     {isMobileOpen && (
                       <div className="pl-4 pr-2 py-1 flex flex-col gap-1 border-l-2 border-stone-200 ml-3 my-1">
-                        {link.subItems.map((sub) => (
-                          <button
-                            key={sub.key}
-                            onClick={(e) => {
-                              handleNavClick(e, sub.key, sub.sectionId);
-                              setIsMobileMenuOpen(false);
-                            }}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide text-left w-full transition-colors ${activeNav === sub.key
+                        {link.subItems.map((sub) => {
+                          const subItemClass = (active) =>
+                            `flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide text-left w-full transition-colors ${active
                               ? 'bg-amber-50 text-[#c28227] font-bold'
                               : 'text-stone-700 hover:bg-stone-50 hover:text-[#c28227]'
-                              }`}
-                          >
-                            <span className="text-[#c28227]">❖</span>
-                            <span>{sub.label}</span>
-                          </button>
-                        ))}
+                            }`;
+
+                          if (sub.to) {
+                            const aliasActive = sub.aliases?.includes(location.pathname) ?? false;
+                            return (
+                              <NavLink
+                                key={sub.key}
+                                to={sub.to}
+                                onClick={handleRouteNav}
+                                className={({ isActive }) => subItemClass(isActive || aliasActive)}
+                              >
+                                <span className="text-[#c28227]">❖</span>
+                                <span>{sub.label}</span>
+                              </NavLink>
+                            );
+                          }
+
+                          return (
+                            <button
+                              key={sub.key}
+                              onClick={() => scrollToSection(sub.sectionId)}
+                              className={subItemClass(false)}
+                            >
+                              <span className="text-[#c28227]">❖</span>
+                              <span>{sub.label}</span>
+                            </button>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
                 );
               }
 
-              const isActive = activeNav === link.key;
+              if (link.to) {
+                return (
+                  <NavLink
+                    key={link.key}
+                    to={link.to}
+                    end
+                    onClick={handleRouteNav}
+                    className={({ isActive }) => `flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full ${isActive
+                      ? 'bg-amber-50 text-[#c28227] font-bold border-l-4 border-[#c28227]'
+                      : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
+                      }`}
+                  >
+                    <span>{link.label}</span>
+                    <ChevronRight className="w-4 h-4 text-stone-400" />
+                  </NavLink>
+                );
+              }
+
               return (
                 <button
                   key={link.key}
-                  onClick={(e) => handleNavClick(e, link.key, link.sectionId)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full ${isActive
-                    ? 'bg-amber-50 text-[#c28227] font-bold border-l-4 border-[#c28227]'
-                    : 'text-stone-800 hover:bg-stone-50 hover:text-[#c28227]'
-                    }`}
+                  onClick={() => scrollToSection(link.sectionId)}
+                  className="flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold tracking-wide transition-colors text-left w-full text-stone-800 hover:bg-stone-50 hover:text-[#c28227]"
                 >
                   <span>{link.label}</span>
                   <ChevronRight className="w-4 h-4 text-stone-400" />
