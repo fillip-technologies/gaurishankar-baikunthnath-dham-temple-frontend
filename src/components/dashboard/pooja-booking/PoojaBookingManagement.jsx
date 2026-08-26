@@ -1,24 +1,66 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   CalendarCheck,
   Search,
-  Filter,
   PlusCircle,
-  Download,
   Eye,
-  CheckCircle,
-  XCircle,
-  Clock,
-  User,
   Phone,
-  Calendar,
   Sparkles,
-  ChevronDown,
-  FileText,
-  Printer,
-  Edit
+  Loader2,
+  AlertCircle,
+  RefreshCw,
 } from 'lucide-react';
+import {
+  getAllPoojaBookingsApi,
+  getAllPoojaApi,
+  createManualPoojaBookingApi,
+  updatePoojaBookingStatusApi,
+} from '../../clientApi/allApi';
+
+// Maps the backend booking status to the label the dashboard renders. `failed`
+// (payment failed) and `cancelled` (admin-cancelled) both display as "Cancelled"
+// — the admin doesn't need to distinguish the two.
+const STATUS_LABEL = {
+  pending: 'Pending',
+  confirmed: 'Confirmed',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+  failed: 'Cancelled',
+};
+
+// Normalizes a populated PoojaBooking document into the flat shape this table
+// renders. Fields the backend does not capture (gotra, priest, slot, …) are
+// left blank rather than faked.
+const normalizeBooking = (d) => {
+  // Online bookings carry the payer on the linked Payment; manual (counter)
+  // bookings have no Payment and keep the payer snapshot on the booking itself.
+  const payer = d.payment?.payer || d.payer || {};
+  const isManual = d.source === 'manual';
+  return {
+    id: d._id,
+    devoteeName: payer.name || '—',
+    phone: payer.phone || '—',
+    email: payer.email || '',
+    gotra: '—',
+    nakshatra: '—',
+    poojaEn: d.pooja?.poojaName || '—',
+    poojaHi: d.pooja?.poojaName || '—',
+    date: d.bookingDate ? new Date(d.bookingDate).toLocaleDateString('en-IN', { dateStyle: 'medium' }) : '—',
+    timeSlot: '',
+    priest: '—',
+    amount: (d.amount || 0) / 100,
+    quantity: d.quantity,
+    paymentStatus: d.status === 'confirmed' ? 'Paid' : d.status === 'failed' ? 'Failed' : 'Pending',
+    paymentMode: isManual
+      ? d.paymentMode || 'Counter'
+      : d.payment?.razorpayPaymentId
+      ? 'Online (Razorpay)'
+      : 'Online',
+    status: STATUS_LABEL[d.status] || d.status,
+    notes: d.quantity ? `Quantity: ${d.quantity}` : '',
+  };
+};
 
 export default function PoojaBookingManagement() {
   const { i18n } = useTranslation();
@@ -29,113 +71,60 @@ export default function PoojaBookingManagement() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  const [bookings, setBookings] = useState([
-    {
-      id: 'PB-9021',
-      devoteeName: 'Rajesh Sharma',
-      phone: '+91 98765 43210',
-      email: 'rajesh.sharma@example.com',
-      gotra: 'Kashyap',
-      nakshatra: 'Rohini',
-      poojaEn: 'Maha Rudrabhishek',
-      poojaHi: 'महारुद्राभिषेक',
-      date: '2026-08-19',
-      timeSlot: '07:30 AM - 09:00 AM',
-      priest: 'Pt. Ramachandra Shastri',
-      amount: 2100,
-      paymentStatus: 'Paid',
-      paymentMode: 'Online (UPI)',
-      status: 'Confirmed',
-      notes: 'Family sankalp for peace & prosperity.',
-    },
-    {
-      id: 'PB-9022',
-      devoteeName: 'Amitabh Verma',
-      phone: '+91 98111 22334',
-      email: 'amitabh.v@example.com',
-      gotra: 'Vatsa',
-      nakshatra: 'Ashwini',
-      poojaEn: 'Satyanarayan Vrat Katha',
-      poojaHi: 'सत्यनारायण व्रत कथा',
-      date: '2026-08-19',
-      timeSlot: '10:30 AM - 12:00 PM',
-      priest: 'Pt. Vidyadhar Joshi',
-      amount: 1500,
-      paymentStatus: 'Paid',
-      paymentMode: 'Cash at Counter',
-      status: 'Confirmed',
-      notes: 'Gruha Pravesh Sankalp.',
-    },
-    {
-      id: 'PB-9023',
-      devoteeName: 'Kavita Singhania',
-      phone: '+91 94567 89012',
-      email: 'kavita.s@example.com',
-      gotra: 'Bhardwaj',
-      nakshatra: 'Pushya',
-      poojaEn: 'Navagraha Shanti Pooja',
-      poojaHi: 'नवग्रह शांति पूजा',
-      date: '2026-08-20',
-      timeSlot: '04:00 PM - 05:30 PM',
-      priest: 'Pt. Harishanker Mishra',
-      amount: 3500,
-      paymentStatus: 'Paid',
-      paymentMode: 'Card Payment',
-      status: 'Confirmed',
-      notes: 'Special havan included.',
-    },
-    {
-      id: 'PB-9024',
-      devoteeName: 'Devendra Patel',
-      phone: '+91 99223 34455',
-      email: 'devendra.p@example.com',
-      gotra: 'Garg',
-      nakshatra: 'Magha',
-      poojaEn: 'Special Sandhya Aarti Seva',
-      poojaHi: 'विशेष संध्या आरती सेवा',
-      date: '2026-08-21',
-      timeSlot: '06:30 PM - 07:30 PM',
-      priest: 'Head Priest Team',
-      amount: 5100,
-      paymentStatus: 'Pending',
-      paymentMode: 'Pay at Temple',
-      status: 'Pending',
-      notes: 'Prasad booking for 50 people.',
-    },
-    {
-      id: 'PB-9025',
-      devoteeName: 'Suresh Chandra',
-      phone: '+91 97654 32198',
-      email: 'suresh.c@example.com',
-      gotra: 'Sandilya',
-      nakshatra: 'Swati',
-      poojaEn: 'Kaal Sarp Dosh Nivaran',
-      poojaHi: 'कालसर्प दोष निवारण',
-      date: '2026-08-22',
-      timeSlot: '08:00 AM - 11:00 AM',
-      priest: 'Pt. Ramachandra Shastri',
-      amount: 4500,
-      paymentStatus: 'Paid',
-      paymentMode: 'Online (UPI)',
-      status: 'Confirmed',
-      notes: 'Full Vedic ritual with 3 priests.',
-    },
-  ]);
+  const [bookings, setBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const [formData, setFormData] = useState({
+  // Pure loader: all state updates live inside the promise callbacks (never
+  // synchronous), so the mount effect below doesn't trip
+  // react-hooks/set-state-in-effect. `isLoading` starts true, so the initial
+  // load already shows the spinner without a synchronous setState here.
+  const fetchBookings = useCallback(() => {
+    return getAllPoojaBookingsApi()
+      .then((res) => {
+        setBookings((res?.data?.data?.bookings ?? []).map(normalizeBooking));
+        setError('');
+      })
+      .catch((err) => {
+        setError(
+          err?.response?.data?.message ||
+          (isHi ? 'बुकिंग लोड करने में त्रुटि हुई।' : 'Failed to load bookings. Please try again.'),
+        );
+      })
+      .finally(() => setIsLoading(false));
+  }, [isHi]);
+
+  useEffect(() => { fetchBookings(); }, [fetchBookings]);
+
+  // Manual refresh from the header button — safe to flip the spinner on here
+  // because it runs in an event handler, not inside an effect.
+  const handleRefresh = () => {
+    setIsLoading(true);
+    fetchBookings();
+  };
+
+  // Bookable pooja catalogue — powers the "Pooja Type" select in the add modal.
+  // The manual route needs a real pooja _id, so we can't hardcode names anymore.
+  const [poojas, setPoojas] = useState([]);
+  useEffect(() => {
+    getAllPoojaApi()
+      .then((res) => setPoojas(res?.data?.data ?? []))
+      .catch(() => setPoojas([]));
+  }, []);
+
+  const EMPTY_FORM = {
     devoteeName: '',
     phone: '',
     email: '',
-    gotra: '',
-    nakshatra: '',
-    poojaName: 'Maha Rudrabhishek',
+    poojaId: '',
+    quantity: '1',
     date: '',
-    timeSlot: '07:30 AM - 09:00 AM',
-    priest: 'Pt. Ramachandra Shastri',
-    amount: '2100',
-    paymentMode: 'Online (UPI)',
-    notes: '',
-  });
+    amount: '',
+    paymentMode: 'Cash at Counter',
+  };
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const filteredBookings = bookings.filter((b) => {
     const matchesSearch =
@@ -148,53 +137,70 @@ export default function PoojaBookingManagement() {
     return matchesSearch && matchesStatus;
   });
 
-  const handleStatusChange = (id, newStatus) => {
-    setBookings((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b))
-    );
-    if (selectedBooking && selectedBooking.id === id) {
-      setSelectedBooking((prev) => ({ ...prev, status: newStatus }));
+  // `status` is a backend code (confirmed|completed|cancelled). The API stores
+  // the code; local state stores the label form (STATUS_LABEL[code]) that the
+  // badge colours and the status filter both key off.
+  const [statusUpdatingId, setStatusUpdatingId] = useState(null);
+  const [statusError, setStatusError] = useState('');
+
+  const handleStatusChange = async (id, status) => {
+    setStatusError('');
+    setStatusUpdatingId(id);
+    try {
+      await updatePoojaBookingStatusApi(id, status);
+      const label = STATUS_LABEL[status] || status;
+      setBookings((prev) =>
+        prev.map((b) => (b.id === id ? { ...b, status: label } : b))
+      );
+      if (selectedBooking && selectedBooking.id === id) {
+        setSelectedBooking((prev) => ({ ...prev, status: label }));
+      }
+    } catch (err) {
+      setStatusError(
+        err?.response?.data?.message ||
+        (isHi ? 'स्थिति अपडेट करने में त्रुटि हुई।' : 'Failed to update status. Please try again.'),
+      );
+    } finally {
+      setStatusUpdatingId(null);
     }
   };
 
-  const handleCreateBooking = (e) => {
+  const handleCreateBooking = async (e) => {
     e.preventDefault();
-    const newId = `PB-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newEntry = {
-      id: newId,
-      devoteeName: formData.devoteeName,
-      phone: formData.phone,
-      email: formData.email,
-      gotra: formData.gotra || 'Kashyap',
-      nakshatra: formData.nakshatra || 'N/A',
-      poojaEn: formData.poojaName,
-      poojaHi: formData.poojaName,
-      date: formData.date || new Date().toISOString().split('T')[0],
-      timeSlot: formData.timeSlot,
-      priest: formData.priest,
-      amount: Number(formData.amount) || 2100,
-      paymentStatus: 'Paid',
-      paymentMode: formData.paymentMode,
-      status: 'Confirmed',
-      notes: formData.notes || 'Direct counter booking',
-    };
+    setFormError('');
 
-    setBookings([newEntry, ...bookings]);
-    setIsAddModalOpen(false);
-    setFormData({
-      devoteeName: '',
-      phone: '',
-      email: '',
-      gotra: '',
-      nakshatra: '',
-      poojaName: 'Maha Rudrabhishek',
-      date: '',
-      timeSlot: '07:30 AM - 09:00 AM',
-      priest: 'Pt. Ramachandra Shastri',
-      amount: '2100',
-      paymentMode: 'Online (UPI)',
-      notes: '',
-    });
+    if (!formData.poojaId) {
+      setFormError(isHi ? 'कृपया पूजा चुनें।' : 'Please select a pooja.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await createManualPoojaBookingApi({
+        poojaId: formData.poojaId,
+        quantity: Number(formData.quantity) || 1,
+        bookingDate: formData.date || new Date().toISOString().split('T')[0],
+        amount: formData.amount === '' ? undefined : Number(formData.amount),
+        paymentMode: formData.paymentMode,
+        payer: {
+          name: formData.devoteeName.trim(),
+          phone: formData.phone.trim(),
+          ...(formData.email.trim() ? { email: formData.email.trim() } : {}),
+        },
+      });
+
+      setIsAddModalOpen(false);
+      setFormData(EMPTY_FORM);
+      // Reload from the server so the new record shows with its real _id/amount.
+      await fetchBookings();
+    } catch (err) {
+      setFormError(
+        err?.response?.data?.message ||
+        (isHi ? 'बुकिंग सहेजने में त्रुटि हुई।' : 'Failed to save booking. Please try again.'),
+      );
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -213,13 +219,23 @@ export default function PoojaBookingManagement() {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#c28227] text-white font-bold text-xs sm:text-sm hover:brightness-110 shadow-sm transition"
-        >
-          <PlusCircle className="w-4 h-4" />
-          <span>{isHi ? 'नई पूजा दर्ज करें' : 'Record New Pooja'}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-stone-100 text-stone-700 border border-stone-200 font-bold text-xs sm:text-sm hover:bg-stone-200 transition disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">{isHi ? 'रिफ्रेश' : 'Refresh'}</span>
+          </button>
+          <button
+            onClick={() => { setFormError(''); setFormData(EMPTY_FORM); setIsAddModalOpen(true); }}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#c28227] text-white font-bold text-xs sm:text-sm hover:brightness-110 shadow-sm transition"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>{isHi ? 'नई पूजा दर्ज करें' : 'Record New Pooja'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -279,7 +295,25 @@ export default function PoojaBookingManagement() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {filteredBookings.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={8} className="py-10 text-center text-stone-400 font-medium">
+                    <span className="inline-flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin text-[#c28227]" />
+                      {isHi ? 'बुकिंग लोड हो रही हैं…' : 'Loading bookings…'}
+                    </span>
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={8} className="py-10 text-center">
+                    <span className="inline-flex items-center gap-2 text-red-700 font-medium">
+                      <AlertCircle className="w-4 h-4" />
+                      {error}
+                    </span>
+                  </td>
+                </tr>
+              ) : filteredBookings.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-stone-400 font-medium">
                     {isHi ? 'कोई पूजा बुकिंग नहीं मिली।' : 'No pooja bookings found matching criteria.'}
@@ -328,7 +362,7 @@ export default function PoojaBookingManagement() {
                     </td>
                     <td className="py-3 px-4 text-right">
                       <button
-                        onClick={() => setSelectedBooking(b)}
+                        onClick={() => { setStatusError(''); setSelectedBooking(b); }}
                         className="p-1.5 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200 border border-stone-200 transition"
                         title={isHi ? 'विवरण देखें' : 'View Details'}
                       >
@@ -409,26 +443,43 @@ export default function PoojaBookingManagement() {
                 </div>
               )}
 
+              {statusError && (
+                <div className="flex items-center gap-2 text-red-700 font-medium pt-1">
+                  <AlertCircle className="w-4 h-4" />
+                  {statusError}
+                </div>
+              )}
+
               {/* Status Update Buttons */}
               <div className="pt-3 border-t border-stone-100 flex flex-wrap gap-2 justify-end">
-                <button
-                  onClick={() => handleStatusChange(selectedBooking.id, 'Confirmed')}
-                  className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 font-bold transition"
-                >
-                  {isHi ? 'स्वीकृत करें' : 'Confirm'}
-                </button>
-                <button
-                  onClick={() => handleStatusChange(selectedBooking.id, 'Completed')}
-                  className="px-3 py-1.5 rounded-xl bg-blue-100 text-blue-800 border border-blue-300 hover:bg-blue-200 font-bold transition"
-                >
-                  {isHi ? 'पूर्ण चिह्नित करें' : 'Mark Completed'}
-                </button>
-                <button
-                  onClick={() => handleStatusChange(selectedBooking.id, 'Cancelled')}
-                  className="px-3 py-1.5 rounded-xl bg-red-100 text-red-800 border border-red-300 hover:bg-red-200 font-bold transition"
-                >
-                  {isHi ? 'रद्द करें' : 'Cancel'}
-                </button>
+                {(() => {
+                  const busy = statusUpdatingId === selectedBooking.id;
+                  return (
+                    <>
+                      <button
+                        disabled={busy}
+                        onClick={() => handleStatusChange(selectedBooking.id, 'confirmed')}
+                        className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 font-bold transition disabled:opacity-50"
+                      >
+                        {isHi ? 'स्वीकृत करें' : 'Confirm'}
+                      </button>
+                      <button
+                        disabled={busy}
+                        onClick={() => handleStatusChange(selectedBooking.id, 'completed')}
+                        className="px-3 py-1.5 rounded-xl bg-blue-100 text-blue-800 border border-blue-300 hover:bg-blue-200 font-bold transition disabled:opacity-50"
+                      >
+                        {isHi ? 'पूर्ण चिह्नित करें' : 'Mark Completed'}
+                      </button>
+                      <button
+                        disabled={busy}
+                        onClick={() => handleStatusChange(selectedBooking.id, 'cancelled')}
+                        className="px-3 py-1.5 rounded-xl bg-red-100 text-red-800 border border-red-300 hover:bg-red-200 font-bold transition disabled:opacity-50"
+                      >
+                        {isHi ? 'रद्द करें' : 'Cancel'}
+                      </button>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -472,53 +523,47 @@ export default function PoojaBookingManagement() {
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 98765 00000"
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'गोत्र' : 'Gotra'}</label>
-                  <input
-                    type="text"
-                    value={formData.gotra}
-                    onChange={(e) => setFormData({ ...formData, gotra: e.target.value })}
-                    placeholder="e.g. Kashyap"
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'नक्षत्र' : 'Nakshatra'}</label>
-                  <input
-                    type="text"
-                    value={formData.nakshatra}
-                    onChange={(e) => setFormData({ ...formData, nakshatra: e.target.value })}
-                    placeholder="e.g. Rohini"
+                    placeholder="9876500000"
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-stone-700 font-bold mb-1">{isHi ? 'पूजा का प्रकार' : 'Pooja Type'}</label>
+                <label className="block text-stone-700 font-bold mb-1">
+                  {isHi ? 'ईमेल (रसीद हेतु)' : 'Email (for receipt)'}
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder={isHi ? 'वैकल्पिक — रसीद ईमेल के लिए' : 'Optional — emails a receipt if provided'}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-stone-700 font-bold mb-1">{isHi ? 'पूजा का प्रकार' : 'Pooja Type'} *</label>
                 <select
-                  value={formData.poojaName}
-                  onChange={(e) => setFormData({ ...formData, poojaName: e.target.value })}
+                  required
+                  value={formData.poojaId}
+                  onChange={(e) => setFormData({ ...formData, poojaId: e.target.value })}
                   className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
                 >
-                  <option value="Maha Rudrabhishek">Maha Rudrabhishek (महारुद्राभिषेक)</option>
-                  <option value="Satyanarayan Vrat Katha">Satyanarayan Vrat Katha (सत्यनारायण व्रत कथा)</option>
-                  <option value="Navagraha Shanti Pooja">Navagraha Shanti Pooja (नवग्रह शांति पूजा)</option>
-                  <option value="Special Sandhya Aarti Seva">Special Sandhya Aarti Seva (विशेष संध्या आरती)</option>
-                  <option value="Kaal Sarp Dosh Nivaran">Kaal Sarp Dosh Nivaran (कालसर्प दोष निवारण)</option>
+                  <option value="" disabled>
+                    {isHi ? '— पूजा चुनें —' : '— Select a pooja —'}
+                  </option>
+                  {poojas.map((p) => (
+                    <option key={p._id} value={p._id}>
+                      {p.poojaName} (₹{p.price})
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'दिनांक' : 'Date'}</label>
+                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'दिनांक' : 'Date'} *</label>
                   <input
                     type="date"
                     required
@@ -528,27 +573,29 @@ export default function PoojaBookingManagement() {
                   />
                 </div>
                 <div>
-                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'समय' : 'Slot'}</label>
-                  <select
-                    value={formData.timeSlot}
-                    onChange={(e) => setFormData({ ...formData, timeSlot: e.target.value })}
+                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'मात्रा' : 'Quantity'} *</label>
+                  <input
+                    type="number"
+                    min="1"
+                    required
+                    value={formData.quantity}
+                    onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
-                  >
-                    <option value="07:30 AM - 09:00 AM">07:30 AM - 09:00 AM</option>
-                    <option value="10:30 AM - 12:00 PM">10:30 AM - 12:00 PM</option>
-                    <option value="04:00 PM - 05:30 PM">04:00 PM - 05:30 PM</option>
-                    <option value="06:30 PM - 07:30 PM">06:30 PM - 07:30 PM</option>
-                  </select>
+                  />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-stone-700 font-bold mb-1">{isHi ? 'शुल्क (₹)' : 'Dakshina (₹)'}</label>
+                  <label className="block text-stone-700 font-bold mb-1">
+                    {isHi ? 'शुल्क अधिभावी (₹)' : 'Amount Override (₹)'}
+                  </label>
                   <input
                     type="number"
+                    min="0"
                     value={formData.amount}
                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                    placeholder={isHi ? 'खाली = सूची मूल्य' : 'Blank = catalogue price'}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
                   />
                 </div>
@@ -559,12 +606,19 @@ export default function PoojaBookingManagement() {
                     onChange={(e) => setFormData({ ...formData, paymentMode: e.target.value })}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
                   >
-                    <option value="Online (UPI)">Online (UPI)</option>
                     <option value="Cash at Counter">Cash at Counter</option>
+                    <option value="UPI">UPI</option>
                     <option value="Bank Card">Bank Card</option>
                   </select>
                 </div>
               </div>
+
+              {formError && (
+                <div className="flex items-center gap-2 text-red-700 font-medium">
+                  <AlertCircle className="w-4 h-4" />
+                  {formError}
+                </div>
+              )}
 
               <div className="pt-3 border-t border-stone-100 flex justify-end gap-2">
                 <button
@@ -576,8 +630,10 @@ export default function PoojaBookingManagement() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-[#c28227] text-white font-bold hover:brightness-110 shadow-sm transition"
+                  disabled={isSaving}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#c28227] text-white font-bold hover:brightness-110 shadow-sm transition disabled:opacity-50"
                 >
+                  {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
                   {isHi ? 'बुकिंग सहेजें' : 'Save Booking'}
                 </button>
               </div>

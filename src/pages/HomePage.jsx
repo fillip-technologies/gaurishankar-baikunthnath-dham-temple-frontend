@@ -6,6 +6,7 @@ import AboutSection from '../components/home/AboutSection';
 import LiveDarshanSection from '../components/home/LiveDarshanSection';
 import MandirScheduleSection from '../components/home/MandirScheduleSection';
 import GallerySection from '../components/home/GallerySection';
+import DonationSection from '../components/home/DonationSection';
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <AboutSection />
       <LiveDarshanSection />
       <MandirScheduleSection />
+      <DonationSection />
       <GallerySection />
     </main>
   );

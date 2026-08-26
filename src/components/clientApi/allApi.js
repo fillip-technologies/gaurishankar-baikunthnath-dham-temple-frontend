@@ -170,6 +170,82 @@ export const mediaDeleteApi = (id) => {
  */
 export const shringarCreateApi = (formData, { onUploadProgress } = {}) => {
     return api.post(SHRINGAR_CREATE_URL, formData, {
+=======
+// Pooja Booking Endpoints
+// ─────────────────────────────────────────────
+export const POOJA_LIST_URL = "/api/v1/pooja/poojas";
+export const POOJA_BOOK_URL = "/api/v1/pooja/book";
+export const POOJA_VERIFY_URL = "/api/v1/pooja/verify";
+export const POOJA_BOOKINGS_URL = "/api/v1/pooja/bookings";
+export const POOJA_MANUAL_BOOKING_URL = "/api/v1/pooja/bookings/manual";
+export const POOJA_ADD_URL = "/api/v1/pooja/add";
+export const POOJA_UPDATE_URL = "/api/v1/pooja/update"; // + /:id
+export const POOJA_REMOVE_URL = "/api/v1/pooja/remove"; // + /:id
+export const POOJA_CATEGORIES_URL = "/api/v1/pooja/categories"; // + /:id for delete
+
+// ─────────────────────────────────────────────
+// Pooja Booking API Functions
+// ─────────────────────────────────────────────
+
+/**
+ * GET /api/v1/pooja/poojas
+ * Fetch the bookable pooja catalogue (public — no auth needed).
+ * Returns an array of { _id, poojaName, description, imageUrl, price }.
+ */
+export const getAllPoojaApi = () => {
+    return api.get(POOJA_LIST_URL);
+};
+
+/**
+ * POST /api/v1/pooja/book
+ * Create a pooja booking + Razorpay order (public checkout). The server prices
+ * the booking from the catalogue — the client only picks the pooja + quantity.
+ * @param {{ poojaId: string, quantity: number, bookingDate: string, payer: { name: string, email: string, phone: string } }} data
+ * @returns Razorpay handshake fields: { bookingId, poojaName, quantity, bookingDate, key, orderId, amount, currency, paymentId, payer }
+ */
+export const bookPoojaApi = ({ poojaId, quantity, bookingDate, payer }) => {
+    return api.post(POOJA_BOOK_URL, { poojaId, quantity, bookingDate, payer });
+};
+
+/**
+ * POST /api/v1/pooja/verify
+ * Confirm the booking after Razorpay Checkout succeeds. Field names are the
+ * camelCase form the backend expects (map from Razorpay's snake_case response).
+ * @param {{ razorpayOrderId: string, razorpayPaymentId: string, razorpaySignature: string }} data
+ */
+export const verifyPoojaBookingApi = ({
+    razorpayOrderId,
+    razorpayPaymentId,
+    razorpaySignature,
+}) => {
+    return api.post(POOJA_VERIFY_URL, {
+        razorpayOrderId,
+        razorpayPaymentId,
+        razorpaySignature,
+    });
+};
+
+/**
+ * GET /api/v1/pooja/bookings
+ * Admin-only: list pooja bookings (newest first). Requires auth + valid session.
+ * @param {{ status?: string, from?: string, to?: string, page?: number, limit?: number }} [params]
+ * @returns { bookings, pagination }
+ */
+export const getAllPoojaBookingsApi = (params = {}) => {
+    return api.get(POOJA_BOOKINGS_URL, { params });
+};
+
+/**
+ * POST /api/v1/pooja/add
+ * Admin-only: add a pooja to the bookable catalogue (multipart: image `file` +
+ * fields). Requires auth + valid session. A category is required: send either
+ * `category` (existing category id) or `categoryName` (creates it on the fly).
+ * @param {FormData} formData — must contain: file (image), poojaName, price, and category|categoryName; description optional
+ * @param {{ onUploadProgress?: (e: any) => void }} [config]
+ */
+export const addPoojaApi = (formData, { onUploadProgress } = {}) => {
+    return api.post(POOJA_ADD_URL, formData, {
+>>>>>>> 5266551353979f1b752b1552b1d6e4ddcbb51938
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress,
     });

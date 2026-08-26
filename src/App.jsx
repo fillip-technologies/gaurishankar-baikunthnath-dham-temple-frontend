@@ -78,10 +78,12 @@ function AppRoutes() {
         <Route path="/admin/login" element={<AdminLoginWrapper />} />
       </Route>
 
-      {/* Protected Admin Portal with Dedicated Admin Layout */}
+      {/* Protected Admin Portal with Dedicated Admin Layout. The active section
+          lives in the URL (/admin/:tab) so a refresh keeps you on the same tab
+          and browser back/forward moves between sections. */}
       <Route element={<ProtectedRoute />}>
         <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/admin/:tab" element={<AdminDashboardPage />} />
       </Route>
 
       {/* Fallback */}
