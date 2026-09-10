@@ -22,6 +22,7 @@ import {
   Flower2,
   BedDouble,
   Gift,
+  IndianRupee,
 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import templeLogo from '../../../assets/logo.png';
@@ -80,6 +81,13 @@ export default function DashboardSidebar({ activeTab, setActiveTab, isCollapsed,
       labelHi: 'कैटलॉग',
       icon: Flame,
       roles: ['Super Admin', 'Admin'],
+    },
+    {
+      id: 'payment-history',
+      labelEn: 'Payment History',
+      labelHi: 'भुगतान इतिहास',
+      icon: IndianRupee,
+      roles: ['Super Admin'],
     },
     {
       id: 'donation',
