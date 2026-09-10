@@ -107,35 +107,29 @@ export default function ShringarPreviewModal({ isOpen, onClose, shringarItem, is
                   {isHi ? shringarItem.descriptionHi || shringarItem.descriptionEn : shringarItem.descriptionEn}
                 </p>
 
-                {/* Offerings & Adornment Details */}
-                <div className="space-y-2.5 pt-2 border-t border-stone-100">
-                  <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
-                    <span className="text-stone-400 block text-[10px] font-bold uppercase">
-                      {isHi ? 'पावन पुष्प' : 'Sacred Flowers'}
-                    </span>
-                    <span className="font-semibold text-stone-900">
-                      {shringarItem.flowers || 'Lotus, Belpatra, Jasmine & Tulsi'}
-                    </span>
+                {/* Offerings & Adornment Details — only shown when saved in DB */}
+                {(shringarItem.flowers || shringarItem.chandan || shringarItem.silks) && (
+                  <div className="space-y-2.5 pt-2 border-t border-stone-100">
+                    {shringarItem.flowers && (
+                      <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
+                        <span className="text-stone-400 block text-[10px] font-bold uppercase">{isHi ? 'पावन पुष्प' : 'Sacred Flowers'}</span>
+                        <span className="font-semibold text-stone-900">{shringarItem.flowers}</span>
+                      </div>
+                    )}
+                    {shringarItem.chandan && (
+                      <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
+                        <span className="text-stone-400 block text-[10px] font-bold uppercase">{isHi ? 'चंदन व तिलक' : 'Chandan & Tilak'}</span>
+                        <span className="font-semibold text-stone-900">{shringarItem.chandan}</span>
+                      </div>
+                    )}
+                    {shringarItem.silks && (
+                      <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
+                        <span className="text-stone-400 block text-[10px] font-bold uppercase">{isHi ? 'दिव्य परिधान' : 'Holy Silks & Crown'}</span>
+                        <span className="font-semibold text-stone-900">{shringarItem.silks}</span>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
-                    <span className="text-stone-400 block text-[10px] font-bold uppercase">
-                      {isHi ? 'चंदन व तिलक' : 'Chandan & Tilak'}
-                    </span>
-                    <span className="font-semibold text-stone-900">
-                      {shringarItem.chandan || 'Pure Saffron Sandalwood & Bhasma'}
-                    </span>
-                  </div>
-
-                  <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
-                    <span className="text-stone-400 block text-[10px] font-bold uppercase">
-                      {isHi ? 'दिव्य परिधान' : 'Holy Silks & Crown'}
-                    </span>
-                    <span className="font-semibold text-stone-900">
-                      {shringarItem.silks || 'Pitambar Golden Silks & Sacred Crown'}
-                    </span>
-                  </div>
-                </div>
+                )}
 
                 {/* Head Priest Tag */}
                 {shringarItem.priestName && (

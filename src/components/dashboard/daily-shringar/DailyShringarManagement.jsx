@@ -61,7 +61,7 @@ export default function DailyShringarManagement() {
       isTodayActive: !!item.isTodayActive,
       date: createdAtDate,
       timeSlot: item.timeSlot || '',
-      title: rawTitle || 'Aaj Ka Divya Shringar',
+      title: rawTitle || '',
       titleEn: item.titleEn || rawTitle || '',
       titleHi: item.titleHi || rawTitle || '',
       subtitleEn: item.subtitleEn || '',

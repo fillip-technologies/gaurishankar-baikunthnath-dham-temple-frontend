@@ -71,37 +71,25 @@ export default function AajKaShringar() {
 
   const shringarData = {
     title: currentLang === 'hi'
-      ? (activeRecord?.titleHi || activeRecord?.title || 'आज का दिव्य शृंगार')
-      : (activeRecord?.titleEn || activeRecord?.title || 'Aaj Ka Divya Shringar'),
+      ? (activeRecord?.titleHi || activeRecord?.title || '')
+      : (activeRecord?.titleEn || activeRecord?.title || ''),
     subtitle: currentLang === 'hi'
-      ? (activeRecord?.subtitleHi || activeRecord?.subtitleEn || 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार')
-      : (activeRecord?.subtitleEn || activeRecord?.subtitleHi || 'Daily Morning Adornment of Lord Hari-Hara'),
+      ? (activeRecord?.subtitleHi || activeRecord?.subtitleEn || '')
+      : (activeRecord?.subtitleEn || activeRecord?.subtitleHi || ''),
     timeSlot: currentLang === 'hi'
-      ? (activeRecord?.timeSlot ? `प्रातः ${activeRecord.timeSlot}` : 'प्रातः 08:30 बजे')
-      : (activeRecord?.timeSlot || '08:30 AM'),
+      ? (activeRecord?.timeSlot ? `प्रातः ${activeRecord.timeSlot}` : '')
+      : (activeRecord?.timeSlot || ''),
     image: activeRecord?.image || todayShringarImg,
-    chant: activeRecord?.chant || (currentLang === 'hi' ? '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥' : '॥ Om Namah Shivaya • Om Namo Bhagavate Vasudevaya ॥'),
+    chant: activeRecord?.chant || '',
     description: currentLang === 'hi'
-      ? (activeRecord?.descriptionHi || 'आज प्रातः काल भगवान श्री गौरीशंकर (शिव) और भगवान बैकुंठनाथ (विष्णु) का पावन गंगाजल व पंचामृत से महाभिषेक संपन्न हुआ। इसके उपरांत प्रभु को मलयागिरि के सुगंधित केसरिया चंदन, ताजे कमल पुष्प, १०८ बेलपत्र, तुलसी दल एवं विशेष पीतांबर रेशमी वस्त्रों से अलौकिक रूप से सुसज्जित किया गया है।')
-      : (activeRecord?.descriptionEn || 'This morning, sacred snan and abhishek of Lord Gaurishankar & Lord Baikunthnath was performed with holy Ganga water and Panchamrit. The sanctum deity is divinely adorned with Malayagiri saffron sandalwood paste, fresh lotus blossoms, 108 Bilva leaves, Tulsi, and auspicious golden silks.'),
+      ? (activeRecord?.descriptionHi || activeRecord?.descriptionEn || '')
+      : (activeRecord?.descriptionEn || activeRecord?.descriptionHi || ''),
     details: [
-      {
-        label: currentLang === 'hi' ? 'पावन पुष्प' : 'Sacred Flowers',
-        val: activeRecord?.flowers || (currentLang === 'hi' ? 'कमल, श्वेत मंदार, गेंदा एवं तुलसी दल' : 'Lotus, Jasmine, Marigold & Tulsi')
-      },
-      {
-        label: currentLang === 'hi' ? 'चंदन व तिलक' : 'Chandan & Tilak',
-        val: activeRecord?.chandan || (currentLang === 'hi' ? 'शुद्ध मलयागिरि केसरिया चंदन एवं भस्म' : 'Pure Saffron Sandalwood & Bhasma')
-      },
-      {
-        label: currentLang === 'hi' ? 'दिव्य परिधान' : 'Holy Silks',
-        val: activeRecord?.silks || (currentLang === 'hi' ? 'पीतांबर रेशमी वस्त्र व स्वर्ण मुकुट' : 'Pitambar Golden Silks & Sacred Crown')
-      },
-      {
-        label: currentLang === 'hi' ? 'दर्शन समय' : 'Darshan Hours',
-        val: activeRecord?.darshanHours || (currentLang === 'hi' ? 'प्रातः 05:00 - 12:30 | सायं 04:00 - 09:00' : '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM')
-      }
-    ]
+      activeRecord?.flowers   && { label: currentLang === 'hi' ? 'पावन पुष्प'    : 'Sacred Flowers',  val: activeRecord.flowers   },
+      activeRecord?.chandan   && { label: currentLang === 'hi' ? 'चंदन व तिलक'  : 'Chandan & Tilak', val: activeRecord.chandan   },
+      activeRecord?.silks     && { label: currentLang === 'hi' ? 'दिव्य परिधान' : 'Holy Silks',       val: activeRecord.silks     },
+      activeRecord?.darshanHours && { label: currentLang === 'hi' ? 'दर्शन समय'  : 'Darshan Hours',   val: activeRecord.darshanHours },
+    ].filter(Boolean)
   };
 
   const handleShare = () => {
