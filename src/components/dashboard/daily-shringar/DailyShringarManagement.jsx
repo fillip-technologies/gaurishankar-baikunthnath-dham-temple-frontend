@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Flower2,
-  Sparkles,
   Calendar,
   Clock,
   Plus,
@@ -10,18 +9,11 @@ import {
   Trash2,
   Edit3,
   Eye,
-  Download,
-  Share2,
   CheckCircle2,
   LayoutGrid,
   List,
   AlertCircle,
-  FileImage,
   RefreshCw,
-  UserCheck,
-  Flame,
-  Star,
-  ExternalLink,
   Loader2
 } from 'lucide-react';
 import ShringarFormModal from './ShringarFormModal';
@@ -66,7 +58,7 @@ export default function DailyShringarManagement() {
     return {
       id: item._id || item.id || `shringar-${idx}`,
       _id: item._id || item.id,
-      isTodayActive: idx === 0,
+      isTodayActive: !!item.isTodayActive,
       date: createdAtDate,
       timeSlot: item.timeSlot || '',
       title: rawTitle || 'Aaj Ka Divya Shringar',
@@ -277,81 +269,6 @@ export default function DailyShringarManagement() {
         </div>
       )}
 
-      {/* Quick Statistics Banner */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Stat 1: Current Status */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
-              {isHi ? 'आज का शृंगार' : 'Today\'s Status'}
-            </span>
-            <span className="text-lg font-extrabold text-stone-900 font-cinzel mt-0.5 block">
-              {todayActiveShringar?.status === 'Published' ? 'Live Published' : 'Draft'}
-            </span>
-            <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1 mt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              {todayActiveShringar?.timeSlot || '08:30 AM'} Aarti
-            </span>
-          </div>
-          <div className="w-11 h-11 rounded-xl bg-amber-50 text-[#c28227] border border-amber-200 flex items-center justify-center">
-            <Sparkles className="w-5 h-5" />
-          </div>
-        </div>
-
-        {/* Stat 2: Total Archive Records */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
-              {isHi ? 'कुल शृंगार आर्काइव' : 'Total Archive Photos'}
-            </span>
-            <span className="text-2xl font-extrabold text-stone-900 font-sans mt-0.5 block">
-              {shringarList.length}
-            </span>
-            <span className="text-[11px] text-stone-500 mt-1 block">
-              {isHi ? 'सहेजे गए दैनिक दर्शन' : 'Archived Darshan days'}
-            </span>
-          </div>
-          <div className="w-11 h-11 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center">
-            <FileImage className="w-5 h-5" />
-          </div>
-        </div>
-
-        {/* Stat 3: Devotee Views */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
-              {isHi ? 'आज के दर्शनार्थी' : 'Today\'s Darshan Views'}
-            </span>
-            <span className="text-2xl font-extrabold text-stone-900 font-sans mt-0.5 block">
-              {(todayActiveShringar?.viewsCount || 1420).toLocaleString('en-IN')}
-            </span>
-            <span className="text-[11px] text-emerald-600 font-bold mt-1 block">
-              +24% vs yesterday
-            </span>
-          </div>
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
-            <Eye className="w-5 h-5" />
-          </div>
-        </div>
-
-        {/* Stat 4: Head Priest on Duty */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
-              {isHi ? 'अर्चक / मुख्य पुजारी' : 'Priest on Duty'}
-            </span>
-            <span className="text-sm font-extrabold text-stone-900 mt-0.5 block truncate max-w-[140px]">
-              {todayActiveShringar?.priestName || 'Pt. Ramakant Pandey'}
-            </span>
-            <span className="text-[11px] text-stone-500 mt-1 block">
-              Sanctum In-Charge
-            </span>
-          </div>
-          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center">
-            <UserCheck className="w-5 h-5" />
-          </div>
-        </div>
-      </div>
 
       {/* Sub-Tabs: Today's Active Spotlight vs Archive History */}
       <div className="flex items-center justify-between border-b border-stone-200 pb-1">
@@ -430,9 +347,11 @@ export default function DailyShringarManagement() {
                 <Flower2 className="w-3.5 h-3.5" />
                 <span>{isHi ? 'आज का लाइव शृंगार' : 'Active Today'}</span>
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-amber-300 text-xs font-mono font-bold border border-white/20">
-                {todayActiveShringar.timeSlot || '08:30 AM'}
-              </span>
+              {todayActiveShringar.timeSlot && (
+                <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-amber-300 text-xs font-mono font-bold border border-white/20">
+                  {todayActiveShringar.timeSlot}
+                </span>
+              )}
             </div>
 
             {/* Bottom Image Info */}
@@ -473,35 +392,29 @@ export default function DailyShringarManagement() {
                 {isHi ? todayActiveShringar.descriptionHi || todayActiveShringar.descriptionEn : todayActiveShringar.descriptionEn}
               </p>
 
-              {/* Offerings Summary */}
-              <div className="space-y-2 pt-2 border-t border-stone-100">
-                <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
-                  <span className="text-stone-400 block text-[10px] font-bold uppercase">
-                    {isHi ? 'पावन पुष्प' : 'Sacred Flowers'}
-                  </span>
-                  <span className="font-semibold text-stone-900">
-                    {todayActiveShringar.flowers}
-                  </span>
+              {/* Offerings Summary — only shown when fields are filled */}
+              {(todayActiveShringar.flowers || todayActiveShringar.chandan || todayActiveShringar.silks) && (
+                <div className="space-y-2 pt-2 border-t border-stone-100">
+                  {todayActiveShringar.flowers && (
+                    <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
+                      <span className="text-stone-400 block text-[10px] font-bold uppercase">{isHi ? 'पावन पुष्प' : 'Sacred Flowers'}</span>
+                      <span className="font-semibold text-stone-900">{todayActiveShringar.flowers}</span>
+                    </div>
+                  )}
+                  {todayActiveShringar.chandan && (
+                    <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
+                      <span className="text-stone-400 block text-[10px] font-bold uppercase">{isHi ? 'चंदन व तिलक' : 'Chandan & Tilak'}</span>
+                      <span className="font-semibold text-stone-900">{todayActiveShringar.chandan}</span>
+                    </div>
+                  )}
+                  {todayActiveShringar.silks && (
+                    <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
+                      <span className="text-stone-400 block text-[10px] font-bold uppercase">{isHi ? 'दिव्य परिधान' : 'Holy Silks & Crown'}</span>
+                      <span className="font-semibold text-stone-900">{todayActiveShringar.silks}</span>
+                    </div>
+                  )}
                 </div>
-
-                <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
-                  <span className="text-stone-400 block text-[10px] font-bold uppercase">
-                    {isHi ? 'चंदन व तिलक' : 'Chandan & Tilak'}
-                  </span>
-                  <span className="font-semibold text-stone-900">
-                    {todayActiveShringar.chandan}
-                  </span>
-                </div>
-
-                <div className="bg-[#fefaf0] p-2.5 rounded-xl border border-amber-200/80 text-xs">
-                  <span className="text-stone-400 block text-[10px] font-bold uppercase">
-                    {isHi ? 'दिव्य परिधान' : 'Holy Silks & Crown'}
-                  </span>
-                  <span className="font-semibold text-stone-900">
-                    {todayActiveShringar.silks}
-                  </span>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Actions Bar */}
@@ -529,10 +442,12 @@ export default function DailyShringarManagement() {
                 </button>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-stone-500 pt-1">
-                <span>Darshan: {todayActiveShringar.darshanHours}</span>
-                <span>Priest: {todayActiveShringar.priestName}</span>
-              </div>
+              {(todayActiveShringar.darshanHours || todayActiveShringar.priestName) && (
+                <div className="flex items-center justify-between text-[11px] text-stone-500 pt-1">
+                  {todayActiveShringar.darshanHours && <span>Darshan: {todayActiveShringar.darshanHours}</span>}
+                  {todayActiveShringar.priestName && <span>Priest: {todayActiveShringar.priestName}</span>}
+                </div>
+              )}
             </div>
 
           </div>
