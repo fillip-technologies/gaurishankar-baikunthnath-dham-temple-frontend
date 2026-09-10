@@ -86,8 +86,8 @@ export default function Navbar() {
   ];
 
   const donateSubItems = [
-    { key: 'DONATE_ONLINE', label: t('nav.donateOnline', 'Online Donation'), sectionId: 'online-donation-section' },
-    { key: 'DONATE_SEVA', label: t('nav.donateSeva', 'Seva Daan'), sectionId: 'seva-daan-section' },
+    { key: 'DONATE_ONLINE', label: t('nav.donateOnline', 'Online Donation'), to: '/online-services/donation' },
+    { key: 'DONATE_SEVA', label: t('nav.donateSeva', 'Seva Daan'), to: '/online-services/seva-daan' },
   ];
 
   const membersSubItems = [

@@ -254,7 +254,6 @@ export const addPoojaApi = (formData, { onUploadProgress } = {}) => {
 };
 
 /**
-<<<<<<< HEAD
  * DELETE /api/v1/shringar/remove/:id
  * Remove a shringar document and delete its image from Cloudinary.
  * Access: Auth + Session

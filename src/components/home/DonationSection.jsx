@@ -22,9 +22,7 @@ const EMPTY_PAYER = { name: '', email: '', phone: '' };
 // Preset amounts (in rupees) offered as quick-select chips.
 const QUICK_AMOUNTS = [501, 1100, 2100, 5100, 11000];
 
-// Seva causes mirror the ledger categories used on the admin dashboard. The chosen
-// cause is passed through the order's `notes` so it survives onto the Payment record.
-const CAUSES = [
+export const ALL_CAUSES = [
   { id: 'temple-construction', en: 'Temple Construction Nidhi', hi: 'मंदिर निर्माण निधि', Icon: Building },
   { id: 'anna-daan', en: 'Nitya Anna Daan Seva', hi: 'नित्य अन्नदान सेवा', Icon: Utensils },
   { id: 'gau-seva', en: 'Gau Seva & Chara Fund', hi: 'गौ सेवा एवं चारा कोष', Icon: Sun },
@@ -49,12 +47,12 @@ function validateDonation(payer, amount, isHi) {
   return '';
 }
 
-export default function DonationSection() {
+export default function DonationSection({ causes = ALL_CAUSES }) {
   const { t, i18n } = useTranslation();
   const isHi = i18n.language === 'hi';
 
   const [isOpen, setIsOpen] = useState(false);
-  const [cause, setCause] = useState(CAUSES[0]);
+  const [cause, setCause] = useState(causes[0]);
   const [amount, setAmount] = useState('');
   const [payer, setPayer] = useState(EMPTY_PAYER);
   const [formError, setFormError] = useState('');
@@ -62,7 +60,7 @@ export default function DonationSection() {
   const [confirmation, setConfirmation] = useState(null);
 
   const openForm = (selectedCause) => {
-    setCause(selectedCause || CAUSES[0]);
+    setCause(selectedCause || causes[0]);
     setAmount('');
     setPayer(EMPTY_PAYER);
     setFormError('');
@@ -218,7 +216,7 @@ export default function DonationSection() {
 
         {/* Cause cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {CAUSES.map((c) => (
+          {causes.map((c) => (
             <div
               key={c.id}
               className="bg-white/5 backdrop-blur-sm rounded-2xl border border-amber-500/20 p-5 flex flex-col gap-3 hover:border-[#c28227] hover:bg-white/10 transition group"
@@ -243,7 +241,7 @@ export default function DonationSection() {
         {/* Primary CTA + trust line */}
         <div className="flex flex-col items-center gap-4">
           <button
-            onClick={() => openForm(CAUSES[0])}
+            onClick={() => openForm(causes[0])}
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ffd700] text-[#2a080d] font-extrabold text-sm sm:text-base hover:brightness-105 shadow-xl transition"
           >
             <HeartHandshake className="w-5 h-5" />
@@ -306,10 +304,10 @@ export default function DonationSection() {
                   <label className="block text-stone-700 font-bold mb-1">{isHi ? 'दान प्रयोजन' : 'Seva Cause'} *</label>
                   <select
                     value={cause.id}
-                    onChange={(e) => setCause(CAUSES.find((c) => c.id === e.target.value) || CAUSES[0])}
+                    onChange={(e) => setCause(causes.find((c) => c.id === e.target.value) || causes[0])}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-[#c28227] focus:bg-white"
                   >
-                    {CAUSES.map((c) => (
+                    {causes.map((c) => (
                       <option key={c.id} value={c.id}>{isHi ? c.hi : c.en}</option>
                     ))}
                   </select>

@@ -17,6 +17,8 @@ import MediaDetailPage from './pages/MediaDetailPage';
 import PoojaBookingPage from './pages/PoojaBookingPage';
 import RoomBookingPage from './pages/RoomBookingPage';
 import VolunteersPage from './pages/VolunteersPage';
+import DonationPage from './pages/DonationPage';
+import SevaDaanPage from './pages/SevaDaanPage';
 import PriestPage from './pages/PriestPage';
 import TrustMembersPage from './pages/TrustMembersPage';
 import AdminLoginPage from './pages/AdminLoginPage';
@@ -70,6 +72,8 @@ function AppRoutes() {
         <Route path="/online-services/pooja-booking" element={<PoojaBookingPage />} />
         <Route path="/online-services/room-booking" element={<RoomBookingPage />} />
         <Route path="/online-services/volunteers" element={<VolunteersPage />} />
+        <Route path="/online-services/donation" element={<DonationPage />} />
+        <Route path="/online-services/seva-daan" element={<SevaDaanPage />} />
 
         <Route path="/members/priest" element={<PriestPage />} />
         <Route path="/members/trust-members" element={<TrustMembersPage />} />
