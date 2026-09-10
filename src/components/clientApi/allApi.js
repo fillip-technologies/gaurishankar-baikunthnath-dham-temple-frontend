@@ -229,33 +229,4 @@ export const addPoojaApi = (formData, { onUploadProgress } = {}) => {
     });
 };
 
-/**
- * DELETE /api/v1/shringar/remove/:id
- * Remove a shringar document and delete its image from Cloudinary.
- * Access: Auth + Session
- * @param {string} id - Shringar document _id
- */
-export const shringarDeleteApi = (id) => {
-    return api.delete(`${SHRINGAR_REMOVE_URL}/${id}`);
-};
-
-/**
- * GET /api/v1/shringar/all
- * Fetch all shringar records (newest first).
- * Access: Public
- */
-export const shringarGetAllApi = () => {
-    return api.get(SHRINGAR_ALL_URL);
-};
-
-/**
- * GET /api/v1/shringar/:id
- * Fetch shringar by id (returns the shringar / most recent).
- * Access: Public
- * @param {string} id - Required path param
- */
-export const shringarGetByIdApi = (id) => {
-    return api.get(`${SHRINGAR_GET_URL}/${id}`);
-};
-
 export default api;
