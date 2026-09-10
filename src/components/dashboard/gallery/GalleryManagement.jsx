@@ -28,6 +28,7 @@ import {
   galleryDeleteApi,
   GALLERY_DATATYPE_MAP,
 } from '../../clientApi/allApi';
+import { formatDate } from '../../clientApi/format';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const MAX_FILE_SIZE_MB = 500; // must match backend multer limit
@@ -531,7 +532,7 @@ export default function GalleryManagement() {
             const folder = item.folder || '';
             const views = item.views ?? null;
             const date = item.createdAt
-              ? new Date(item.createdAt).toLocaleDateString('en-IN')
+              ? formatDate(item.createdAt)
               : (item.date || '');
 
             return (

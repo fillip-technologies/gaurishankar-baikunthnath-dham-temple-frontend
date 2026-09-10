@@ -12,6 +12,7 @@ import {
   X,
 } from 'lucide-react';
 import { getAllPrasadBookingsApi } from '../../clientApi/allApi';
+import { formatDate } from '../../clientApi/format';
 
 const STATUS_LABEL = {
   pending: 'Pending',
@@ -20,7 +21,7 @@ const STATUS_LABEL = {
 };
 
 const fmtDate = (d) =>
-  d ? new Date(d).toLocaleDateString('en-IN', { dateStyle: 'medium' }) : '—';
+  d ? formatDate(d) : '—';
 
 // Normalizes a populated PrasadBooking document into the flat shape this table renders.
 const normalizeBooking = (d) => {

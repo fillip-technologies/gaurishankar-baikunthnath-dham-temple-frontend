@@ -31,6 +31,7 @@ import {
   shringarCreateApi,
   shringarDeleteApi
 } from '../../clientApi/allapi';
+import { formatDate } from '../../clientApi/format';
 import todayShringarImg from '../../../assets/home/herosection-3.png';
 import altShringarImg1 from '../../../assets/home/herosection-2.png';
 import altShringarImg2 from '../../../assets/home/upcoming-festival.png';
@@ -598,12 +599,7 @@ export default function DailyShringarManagement() {
               <div className="text-xs text-amber-300 font-bold flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 <span>
-                  {new Date(todayActiveShringar.date).toLocaleDateString(isHi ? 'hi-IN' : 'en-US', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  })}
+                  {formatDate(todayActiveShringar.date)}
                 </span>
               </div>
               <p className="text-xs text-stone-200 font-hindi font-medium">
@@ -759,7 +755,7 @@ export default function DailyShringarManagement() {
 
                     <div className="absolute bottom-3 left-3 right-3 text-white">
                       <span className="text-[11px] text-amber-300 font-bold block">
-                        {new Date(item.date).toLocaleDateString(isHi ? 'hi-IN' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {formatDate(item.date)}
                       </span>
                       <h4 className="font-bold text-sm truncate font-cinzel">
                         {isHi ? item.titleHi || item.title || item.titleEn : item.titleEn || item.title || item.titleHi}
@@ -860,7 +856,7 @@ export default function DailyShringarManagement() {
                         </td>
                         <td className="py-3 px-4">
                           <div className="font-bold text-stone-900 font-mono">
-                            {item.date}
+                            {formatDate(item.date)}
                           </div>
                           <span className="text-[10px] text-stone-500 font-semibold">{item.timeSlot}</span>
                         </td>

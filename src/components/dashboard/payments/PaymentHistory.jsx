@@ -6,6 +6,7 @@ import {
   Download, CalendarDays,
 } from 'lucide-react';
 import { getAllPaymentsApi } from '../../clientApi/allApi';
+import { formatDate, formatDateTime } from '../../clientApi/format';
 import { generatePaymentPDF } from '../../../utils/generatePaymentPDF';
 
 const toRupees = (paise) => Math.round((Number(paise) || 0) / 100);
@@ -323,7 +324,7 @@ export default function PaymentHistory() {
                         {r.status}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-stone-500 font-medium whitespace-nowrap">{r.date}</td>
+                    <td className="py-3 px-4 text-stone-500 font-medium whitespace-nowrap">{formatDate(r.date)}</td>
                     <td className="py-3 px-4 text-right">
                       <button onClick={() => setSelected(r)} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200 font-bold transition">
                         <Eye className="w-3.5 h-3.5" />
@@ -365,7 +366,7 @@ export default function PaymentHistory() {
                 {[
                   [isHi ? 'भुगतान आईडी' : 'Payment ID',   <span className="font-mono break-all text-[#965f16]">{selected.paymentId}</span>],
                   [isHi ? 'Razorpay Order'  : 'Order ID',    <span className="font-mono break-all text-stone-600 text-[10px]">{selected.orderId}</span>],
-                  [isHi ? 'दिनांक'          : 'Date',         selected.date],
+                  [isHi ? 'दिनांक'          : 'Date',         formatDate(selected.date)],
                   [isHi ? 'स्थिति'          : 'Status',       <span className={`capitalize px-2 py-0.5 rounded-full font-bold border ${STATUS_STYLE[selected.status] || STATUS_STYLE.created}`}>{selected.status}</span>],
                   [isHi ? 'नाम'             : 'Name',          selected.donorName],
                   [isHi ? 'फोन'             : 'Phone',         selected.phone],

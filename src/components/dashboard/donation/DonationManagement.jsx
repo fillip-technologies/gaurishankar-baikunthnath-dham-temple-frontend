@@ -15,6 +15,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { getAllPaymentsApi } from '../../clientApi/allApi';
+import { formatDate } from '../../clientApi/format';
 
 // Payment amounts are stored in paise; the ledger shows rupees.
 const toRupees = (paise) => Math.round((Number(paise) || 0) / 100);
@@ -41,7 +42,7 @@ const toDonation = (p) => ({
   amount: toRupees(p.amount),
   status: p.status || 'created',
   transactionRef: p.razorpayPaymentId || '—',
-  date: p.createdAt ? new Date(p.createdAt).toISOString().split('T')[0] : '—',
+  date: formatDate(p.createdAt),
 });
 
 const STATUS_STYLES = {

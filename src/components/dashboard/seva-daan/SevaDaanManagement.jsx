@@ -5,6 +5,7 @@ import {
   Loader2, AlertCircle, RefreshCw, FileCheck, IndianRupee,
 } from 'lucide-react';
 import { getAllPaymentsApi } from '../../clientApi/allApi';
+import { formatDate } from '../../clientApi/format';
 
 const toRupees = (paise) => Math.round((Number(paise) || 0) / 100);
 
@@ -30,7 +31,7 @@ const toRow = (p) => ({
   cause: p.notes?.cause || 'General Donation',
   amount: toRupees(p.amount),
   status: p.status || 'created',
-  date: p.createdAt ? new Date(p.createdAt).toISOString().split('T')[0] : '—',
+  date: formatDate(p.createdAt),
   pan: p.notes?.pan || '',
   state: p.notes?.state || '',
   city: p.notes?.city || '',

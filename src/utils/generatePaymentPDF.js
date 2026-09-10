@@ -29,8 +29,14 @@ const MODULE_LABEL = {
 };
 
 const fmt = (n) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
-const today = () => new Date().toLocaleDateString('en-IN', { dateStyle: 'medium' });
-const ts    = () => new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+const _dd  = (d) => String(d.getDate()).padStart(2,'0');
+const _mm  = (d) => String(d.getMonth()+1).padStart(2,'0');
+const _yy  = (d) => String(d.getFullYear()).slice(-2);
+const _hh  = (d) => String(d.getHours()).padStart(2,'0');
+const _min = (d) => String(d.getMinutes()).padStart(2,'0');
+const today = () => { const d = new Date(); return `${_dd(d)}-${_mm(d)}-${_yy(d)}`; };
+const ts    = () => { const d = new Date(); return `${_dd(d)}-${_mm(d)}-${_yy(d)} ${_hh(d)}:${_min(d)}`; };
+const fmtDate = (iso) => { if (!iso || iso==='—') return iso||'—'; const d=new Date(iso); return isNaN(d)?iso:`${_dd(d)}-${_mm(d)}-${_yy(d)}`; };
 
 // ─── derive per-module summary from rows ─────────────────────────────────────
 function buildSummary(rows) {
@@ -207,7 +213,7 @@ export function generatePaymentPDF(rows, { from = '', to = '', module = 'All', s
           content: r.status.charAt(0).toUpperCase() + r.status.slice(1),
           styles: { textColor: statusColor, fontStyle: 'bold' },
         },
-        r.date,
+        fmtDate(r.date),
         r.cause || '—',
       ];
     });

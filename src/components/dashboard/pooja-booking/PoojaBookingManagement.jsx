@@ -17,6 +17,7 @@ import {
   createManualPoojaBookingApi,
   updatePoojaBookingStatusApi,
 } from '../../clientApi/allApi';
+import { formatDate } from '../../clientApi/format';
 
 // Maps the backend booking status to the label the dashboard renders. `failed`
 // (payment failed) and `cancelled` (admin-cancelled) both display as "Cancelled"
@@ -46,7 +47,7 @@ const normalizeBooking = (d) => {
     nakshatra: '—',
     poojaEn: d.pooja?.poojaName || '—',
     poojaHi: d.pooja?.poojaName || '—',
-    date: d.bookingDate ? new Date(d.bookingDate).toLocaleDateString('en-IN', { dateStyle: 'medium' }) : '—',
+    date: d.bookingDate ? formatDate(d.bookingDate) : '—',
     timeSlot: '',
     priest: '—',
     amount: (d.amount || 0) / 100,

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 
 import { shringarGetAllApi } from '../../clientApi/allapi';
+import { formatDate } from '../../clientApi/format';
 import todayShringarImg from '../../../assets/home/herosection-3.png';
 
 const STORAGE_KEY = 'baikunth_daily_shringar_list';
@@ -66,11 +67,7 @@ export default function AajKaShringar() {
     loadShringar();
   }, []);
 
-  const todayDateFormatted = new Date(activeRecord?.date || Date.now()).toLocaleDateString(currentLang === 'hi' ? 'hi-IN' : 'en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
+  const todayDateFormatted = formatDate(activeRecord?.date || new Date());
 
   const shringarData = {
     title: currentLang === 'hi'

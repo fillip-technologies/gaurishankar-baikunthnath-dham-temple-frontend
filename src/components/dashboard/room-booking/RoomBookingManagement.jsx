@@ -20,6 +20,7 @@ import {
   checkInRoomBookingApi,
   checkOutRoomBookingApi,
 } from '../../clientApi/allApi';
+import { formatDate } from '../../clientApi/format';
 
 const STATUS_LABEL = {
   pending: 'Pending',
@@ -34,7 +35,7 @@ const STAY_LABEL = {
 };
 
 const fmtDate = (d) =>
-  d ? new Date(d).toLocaleDateString('en-IN', { dateStyle: 'medium' }) : '—';
+  d ? formatDate(d) : '—';
 
 // Normalizes a populated RoomBooking document into the flat shape this table renders.
 const normalizeBooking = (d) => {

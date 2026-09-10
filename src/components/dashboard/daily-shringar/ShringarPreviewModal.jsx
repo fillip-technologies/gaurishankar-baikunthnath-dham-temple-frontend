@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from '../../clientApi/format';
 import {
   X,
   Flower2,
@@ -15,15 +16,7 @@ import {
 export default function ShringarPreviewModal({ isOpen, onClose, shringarItem, isHi }) {
   if (!isOpen || !shringarItem) return null;
 
-  const dateDisplay = new Date(shringarItem.date || Date.now()).toLocaleDateString(
-    isHi ? 'hi-IN' : 'en-US',
-    {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }
-  );
+  const dateDisplay = formatDate(shringarItem.date || new Date());
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-sm overflow-y-auto">

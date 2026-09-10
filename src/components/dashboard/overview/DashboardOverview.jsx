@@ -9,6 +9,7 @@ import {
   getAllPoojaBookingsApi, getAllPaymentsApi,
   getAllRoomBookingsApi, getAllPrasadBookingsApi,
 } from '../../clientApi/allApi';
+import { formatDateTime } from '../../clientApi/format';
 
 const toRupees = (paise) => Math.round((Number(paise) || 0) / 100);
 const todayStr = () => new Date().toISOString().split('T')[0];
@@ -345,7 +346,7 @@ export default function DashboardOverview({ setActiveTab }) {
                   <p className="text-[11px] text-amber-700 mt-0.5 font-medium truncate">{p.notes?.cause || 'General Donation'}</p>
                 </div>
                 <div className="mt-3 pt-2 border-t border-slate-200/60 text-[10px] text-slate-400">
-                  {new Date(p.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}
+                  {formatDateTime(p.createdAt)}
                 </div>
               </div>
             ))}
