@@ -5,7 +5,7 @@ import {
   Globe, Hash, FileText, ShieldCheck, Loader2, CheckCircle2,
   AlertCircle, RefreshCw, HeartHandshake, CalendarDays, ChevronDown,
 } from 'lucide-react';
-import { createDonationOrderApi, verifyDonationApi } from '../../clientApi/allapi';
+import { createDonationOrderApi, verifyDonationApi } from '../../clientApi/allApi';
 import { loadRazorpayScript } from '../../../utils/loadRazorpay';
 
 const INDIAN_STATES = [

@@ -4,7 +4,7 @@ import {
   CalendarCheck, HeartHandshake, Users, TrendingUp, ArrowUpRight,
   Flame, Clock, Loader2, AlertCircle, RefreshCw,
 } from 'lucide-react';
-import { getAllPoojaBookingsApi, getAllPaymentsApi } from '../../clientApi/allapi';
+import { getAllPoojaBookingsApi, getAllPaymentsApi } from '../../clientApi/allApi';
 import { listAdminsApi } from '../../clientApi/adminApi';
 
 const toRupees = (paise) => Math.round((Number(paise) || 0) / 100);
