@@ -32,8 +32,10 @@ export const MEDIA_URL = "/api/v1/media/mediaCoverage";
 // ─────────────────────────────────────────────
 export const SHRINGAR_CREATE_URL = "/api/v1/shringar/create";
 export const SHRINGAR_REMOVE_URL = "/api/v1/shringar/remove"; // /api/v1/shringar/remove/:id
-export const SHRINGAR_ALL_URL = "/api/v1/shringar/all";
-export const SHRINGAR_GET_URL = "/api/v1/shringar"; // /api/v1/shringar/:id
+export const SHRINGAR_ALL_URL    = "/api/v1/shringar/all";
+export const SHRINGAR_UPDATE_URL   = "/api/v1/shringar/update";   // /api/v1/shringar/update/:id
+export const SHRINGAR_ACTIVATE_URL = "/api/v1/shringar/activate"; // /api/v1/shringar/activate/:id
+export const SHRINGAR_GET_URL      = "/api/v1/shringar"; // /api/v1/shringar/:id
 
 // ─────────────────────────────────────────────
 // Authentication API Functions
@@ -174,6 +176,52 @@ export const shringarCreateApi = (formData, { onUploadProgress } = {}) => {
         onUploadProgress,
     });
 };
+
+/**
+ * PUT /api/v1/shringar/update/:id
+ * Update an existing shringar — optional new image + any changed fields.
+ * Access: Auth + Session
+ * @param {string} id
+ * @param {FormData} formData
+ */
+export const shringarUpdateApi = (id, formData, { onUploadProgress } = {}) => {
+    return api.put(`${SHRINGAR_UPDATE_URL}/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
+
+/** PATCH /api/v1/shringar/activate/:id — set as today's active shringar. Auth required. */
+export const shringarActivateApi = (id) => {
+    return api.patch(`${SHRINGAR_ACTIVATE_URL}/${id}`);
+};
+
+/**
+ * DELETE /api/v1/shringar/remove/:id
+ * Remove a shringar document and delete its image from Cloudinary.
+ * Access: Auth + Session
+ * @param {string} id
+ */
+export const shringarDeleteApi = (id) => {
+    return api.delete(`${SHRINGAR_REMOVE_URL}/${id}`);
+};
+
+/**
+ * GET /api/v1/shringar/all
+ * Fetch all shringar records (newest first). Access: Public
+ */
+export const shringarGetAllApi = () => {
+    return api.get(SHRINGAR_ALL_URL);
+};
+
+/**
+ * GET /api/v1/shringar/:id
+ * Fetch shringar by id. Access: Public
+ */
+export const shringarGetByIdApi = (id) => {
+    return api.get(`${SHRINGAR_GET_URL}/${id}`);
+};
+
 // Pooja Booking Endpoints
 // ─────────────────────────────────────────────
 export const POOJA_LIST_URL = "/api/v1/pooja/poojas";
@@ -253,34 +301,6 @@ export const addPoojaApi = (formData, { onUploadProgress } = {}) => {
     });
 };
 
-/**
- * DELETE /api/v1/shringar/remove/:id
- * Remove a shringar document and delete its image from Cloudinary.
- * Access: Auth + Session
- * @param {string} id - Shringar document _id
- */
-export const shringarDeleteApi = (id) => {
-    return api.delete(`${SHRINGAR_REMOVE_URL}/${id}`);
-};
-
-/**
- * GET /api/v1/shringar/all
- * Fetch all shringar records (newest first).
- * Access: Public
- */
-export const shringarGetAllApi = () => {
-    return api.get(SHRINGAR_ALL_URL);
-};
-
-/**
- * GET /api/v1/shringar/:id
- * Fetch shringar by id (returns the shringar / most recent).
- * Access: Public
- * @param {string} id - Required path param
- */
-export const shringarGetByIdApi = (id) => {
-    return api.get(`${SHRINGAR_GET_URL}/${id}`);
-};
 /* PATCH /api/v1/pooja/update/:id
 * Admin-only: update a catalogue pooja (multipart: optional new image + changed
 * fields). At least one field/file must be present. Requires auth + valid session.

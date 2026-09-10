@@ -29,110 +29,12 @@ import ShringarPreviewModal from './ShringarPreviewModal';
 import {
   shringarGetAllApi,
   shringarCreateApi,
+  shringarUpdateApi,
+  shringarActivateApi,
   shringarDeleteApi
 } from '../../clientApi/allapi';
 import { formatDate } from '../../clientApi/format';
 import todayShringarImg from '../../../assets/home/herosection-3.png';
-import altShringarImg1 from '../../../assets/home/herosection-2.png';
-import altShringarImg2 from '../../../assets/home/upcoming-festival.png';
-import altShringarImg3 from '../../../assets/home/herosection.png';
-
-const STORAGE_KEY = 'baikunth_daily_shringar_list';
-
-const DEFAULT_SHRINGAR_LIST = [
-  {
-    id: 'shringar-today',
-    isTodayActive: true,
-    date: new Date().toISOString().slice(0, 10),
-    timeSlot: '08:30 AM',
-    title: 'Aaj Ka Divya Shringar',
-    titleEn: 'Aaj Ka Divya Shringar',
-    titleHi: 'आज का दिव्य शृंगार',
-    subtitleEn: 'Daily Morning Adornment of Lord Hari-Hara',
-    subtitleHi: 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार',
-    chant: '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥',
-    descriptionEn: 'This morning, sacred snan and abhishek of Lord Gaurishankar & Lord Baikunthnath was performed with holy Ganga water and Panchamrit. The sanctum deity is divinely adorned with Malayagiri saffron sandalwood paste, fresh lotus blossoms, 108 Bilva leaves, Tulsi, and auspicious golden silks.',
-    descriptionHi: 'आज प्रातः काल भगवान श्री गौरीशंकर (शिव) और भगवान बैकुंठनाथ (विष्णु) का पावन गंगाजल व पंचामृत से महाभिषेक संपन्न हुआ। इसके उपरांत प्रभु को मलयागिरि के सुगंधित केसरिया चंदन, ताजे कमल पुष्प, १०८ बेलपत्र, तुलसी दल एवं विशेष पीतांबर रेशमी वस्त्रों से अलौकिक रूप से सुसज्जित किया गया है।',
-    flowers: 'Lotus, Jasmine, Marigold & Tulsi',
-    chandan: 'Pure Saffron Sandalwood & Bhasma',
-    silks: 'Pitambar Golden Silks & Sacred Crown',
-    darshanHours: '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM',
-    priestName: 'Pt. Ramakant Pandey',
-    status: 'Published',
-    viewsCount: 1420,
-    downloadsCount: 380,
-    image: todayShringarImg,
-  },
-  {
-    id: 'shringar-yesterday',
-    isTodayActive: false,
-    date: new Date(Date.now() - 86400000).toISOString().slice(0, 10),
-    timeSlot: '08:30 AM',
-    title: 'Shravan Somvaar Mahashringar',
-    titleEn: 'Shravan Somvaar Mahashringar',
-    titleHi: 'श्रावण सोमवार महाशृंगार',
-    subtitleEn: 'Special Bilva & Ganga Snan Alankar',
-    subtitleHi: 'विशेष बेलपत्र एवं गंगा स्नान अलंकार',
-    chant: '॥ कर्पूरगौरं करुणावतारं संसारसारम् ॥',
-    descriptionEn: 'Special Monday sacred adornment adorned with fresh fragrant champak, bilva patra garlands, and chandan bindi.',
-    descriptionHi: 'श्रावण सोमवार के पावन अवसर पर १०००८ बेलपत्रों, गुलाब माला एवं केवड़े के इत्र से प्रभु का महाशृंगार किया गया।',
-    flowers: 'Belpatra, Champak & White Roses',
-    chandan: 'White Chandan & Bhasma Tripund',
-    silks: 'Pure Silver Border Silks',
-    darshanHours: '05:00 AM - 10:00 PM',
-    priestName: 'Acharya Vidyadhar Jha',
-    status: 'Published',
-    viewsCount: 3250,
-    downloadsCount: 910,
-    image: altShringarImg1,
-  },
-  {
-    id: 'shringar-ekadashi',
-    isTodayActive: false,
-    date: new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10),
-    timeSlot: '05:30 AM',
-    title: 'Ekadashi Mangala Shringar',
-    titleEn: 'Ekadashi Mangala Shringar',
-    titleHi: 'पवित्रा एकादशी मंगला शृंगार',
-    subtitleEn: 'Maha Vishnu Pitambar & Tulsi Garland Shringar',
-    subtitleHi: 'महाविष्णु पीतांबर एवं तुलसी माला शृंगार',
-    chant: '॥ ॐ नमो नारायणाय ॥',
-    descriptionEn: 'Divinely adorned for auspicious Ekadashi with thousand Tulsi leaves, yellow carnations and gold ornaments.',
-    descriptionHi: 'पवित्र एकादशी व्रत के उपलक्ष्य में भगवान विष्णु को पीतांबर वस्त्र, कस्तूरी तिलक एवं तुलसी माला से सुसज्जित किया गया।',
-    flowers: 'Tulsi Dal, Yellow Marigold & Orchids',
-    chandan: 'Kasturi Chandan Tilak',
-    silks: 'Vibrant Yellow Banarasi Silks',
-    darshanHours: '05:00 AM - 09:30 PM',
-    priestName: 'Pt. Ramakant Pandey',
-    status: 'Published',
-    viewsCount: 2890,
-    downloadsCount: 760,
-    image: altShringarImg2,
-  },
-  {
-    id: 'shringar-pradosh',
-    isTodayActive: false,
-    date: new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10),
-    timeSlot: '06:30 PM',
-    title: 'Pradosh Sandhya Shringar',
-    titleEn: 'Pradosh Sandhya Shringar',
-    titleHi: 'प्रदोष संध्या शृंगार',
-    subtitleEn: 'Evening Deepotsav & Pushpa Alankar',
-    subtitleHi: 'संध्या दीपोत्सव एवं पुष्प अलंकार',
-    chant: '॥ ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् ॥',
-    descriptionEn: 'Evening Aarti Shringar illuminated with 108 ghee lamps and white Parijat flowers.',
-    descriptionHi: 'संध्या प्रदोष वेला में भगवान शिव को पारिजात पुष्पों व १०८ घृत दीपों की आभा में सुसज्जित किया गया।',
-    flowers: 'Parijat, Hibiscus & Lotus',
-    chandan: 'Rakta Chandan & Bhasma',
-    silks: 'Crimson Red Silks',
-    darshanHours: '04:00 PM - 09:00 PM',
-    priestName: 'Pt. Shambhu Nath Mishra',
-    status: 'Published',
-    viewsCount: 1980,
-    downloadsCount: 520,
-    image: altShringarImg3,
-  }
-];
 
 export default function DailyShringarManagement() {
   const { i18n } = useTranslation();
@@ -166,23 +68,21 @@ export default function DailyShringarManagement() {
       _id: item._id || item.id,
       isTodayActive: idx === 0,
       date: createdAtDate,
-      timeSlot: item.timeSlot || '08:30 AM',
+      timeSlot: item.timeSlot || '',
       title: rawTitle || 'Aaj Ka Divya Shringar',
-      titleEn: item.titleEn || rawTitle || 'Aaj Ka Divya Shringar',
-      titleHi: item.titleHi || rawTitle || 'आज का दिव्य शृंगार',
-      subtitleEn: item.subtitleEn || 'Daily Morning Adornment of Lord Hari-Hara',
-      subtitleHi: item.subtitleHi || 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः शृंगार',
-      chant: item.chant || '॥ ॐ नमः शिवाय • ॐ नमो भगवते वासुदेवाय ॥',
-      descriptionEn: item.descriptionEn || 'Sacred daily adornment of sanctum deities Lord Gaurishankar & Lord Baikunthnath.',
-      descriptionHi: item.descriptionHi || 'भगवान श्री गौरीशंकर एवं बैकुंठनाथ जी का नित्य प्रातः दिव्य शृंगार दर्शन।',
-      flowers: item.flowers || 'Lotus, Jasmine, Marigold & Tulsi',
-      chandan: item.chandan || 'Pure Saffron Sandalwood & Bhasma',
-      silks: item.silks || 'Pitambar Golden Silks & Sacred Crown',
-      darshanHours: item.darshanHours || '05:00 AM - 12:30 PM | 04:00 PM - 09:00 PM',
-      priestName: item.priestName || 'Pt. Ramakant Pandey',
+      titleEn: item.titleEn || rawTitle || '',
+      titleHi: item.titleHi || rawTitle || '',
+      subtitleEn: item.subtitleEn || '',
+      subtitleHi: item.subtitleHi || '',
+      chant: item.chant || '',
+      descriptionEn: item.descriptionEn || '',
+      descriptionHi: item.descriptionHi || '',
+      flowers: item.flowers || '',
+      chandan: item.chandan || '',
+      silks: item.silks || '',
+      darshanHours: item.darshanHours || '',
+      priestName: item.priestName || '',
       status: item.status || 'Published',
-      viewsCount: item.viewsCount || 1420,
-      downloadsCount: item.downloadsCount || 380,
       image: photoUrl,
       raw: item
     };
@@ -196,24 +96,11 @@ export default function DailyShringarManagement() {
 
     try {
       const res = await shringarGetAllApi();
-      if (res.status === 200 && Array.isArray(res.data?.data) && res.data.data.length > 0) {
-        const normalized = res.data.data.map((item, idx) => normalizeItem(item, idx));
-        setShringarList(normalized);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
-      } else if (res.status === 204 || (res.data?.data && res.data.data.length === 0)) {
-        // No records in backend yet: use defaults or empty
-        const saved = localStorage.getItem(STORAGE_KEY);
-        setShringarList(saved ? JSON.parse(saved) : DEFAULT_SHRINGAR_LIST);
-      } else {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        setShringarList(saved ? JSON.parse(saved) : DEFAULT_SHRINGAR_LIST);
-      }
+      const records = Array.isArray(res.data?.data) ? res.data.data : [];
+      setShringarList(records.map((item, idx) => normalizeItem(item, idx)));
     } catch (err) {
-      console.warn('Failed to fetch shringar from API, using fallback cache:', err);
-      const saved = localStorage.getItem(STORAGE_KEY);
-      setShringarList(saved ? JSON.parse(saved) : DEFAULT_SHRINGAR_LIST);
       if (!isSilent) {
-        setApiError(err?.response?.data?.message || 'Could not connect to live Shringar API. Showing local records.');
+        setApiError(err?.response?.data?.message || 'Could not load Shringar records. Please try again.');
       }
     } finally {
       setIsLoading(false);
@@ -234,92 +121,46 @@ export default function DailyShringarManagement() {
   // Find the active today's shringar
   const todayActiveShringar = shringarList.find((item) => item.isTodayActive) || shringarList[0];
 
-  // Save handler for Create / Edit (POST /api/v1/shringar/create)
-  const handleSaveShringar = async (savedData) => {
-    const updatedTitle = (savedData.title || savedData.titleEn || savedData.titleHi || '').trim();
-
-    if (savedData.file) {
-      // POST multipart FormData to backend API
-      const formData = new FormData();
-      formData.append('file', savedData.file);
-      if (updatedTitle) {
-        formData.append('title', updatedTitle);
-      }
-
-      const res = await shringarCreateApi(formData);
-      if (res.data?.data) {
-        const newlyUploaded = normalizeItem(res.data.data, 0);
-        setShringarList((prev) => {
-          const updated = [
-            {
-              ...newlyUploaded,
-              ...savedData,
-              isTodayActive: true,
-              title: updatedTitle || newlyUploaded.title,
-              titleEn: updatedTitle || newlyUploaded.titleEn,
-              titleHi: updatedTitle || newlyUploaded.titleHi,
-            },
-            ...prev.map((i) => ({ ...i, isTodayActive: false }))
-          ];
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-          return updated;
-        });
-      }
-      showToast(res.data?.message || (isHi ? 'नया दिव्य शृंगार सफलतापूर्वक अपलोड हुआ!' : 'Today\'s Shringar published successfully!'));
-      await fetchShringar(true);
-    } else {
-      // Update local state for metadata edits
-      const targetId = editingItem?._id || editingItem?.id || savedData.id;
-      setShringarList((prev) => {
-        const hasExisting = prev.some((item) => item.id === targetId || item._id === targetId || (editingItem?.isTodayActive && item.isTodayActive));
-        
-        let updated;
-        if (hasExisting) {
-          updated = prev.map((item) => {
-            const isMatch = targetId
-              ? (item.id === targetId || item._id === targetId)
-              : (editingItem?.isTodayActive && item.isTodayActive);
-            return isMatch
-              ? {
-                  ...item,
-                  ...savedData,
-                  title: updatedTitle,
-                  titleEn: updatedTitle,
-                  titleHi: updatedTitle
-                }
-              : item;
-          });
-        } else {
-          const newRecord = {
-            ...savedData,
-            id: `shringar-${Date.now()}`,
-            isTodayActive: true,
-            title: updatedTitle,
-            titleEn: updatedTitle,
-            titleHi: updatedTitle,
-            date: savedData.date || new Date().toISOString().slice(0, 10),
-            image: savedData.image || todayShringarImg,
-          };
-          updated = [newRecord, ...prev.map((i) => ({ ...i, isTodayActive: false }))];
-        }
-
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-        return updated;
-      });
-      showToast(isHi ? 'दैनिक शृंगार विवरण अपडेट हुआ!' : 'Daily Shringar updated successfully!');
-    }
-    setEditingItem(null);
+  // Builds a FormData with all shringar fields the backend accepts.
+  const buildFormData = (savedData) => {
+    const fd = new FormData();
+    if (savedData.file) fd.append('file', savedData.file);
+    const FIELDS = ['title','titleEn','titleHi','subtitleEn','subtitleHi','descriptionEn','descriptionHi','date','timeSlot','chant','flowers','chandan','silks','darshanHours','priestName','status'];
+    FIELDS.forEach((key) => {
+      if (savedData[key] !== undefined && savedData[key] !== null && savedData[key] !== '')
+        fd.append(key, savedData[key]);
+    });
+    return fd;
   };
 
-  // Set as Active Shringar
-  const handleSetActive = (id) => {
-    setShringarList((prev) =>
-      prev.map((item) => ({
-        ...item,
-        isTodayActive: item.id === id
-      }))
-    );
-    showToast(isHi ? 'चयनित शृंगार को मुख्य शृंगार के रूप में सेट किया गया!' : 'Set as today\'s active shringar!');
+  // Save handler: POST to create, PUT to update — all fields sent every time.
+  const handleSaveShringar = async (savedData) => {
+    const backendId = editingItem?._id || editingItem?.id;
+    const fd = buildFormData(savedData);
+
+    if (backendId) {
+      // Edit existing record
+      await shringarUpdateApi(backendId, fd);
+      showToast(isHi ? 'दैनिक शृंगार विवरण अपडेट हुआ!' : 'Daily Shringar updated successfully!');
+    } else {
+      // Create new record (image required — validated in ShringarFormModal)
+      await shringarCreateApi(fd);
+      showToast(isHi ? 'नया दिव्य शृंगार सफलतापूर्वक अपलोड हुआ!' : "Today's Shringar published successfully!");
+    }
+
+    setEditingItem(null);
+    await fetchShringar(true);
+  };
+
+  // Set as Active Shringar — calls backend then refreshes list
+  const handleSetActive = async (id, backendId) => {
+    try {
+      if (backendId) await shringarActivateApi(backendId);
+      showToast(isHi ? 'चयनित शृंगार को मुख्य शृंगार के रूप में सेट किया गया!' : "Set as today's active shringar!");
+      await fetchShringar(true);
+    } catch (err) {
+      showToast(err?.response?.data?.message || 'Failed to activate shringar.');
+    }
   };
 
   // Delete Shringar item (DELETE /api/v1/shringar/remove/:id)
@@ -784,7 +625,7 @@ export default function DailyShringarManagement() {
                     {!item.isTodayActive && (
                       <button
                         type="button"
-                        onClick={() => handleSetActive(item.id)}
+                        onClick={() => handleSetActive(item.id, item._id)}
                         className="px-2.5 py-1.5 rounded-lg bg-amber-100 hover:bg-[#c28227] text-[#c28227] hover:text-white font-bold text-[10px] transition cursor-pointer"
                         title="Set as Today's Active Shringar"
                       >
