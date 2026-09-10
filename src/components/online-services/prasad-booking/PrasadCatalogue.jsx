@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Gift, Minus, Plus, Loader2, AlertCircle, RefreshCw, ShoppingBag, IndianRupee, ArrowRight,
+  Gift, Minus, Plus, Trash2, Loader2, AlertCircle, RefreshCw, ShoppingBag, IndianRupee, ArrowRight,
 } from 'lucide-react';
 import { getAllPrasadApi } from '../../clientApi/allApi';
 
@@ -144,7 +144,8 @@ export default function PrasadCatalogue({ onProceed }) {
                       <div className="flex items-center justify-between gap-2">
                         <button
                           onClick={() => setQty(p._id, qty - 0.25)}
-                          className="w-9 h-9 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition"
+                          disabled={qty <= 0.5}
+                          className="w-9 h-9 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition disabled:opacity-40"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
@@ -164,8 +165,9 @@ export default function PrasadCatalogue({ onProceed }) {
                         <span className="font-bold text-emerald-700">₹ {(p.pricePerKg * qty).toLocaleString('en-IN')}</span>
                         <button
                           onClick={() => setQty(p._id, 0)}
-                          className="text-red-400 hover:text-red-600 font-medium transition"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 font-bold transition"
                         >
+                          <Trash2 className="w-3 h-3" />
                           {isHi ? 'हटाएं' : 'Remove'}
                         </button>
                       </div>
