@@ -86,7 +86,14 @@ export default function DashboardSidebar({ activeTab, setActiveTab, isCollapsed,
       labelEn: 'Donations & Seva',
       labelHi: 'दान एवं सेवा',
       icon: HeartHandshake,
-      roles: ['Super Admin'], // Super Admin Only
+      roles: ['Super Admin'],
+    },
+    {
+      id: 'seva-daan',
+      labelEn: 'Seva Daan',
+      labelHi: 'सेवा दान',
+      icon: Flame,
+      roles: ['Super Admin'],
     },
     {
       id: 'gallery',

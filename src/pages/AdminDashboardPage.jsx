@@ -11,6 +11,7 @@ import RoomBookingManagement from '../components/dashboard/room-booking/RoomBook
 import PrasadBookingManagement from '../components/dashboard/prasad-booking/PrasadBookingManagement';
 import CatalogueManagement from '../components/dashboard/pooja-catalogue/CatalogueManagement';
 import DonationManagement from '../components/dashboard/donation/DonationManagement';
+import SevaDaanManagement from '../components/dashboard/seva-daan/SevaDaanManagement';
 import GalleryManagement from '../components/dashboard/gallery/GalleryManagement';
 import MediaCoverageManagement from '../components/dashboard/media-coverage/MediaCoverageManagement';
 import UserManagement from '../components/dashboard/users/UserManagement';
@@ -18,7 +19,7 @@ import SystemConfig from '../components/dashboard/config/SystemConfig';
 
 // Every section the dashboard can render, and which roles may see it. The tab
 // id doubles as the URL segment (/admin/<id>).
-const ALL_TABS = ['overview', 'daily-shringar', 'pooja-booking', 'room-booking', 'prasad-booking', 'pooja-catalogue', 'donation', 'gallery', 'media-coverage', 'users', 'config'];
+const ALL_TABS = ['overview', 'daily-shringar', 'pooja-booking', 'room-booking', 'prasad-booking', 'pooja-catalogue', 'donation', 'seva-daan', 'gallery', 'media-coverage', 'users', 'config'];
 const ADMIN_TABS = ['daily-shringar', 'pooja-booking', 'room-booking', 'prasad-booking', 'pooja-catalogue', 'gallery', 'media-coverage'];
 
 export default function AdminDashboardPage() {
@@ -65,6 +66,8 @@ export default function AdminDashboardPage() {
         return isHi ? 'कैटलॉग' : 'Catalogue';
       case 'donation':
         return isHi ? 'दान एवं सेवा प्रबंधन' : 'Donations & Seva Funds';
+      case 'seva-daan':
+        return isHi ? 'सेवा दान प्रबंधन' : 'Seva Daan Management';
       case 'gallery':
         return isHi ? 'फोटो एवं वीडियो' : 'Photos & Videos Management';
       case 'media-coverage':
@@ -111,6 +114,7 @@ export default function AdminDashboardPage() {
           {activeTab === 'prasad-booking' && <PrasadBookingManagement />}
           {activeTab === 'pooja-catalogue' && <CatalogueManagement />}
           {activeTab === 'donation' && <DonationManagement />}
+          {activeTab === 'seva-daan' && <SevaDaanManagement />}
           {activeTab === 'gallery' && <GalleryManagement />}
           {activeTab === 'media-coverage' && <MediaCoverageManagement />}
           {activeTab === 'users' && <UserManagement />}
