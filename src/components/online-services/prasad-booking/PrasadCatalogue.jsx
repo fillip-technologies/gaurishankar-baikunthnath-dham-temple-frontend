@@ -133,7 +133,7 @@ export default function PrasadCatalogue({ onProceed }) {
                   {/* Quantity stepper */}
                   {qty === 0 ? (
                     <button
-                      onClick={() => setQty(p._id, 0.5)}
+                      onClick={() => setQty(p._id, 1)}
                       className="w-full py-2 rounded-xl bg-[#c28227] text-white text-xs font-extrabold hover:brightness-110 transition flex items-center justify-center gap-1.5"
                     >
                       <Plus className="w-3.5 h-3.5" />
