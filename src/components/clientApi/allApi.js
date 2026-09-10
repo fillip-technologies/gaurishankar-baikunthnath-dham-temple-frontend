@@ -229,4 +229,96 @@ export const addPoojaApi = (formData, { onUploadProgress } = {}) => {
     });
 };
 
+export const updatePoojaApi = (id, formData, { onUploadProgress } = {}) => {
+    return api.patch(`${POOJA_UPDATE_URL}/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
+
+export const removePoojaApi = (id) => api.delete(`${POOJA_REMOVE_URL}/${id}`);
+
+export const getPoojaCategoriesApi = () => api.get(POOJA_CATEGORIES_URL);
+
+export const createManualPoojaBookingApi = ({ poojaId, quantity, bookingDate, amount, paymentMode, payer }) => {
+    return api.post(POOJA_MANUAL_BOOKING_URL, {
+        poojaId, quantity, bookingDate,
+        ...(amount != null && amount !== "" ? { amount } : {}),
+        ...(paymentMode ? { paymentMode } : {}),
+        payer,
+    });
+};
+
+export const updatePoojaBookingStatusApi = (id, status) =>
+    api.patch(`${POOJA_BOOKINGS_URL}/${id}/status`, { status });
+
+// ─────────────────────────────────────────────
+// Room Booking Endpoints
+// ─────────────────────────────────────────────
+export const ROOM_LIST_URL         = "/api/v1/rooms/rooms";
+export const ROOM_ADD_URL          = "/api/v1/rooms/add";
+export const ROOM_UPDATE_URL       = "/api/v1/rooms/update";
+export const ROOM_REMOVE_URL       = "/api/v1/rooms/remove";
+export const ROOM_BOOK_URL         = "/api/v1/rooms/book";
+export const ROOM_VERIFY_URL       = "/api/v1/rooms/verify";
+export const ROOM_AVAILABILITY_URL = "/api/v1/rooms/availability";
+export const ROOM_BOOKINGS_URL     = "/api/v1/rooms/bookings";
+
+export const getAllRoomApi = () => api.get(ROOM_LIST_URL);
+
+export const addRoomApi = (formData, { onUploadProgress } = {}) =>
+    api.post(ROOM_ADD_URL, formData, { headers: { "Content-Type": "multipart/form-data" }, onUploadProgress });
+
+export const updateRoomApi = (id, formData, { onUploadProgress } = {}) =>
+    api.patch(`${ROOM_UPDATE_URL}/${id}`, formData, { headers: { "Content-Type": "multipart/form-data" }, onUploadProgress });
+
+export const removeRoomApi = (id) => api.delete(`${ROOM_REMOVE_URL}/${id}`);
+
+export const getAllRoomBookingsApi = (params = {}) => api.get(ROOM_BOOKINGS_URL, { params });
+
+export const checkInRoomBookingApi  = (id) => api.patch(`/api/v1/rooms/checkin/${id}`);
+export const checkOutRoomBookingApi = (id) => api.patch(`/api/v1/rooms/checkout/${id}`);
+
+export const getRoomAvailabilityApi = ({ checkIn, checkOut }) =>
+    api.get(ROOM_AVAILABILITY_URL, { params: { checkIn, checkOut } });
+
+export const bookRoomApi = ({ roomId, quantity, checkIn, checkOut, payer }) =>
+    api.post(ROOM_BOOK_URL, { roomId, quantity, checkIn, checkOut, payer });
+
+export const verifyRoomBookingApi = ({ razorpayOrderId, razorpayPaymentId, razorpaySignature }) =>
+    api.post(ROOM_VERIFY_URL, { razorpayOrderId, razorpayPaymentId, razorpaySignature });
+
+// ─────────────────────────────────────────────
+// Prasad Booking Endpoints
+// ─────────────────────────────────────────────
+export const PRASAD_LIST_URL     = "/api/v1/prasad/prasads";
+export const PRASAD_BOOK_URL     = "/api/v1/prasad/book";
+export const PRASAD_VERIFY_URL   = "/api/v1/prasad/verify";
+export const PRASAD_BOOKINGS_URL = "/api/v1/prasad/bookings";
+
+export const getAllPrasadApi = () => api.get(PRASAD_LIST_URL);
+
+export const bookPrasadApi = ({ prasadId, quantity, payer, address }) =>
+    api.post(PRASAD_BOOK_URL, { prasadId, quantity, payer, address });
+
+export const verifyPrasadBookingApi = ({ razorpayOrderId, razorpayPaymentId, razorpaySignature }) =>
+    api.post(PRASAD_VERIFY_URL, { razorpayOrderId, razorpayPaymentId, razorpaySignature });
+
+export const getAllPrasadBookingsApi = (params = {}) => api.get(PRASAD_BOOKINGS_URL, { params });
+
+// ─────────────────────────────────────────────
+// Payment / Donation Endpoints
+// ─────────────────────────────────────────────
+export const PAYMENT_ORDER_URL  = "/api/v1/payments/order";
+export const PAYMENT_VERIFY_URL = "/api/v1/payments/verify";
+export const PAYMENT_ALL_URL    = "/api/v1/payments/all";
+
+export const createDonationOrderApi = ({ amount, payer, notes }) =>
+    api.post(PAYMENT_ORDER_URL, { amount, purpose: "donation", payer, ...(notes ? { notes } : {}) });
+
+export const verifyDonationApi = ({ razorpayOrderId, razorpayPaymentId, razorpaySignature }) =>
+    api.post(PAYMENT_VERIFY_URL, { razorpayOrderId, razorpayPaymentId, razorpaySignature });
+
+export const getAllPaymentsApi = () => api.get(PAYMENT_ALL_URL);
+
 export default api;
