@@ -80,9 +80,10 @@ export default function Navbar() {
   ];
 
   const servicesSubItems = [
-    { key: 'SERVICES_POOJA', label: t('nav.servicePoojaBooking', 'Pooja Booking'), to: '/online-services/pooja-booking' },
-    { key: 'SERVICES_ROOM', label: t('nav.serviceRoomBooking', 'Room Booking'), to: '/online-services/room-booking' },
-    { key: 'SERVICES_VOLUNTEERS', label: t('nav.serviceVolunteers', 'Volunteers'), to: '/online-services/volunteers' },
+    { key: 'SERVICES_POOJA',   label: t('nav.servicePoojaBooking',   'Pooja Booking'),   to: '/online-services/pooja-booking'   },
+    { key: 'SERVICES_ROOM',    label: t('nav.serviceRoomBooking',    'Room Booking'),    to: '/online-services/room-booking'    },
+    { key: 'SERVICES_PRASAD',  label: t('nav.servicePrasadBooking',  'Prasad Booking'),  to: '/online-services/prasad-booking'  },
+    { key: 'SERVICES_VOLUNTEERS', label: t('nav.serviceVolunteers',  'Volunteers'),      to: '/online-services/volunteers'      },
   ];
 
   const donateSubItems = [

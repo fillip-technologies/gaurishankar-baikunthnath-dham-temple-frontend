@@ -380,6 +380,9 @@ export const ROOM_BOOK_URL = "/api/v1/rooms/book";
 export const ROOM_VERIFY_URL = "/api/v1/rooms/verify";
 export const ROOM_AVAILABILITY_URL = "/api/v1/rooms/availability";
 export const ROOM_BOOKINGS_URL = "/api/v1/rooms/bookings";
+export const PRASAD_LIST_URL     = "/api/v1/prasad/prasads";
+export const PRASAD_BOOK_URL     = "/api/v1/prasad/book";
+export const PRASAD_VERIFY_URL   = "/api/v1/prasad/verify";
 export const PRASAD_BOOKINGS_URL = "/api/v1/prasad/bookings";
 
 // ─────────────────────────────────────────────
@@ -465,6 +468,24 @@ export const checkOutRoomBookingApi = (id) => {
  * @param {{ status?: string, from?: string, to?: string, page?: number, limit?: number }} [params]
  * @returns { bookings, pagination }
  */
+/** GET /api/v1/prasad/prasads — public prasad catalogue */
+export const getAllPrasadApi = () => api.get(PRASAD_LIST_URL);
+
+/**
+ * POST /api/v1/prasad/book
+ * Public checkout: pick prasad + quantity + payer + address → Razorpay order.
+ * Quantity in kg (min 0.5, max 5, steps of 0.25).
+ */
+export const bookPrasadApi = ({ prasadId, quantity, payer, address }) =>
+    api.post(PRASAD_BOOK_URL, { prasadId, quantity, payer, address });
+
+/**
+ * POST /api/v1/prasad/verify
+ * Confirm booking after Razorpay Checkout succeeds.
+ */
+export const verifyPrasadBookingApi = ({ razorpayOrderId, razorpayPaymentId, razorpaySignature }) =>
+    api.post(PRASAD_VERIFY_URL, { razorpayOrderId, razorpayPaymentId, razorpaySignature });
+
 export const getAllPrasadBookingsApi = (params = {}) => {
     return api.get(PRASAD_BOOKINGS_URL, { params });
 };
