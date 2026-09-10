@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import {
   IndianRupee, Search, Eye, Printer, Sparkles, BedDouble, Gift,
   HeartHandshake, Loader2, AlertCircle, RefreshCw, FileCheck, X,
+  Download, CalendarDays,
 } from 'lucide-react';
 import { getAllPaymentsApi } from '../../clientApi/allApi';
+import { generatePaymentPDF } from '../../../utils/generatePaymentPDF';
 
 const toRupees = (paise) => Math.round((Number(paise) || 0) / 100);
 
@@ -77,6 +79,9 @@ export default function PaymentHistory() {
   const [search,       setSearch]       = useState('');
   const [moduleFilter, setModuleFilter] = useState('ALL');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [fromDate,     setFromDate]     = useState('');
+  const [toDate,       setToDate]       = useState('');
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [selected,     setSelected]     = useState(null);
 
   const fetchPayments = useCallback(async () => {
@@ -110,7 +115,9 @@ export default function PaymentHistory() {
   }, [rows]);
 
   // ── Filtered rows ─────────────────────────────────────────────────────────
-  const activeMod = MODULE_FILTERS.find((f) => f.id === moduleFilter) || MODULE_FILTERS[0];
+  const activeMod    = MODULE_FILTERS.find((f) => f.id === moduleFilter) || MODULE_FILTERS[0];
+  const activeStatus = STATUS_FILTERS.find((f) => f.id === statusFilter) || STATUS_FILTERS[0];
+
   const filtered = rows.filter((r) => {
     const term = search.toLowerCase();
     const matchSearch =
@@ -120,8 +127,26 @@ export default function PaymentHistory() {
       r.phone.includes(search);
     const matchModule = activeMod.match(r);
     const matchStatus = statusFilter === 'ALL' || r.status === statusFilter;
-    return matchSearch && matchModule && matchStatus;
+    const matchFrom   = !fromDate || r.date >= fromDate;
+    const matchTo     = !toDate   || r.date <= toDate;
+    return matchSearch && matchModule && matchStatus && matchFrom && matchTo;
   });
+
+  const handleExportPDF = () => {
+    setIsPdfLoading(true);
+    setTimeout(() => {
+      try {
+        generatePaymentPDF(filtered, {
+          from:   fromDate,
+          to:     toDate,
+          module: isHi ? activeMod.labelHi    : activeMod.labelEn,
+          status: isHi ? activeStatus.labelHi : activeStatus.labelEn,
+        });
+      } finally {
+        setIsPdfLoading(false);
+      }
+    }, 50);
+  };
 
   const fmt = (n) => `₹ ${n.toLocaleString('en-IN')}`;
 
@@ -139,10 +164,25 @@ export default function PaymentHistory() {
             {isHi ? 'सभी माध्यमों के भुगतान — पूजा, कक्ष, प्रसाद एवं दान।' : 'Every payment across all modules — Pooja, Room, Prasad & Donations.'}
           </p>
         </div>
-        <button onClick={fetchPayments} disabled={isLoading} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#c28227] text-white font-bold text-xs hover:brightness-110 shadow-sm transition disabled:opacity-60">
-          <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-          <span>{isHi ? 'ताज़ा करें' : 'Refresh'}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleExportPDF}
+            disabled={isPdfLoading || isLoading || filtered.length === 0}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 shadow-sm transition disabled:opacity-50"
+          >
+            {isPdfLoading
+              ? <Loader2 className="w-4 h-4 animate-spin" />
+              : <Download className="w-4 h-4" />}
+            <span>{isHi ? 'PDF डाउनलोड' : 'Export PDF'}</span>
+            {!isPdfLoading && filtered.length > 0 && (
+              <span className="bg-white/20 rounded px-1.5 py-0.5 text-[10px] font-bold">{filtered.length}</span>
+            )}
+          </button>
+          <button onClick={fetchPayments} disabled={isLoading} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#c28227] text-white font-bold text-xs hover:brightness-110 shadow-sm transition disabled:opacity-60">
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <span>{isHi ? 'ताज़ा करें' : 'Refresh'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Summary cards */}
@@ -190,6 +230,39 @@ export default function PaymentHistory() {
             </button>
           ))}
         </div>
+        {/* Date range */}
+        <div className="flex flex-wrap items-center gap-3 pt-1 border-t border-stone-100">
+          <CalendarDays className="w-4 h-4 text-stone-400 shrink-0" />
+          <div className="flex items-center gap-2">
+            <label className="text-xs font-bold text-stone-600">{isHi ? 'से' : 'From'}</label>
+            <input
+              type="date"
+              value={fromDate}
+              max={toDate || undefined}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="px-2.5 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs text-stone-900 focus:outline-none focus:border-[#c28227]"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-xs font-bold text-stone-600">{isHi ? 'तक' : 'To'}</label>
+            <input
+              type="date"
+              value={toDate}
+              min={fromDate || undefined}
+              onChange={(e) => setToDate(e.target.value)}
+              className="px-2.5 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs text-stone-900 focus:outline-none focus:border-[#c28227]"
+            />
+          </div>
+          {(fromDate || toDate) && (
+            <button
+              onClick={() => { setFromDate(''); setToDate(''); }}
+              className="text-xs text-red-500 hover:text-red-700 font-bold underline transition"
+            >
+              {isHi ? 'साफ़ करें' : 'Clear'}
+            </button>
+          )}
+        </div>
+
         <p className="text-[11px] text-stone-400 font-medium">
           {isHi ? `${filtered.length} भुगतान दिख रहे हैं (कुल ${stats.count})` : `Showing ${filtered.length} of ${stats.count} payments · ${stats.settled} settled`}
         </p>
