@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import flower1 from '../../assets/animation/flower.png';
-import flower2 from '../../assets/animation/flower-2.png';
+import belPatraImg from '../../assets/animation/flower-2.png';
 import { X, Sparkles } from 'lucide-react';
 
 export default function WelcomeFlowerShower() {
@@ -8,7 +7,7 @@ export default function WelcomeFlowerShower() {
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    // Automatically start fade out after 17 seconds, then hide completely at 18 seconds
+    // Automatically start fade out after 17 seconds, then hide completely at 18.5 seconds
     const fadeTimer = setTimeout(() => {
       setIsFadingOut(true);
     }, 17000);
@@ -32,20 +31,18 @@ export default function WelcomeFlowerShower() {
 
   if (!isVisible) return null;
 
-  // Generate 40 bulk flowers with varied positions, sizes, speeds, and delays
-  const flowerCount = 42;
-  const flowers = Array.from({ length: flowerCount }).map((_, index) => {
-    const isEven = index % 2 === 0;
-    const imageSrc = isEven ? flower1 : flower2;
-    const leftPos = (index * 2.38 + (index % 5) * 3) % 96 + 2; // evenly spread across 2% to 98%
-    const size = 28 + (index % 7) * 6; // sizes between 28px and 64px
-    const duration = 3.5 + (index % 6) * 0.8; // duration between 3.5s and 7.5s
-    const delay = (index % 12) * 0.35; // staggered start delays up to ~4s
-    const swayDuration = 2 + (index % 4) * 0.8;
+  // Generate 56 bulk bel patra leaves with varied positions, sizes, speeds, and delays
+  const leafCount = 56;
+  const leaves = Array.from({ length: leafCount }).map((_, index) => {
+    const leftPos = (index * 1.78 + (index % 7) * 2.5) % 96 + 2; // evenly spread across 2% to 98%
+    const size = 30 + (index % 8) * 5; // sizes between 30px and 65px
+    const duration = 3.6 + (index % 7) * 0.7; // duration between 3.6s and 7.8s
+    const delay = (index % 14) * 0.28; // staggered start delays
+    const swayDuration = 2.2 + (index % 5) * 0.6;
 
     return {
       id: index,
-      imageSrc,
+      imageSrc: belPatraImg,
       leftPos,
       size,
       duration,
@@ -62,15 +59,15 @@ export default function WelcomeFlowerShower() {
     >
       {/* Inline styles for custom smooth top-to-bottom falling & swaying animations */}
       <style>{`
-        @keyframes flowerTopToDown {
+        @keyframes belPatraTopToDown {
           0% {
-            transform: translateY(-120px) rotate(0deg) scale(0.6);
+            transform: translateY(-120px) rotate(0deg) scale(0.7);
             opacity: 0;
           }
-          10% {
+          8% {
             opacity: 0.95;
           }
-          85% {
+          88% {
             opacity: 0.95;
           }
           100% {
@@ -79,15 +76,15 @@ export default function WelcomeFlowerShower() {
           }
         }
 
-        @keyframes flowerSwayMotion {
+        @keyframes belPatraSwayMotion {
           0% {
-            transform: translateX(-15px) rotate(-10deg);
+            transform: translateX(-18px) rotate(-15deg);
           }
           50% {
             transform: translateX(20px) rotate(15deg);
           }
           100% {
-            transform: translateX(-15px) rotate(-10deg);
+            transform: translateX(-18px) rotate(-15deg);
           }
         }
       `}</style>
@@ -96,46 +93,46 @@ export default function WelcomeFlowerShower() {
       <div className="absolute top-20 right-4 sm:right-6 pointer-events-auto z-50 animate-bounce-slow">
         <div className="bg-gradient-to-r from-stone-900/90 via-amber-950/90 to-stone-900/90 backdrop-blur-md border border-amber-500/40 text-amber-200 px-4 py-2 rounded-full shadow-2xl flex items-center gap-2.5 text-xs font-hindi tracking-wider">
           <Sparkles className="w-4 h-4 text-amber-400 animate-spin-slow" />
-          <span>॥ पुष्प वर्षा • Jai Shri Baikunthnath ॥</span>
+          <span>॥ बेलपत्र वर्षा • Jai Shri Baikunthnath ॥</span>
           <button
             onClick={handleClose}
             className="w-5 h-5 rounded-full bg-amber-500/20 hover:bg-amber-500/50 text-amber-200 hover:text-white flex items-center justify-center transition-colors ml-1 cursor-pointer"
-            title="Stop Flower Shower"
-            aria-label="Close Flower Shower"
+            title="Stop Bel Patra Shower"
+            aria-label="Close Bel Patra Shower"
           >
             <X className="w-3 h-3" />
           </button>
         </div>
       </div>
 
-      {/* Bulk Falling Flowers Container */}
+      {/* Bulk Falling Bel Patra Leaves Container */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {flowers.map((flower) => (
+        {leaves.map((leaf) => (
           <div
-            key={flower.id}
+            key={leaf.id}
             className="absolute pointer-events-none"
             style={{
               top: '-120px',
-              left: `${flower.leftPos}%`,
+              left: `${leaf.leftPos}%`,
               opacity: 0,
-              animation: `flowerTopToDown ${flower.duration}s linear ${flower.delay}s infinite both`,
+              animation: `belPatraTopToDown ${leaf.duration}s linear ${leaf.delay}s infinite both`,
               willChange: 'transform, opacity',
             }}
           >
             <div
               style={{
-                animation: `flowerSwayMotion ${flower.swayDuration}s ease-in-out infinite both`,
+                animation: `belPatraSwayMotion ${leaf.swayDuration}s ease-in-out infinite both`,
                 willChange: 'transform',
               }}
             >
               <img
-                src={flower.imageSrc}
-                alt="Sacred Flower Petal"
+                src={leaf.imageSrc}
+                alt="Sacred Bel Patra"
                 style={{
-                  width: `${flower.size}px`,
-                  height: `${flower.size}px`,
+                  width: `${leaf.size}px`,
+                  height: `${leaf.size}px`,
                 }}
-                className="object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] select-none pointer-events-none"
+                className="object-contain select-none pointer-events-none"
                 loading="eager"
               />
             </div>
