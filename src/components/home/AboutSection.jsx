@@ -1,228 +1,149 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Users, BookOpen, ArrowRight } from 'lucide-react';
-import templeArchImg from '../../assets/home/herosection-3.png';
+import { ArrowRight } from 'lucide-react';
+import shivlingImg from '../../assets/home/sacred_shivling_abhishek.jpg';
 
 export default function AboutSection() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'en';
+  const isHi = currentLang === 'hi';
 
   return (
-    <section id="about-section" className="w-full bg-[#f5eee6] pt-8 sm:pt-12 pb-12 sm:pb-16 text-stone-900 font-sans border-t border-stone-200/60 relative overflow-hidden">
-      
-      {/* Right Top & Right Side Elegant Mandala Vector Overlay */}
-      <div className="absolute top-0 right-0 w-[460px] h-[460px] opacity-15 pointer-events-none z-0 translate-x-12 -translate-y-12">
-        <svg viewBox="0 0 400 400" className="w-full h-full text-[#c28227] fill-current">
-          <circle cx="200" cy="200" r="180" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
-          <circle cx="200" cy="200" r="140" fill="none" stroke="currentColor" strokeWidth="1" />
-          <circle cx="200" cy="200" r="90" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="200" cy="200" r="40" fill="none" stroke="currentColor" strokeWidth="1" />
-          {Array.from({ length: 12 }).map((_, i) => (
-            <path
-              key={i}
-              d="M 200 20 C 220 70, 220 130, 200 200 C 180 130, 180 70, 200 20 Z"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.8"
-              transform={`rotate(${i * 30} 200 200)`}
-            />
-          ))}
-        </svg>
-      </div>
+    <section 
+      id="about-section" 
+      className="w-full bg-[#fcf8f2] py-14 sm:py-18 lg:py-24 text-stone-900 font-sans border-t border-stone-200/60 relative overflow-hidden"
+    >
+      {/* Subtle sacred background watermark pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#c28227_1px,transparent_1px)] [background-size:24px_24px]" />
 
-      <div className="w-full max-w-[1536px] mx-auto px-0 sm:px-4 lg:px-8 relative z-10">
-        
-        {/* Top 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center mb-2 sm:mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
-          {/* Left Column: Frameless Clean Arch */}
-          <div className="lg:col-span-6 xl:col-span-5 relative flex justify-start pl-0 -ml-0 sm:-ml-4 lg:-ml-8">
-            <div className="w-full max-w-[660px] lg:max-w-none relative filter drop-shadow-2xl">
-              <svg className="w-full h-[420px] sm:h-[480px] lg:h-[530px]" viewBox="0 0 660 530">
-                <defs>
-                  <clipPath id="templeCleanFramelessArch">
-                    <path d="M 0 0 L 280 0 C 420 0, 520 60, 540 160 C 610 215, 610 315, 540 370 C 520 470, 420 530, 280 530 L 0 530 Z" />
-                  </clipPath>
-                </defs>
-                
-                {/* Clipped Temple Photo - Clean, Borderless */}
-                <image
-                  href={templeArchImg}
-                  x="-40"
-                  y="0"
-                  width="740"
-                  height="530"
-                  preserveAspectRatio="xMidYMid slice"
-                  clipPath="url(#templeCleanFramelessArch)"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* Right Column: Heading, Chant, Subtitle & Extended Paragraphs + READ MORE Button */}
-          <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-center px-4 sm:px-6 lg:px-0 lg:pl-4 space-y-3.5">
-            
-            {/* Top Chant */}
-            <div className="flex items-center gap-2 text-[#c28227] text-xs font-hindi tracking-widest">
-              <span>✦</span>
-              <span>{t('about.chant')}</span>
-              <span>✦</span>
-            </div>
-
-            {/* Title with Full Width Dynamic Sacred Accent Lines */}
-            <div className="w-full flex items-center gap-2.5 sm:gap-4 my-1">
-              <div className="h-[1.5px] sm:h-[2px] flex-1 bg-gradient-to-r from-transparent to-[#c28227] rounded-full" />
-              <div className="flex items-center gap-2 shrink-0">
-                <span className="text-[#c28227] text-sm sm:text-lg font-hindi select-none">ॐ</span>
-                <h2 className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-stone-900 tracking-tight whitespace-nowrap ${
-                  currentLang === 'hi' ? 'font-sans font-bold' : 'font-cinzel'
-                }`}>
-                  {t('about.title')}
-                </h2>
-                <span className="text-[#c28227] text-sm sm:text-lg font-hindi select-none">ॐ</span>
-              </div>
-              <div className="h-[1.5px] sm:h-[2px] flex-1 bg-gradient-to-l from-transparent to-[#c28227] rounded-full" />
-            </div>
-
-            {/* Subtitle */}
-            <h3 className="text-base sm:text-lg font-bold text-[#c28227] font-hindi leading-snug">
-              {t('about.subtitle')}
-            </h3>
-
-            {/* Paragraph 1 */}
-            <p className="text-stone-700 text-xs sm:text-sm leading-relaxed font-normal">
-              {t('about.desc1')}
-            </p>
-
-            {/* Paragraph 2 */}
-            <p className="text-stone-700 text-xs sm:text-sm leading-relaxed font-normal">
-              {t('about.desc2')}
-            </p>
-
-            {/* Paragraph 3 */}
-            <p className="text-stone-700 text-xs sm:text-sm leading-relaxed font-normal">
-              {t('about.desc3')}
-            </p>
-
-            {/* READ MORE Button */}
-            <div className="pt-2 sm:pt-3">
-              <button className="bg-[#c28227] hover:bg-[#a66d1e] text-white px-6 py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2.5 w-fit group cursor-pointer active:scale-95">
-                <span>{t('about.readMore')}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* Bottom Deep Burgundy Maroon Purpose Banner */}
-        <div className="mx-4 sm:mx-6 lg:mx-8 bg-[#38060d] rounded-[28px] p-5 sm:p-7 text-white border border-amber-500/20 shadow-2xl relative overflow-hidden mt-8 sm:mt-10 lg:mt-12">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-10">
-            
-            {/* Left Mission Info */}
-            <div className="lg:col-span-3 flex flex-col items-start">
-              <h3 className="text-xl sm:text-2xl font-bold text-amber-200 font-hindi">
-                {t('about.missionTitle')}
-              </h3>
+          {/* ── Left Column: Sacred Shivling Abhishek Image with Top-Left Om Badge ── */}
+          <div className="lg:col-span-6 xl:col-span-6 relative">
+            <div className="relative mx-auto max-w-[540px] lg:max-w-none">
               
-              <div className="flex items-center gap-2 my-2 text-amber-400/80 text-xs">
-                <span className="h-[1px] w-6 bg-amber-400/40" />
-                <span>❖</span>
-                <span className="h-[1px] w-6 bg-amber-400/40" />
+              {/* Sacred "ॐ" (Om) Floating Badge on Top-Left (Exact Match to Reference UI) */}
+              <div 
+                className="absolute -top-3.5 -left-3.5 sm:-top-5 sm:-left-5 z-20 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#d97706] to-[#b45309] shadow-[0_6px_20px_rgba(180,83,9,0.35)] border-2 sm:border-[3px] border-white flex items-center justify-center text-white text-2xl sm:text-3xl font-hindi select-none transform hover:scale-105 transition-transform"
+                title="ॐ"
+              >
+                ॐ
               </div>
 
-              <p className="text-xs text-amber-100/90 leading-relaxed font-light">
-                {t('about.missionDesc')}
+              {/* Main Image Container */}
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.14)] border border-[#e8dfcf] bg-stone-100 group">
+                <img
+                  src={shivlingImg}
+                  alt={isHi ? "भगवान शिव शिवलिंग अभिषेक" : "Lord Shiva Sacred Shivling Abhishek"}
+                  className="w-full h-[360px] sm:h-[460px] lg:h-[520px] object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                />
+                
+                {/* Subtle bottom vignette gradient for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+              </div>
+
+            </div>
+          </div>
+
+          {/* ── Right Column: Heading, Descriptions & Info Cards ── */}
+          <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center relative">
+            
+            {/* Sacred Hindi "ॐ" (Om) Background Watermark in Right Empty Space */}
+            <div 
+              className="absolute top-0 sm:top-2 lg:-top-20 xl:-top-22 right-1 sm:right-3 lg:-right-24 xl:-right-28 pointer-events-none select-none z-0 flex items-center justify-center opacity-90"
+              aria-hidden="true"
+            >
+              <div className="relative flex items-center justify-center">
+                {/* Subtle sacred mandala rings */}
+                <div className="absolute w-32 h-32 sm:w-44 sm:h-44 lg:w-56 lg:h-56 rounded-full border border-[#c28227]/15 pointer-events-none" />
+                <div className="absolute w-36 h-36 sm:w-52 sm:h-52 lg:w-64 lg:h-64 rounded-full border border-dashed border-[#c28227]/10 pointer-events-none" />
+                <div className="absolute w-28 h-28 sm:w-36 sm:h-36 lg:w-48 lg:h-48 rounded-full bg-gradient-to-br from-[#ffd778]/15 via-[#c28227]/10 to-transparent blur-xl pointer-events-none" />
+
+                {/* Calligraphic Hindi ॐ in font-yatra */}
+                <span className="font-yatra text-[105px] sm:text-[140px] lg:text-[210px] text-[#c28227]/22 leading-none select-none block drop-shadow-xs transform -rotate-3">
+                  ॐ
+                </span>
+              </div>
+            </div>
+
+            {/* Pill Tag (Exact Match to Reference UI: ABOUT THE TEMPLE) */}
+            <div className="inline-block mb-3.5 sm:mb-4 relative z-10">
+              <span className="inline-flex items-center px-3.5 py-1 rounded-full border border-[#d6a858]/60 bg-[#fbf6ea] text-[#b7791f] text-[11px] sm:text-xs font-semibold tracking-widest uppercase font-sans">
+                {t('about.badge', isHi ? 'मंदिर का परिचय' : 'ABOUT THE TEMPLE')}
+              </span>
+            </div>
+
+            {/* Main Heading (Exact Match to Reference UI: Line 1 Dark Serif, Line 2 Bold Gold Gradient) */}
+            <h2 className="flex flex-col tracking-wide mb-2 sm:mb-3 relative z-10">
+              {/* Line 1: A SACRED ABODE OF */}
+              <span className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-[#26150f] uppercase leading-tight ${
+                isHi ? 'font-yatra' : 'font-cinzel'
+              }`}>
+                {t('about.headingLine1', isHi ? 'परम पावन धाम' : 'A SACRED ABODE OF')}
+              </span>
+
+              {/* Line 2: LORD SHIVA */}
+              <span className={`text-2xl sm:text-3xl lg:text-4xl font-bold uppercase leading-tight bg-gradient-to-r from-[#d97706] via-[#c28227] to-[#78350f] bg-clip-text text-transparent ${
+                isHi ? 'font-yatra' : 'font-cinzel'
+              }`}>
+                {t('about.headingLine2', isHi ? 'भगवान शिव (गौरीशंकर धाम)' : 'LORD SHIVA')}
+              </span>
+            </h2>
+
+            {/* Subtle Gold Accent Underline Bar (Exact Match to Reference UI) */}
+            <div className="w-16 sm:w-20 h-[3px] bg-gradient-to-r from-[#c28227] to-[#d97706] rounded-full mb-5 sm:mb-6 relative z-10" />
+
+            {/* Narrative Paragraphs */}
+            <div className="space-y-3.5 sm:space-y-4 text-stone-600 sm:text-stone-700 text-xs sm:text-[14px] lg:text-[14.5px] leading-relaxed font-normal relative z-10">
+              <p>
+                {t('about.desc1')}
+              </p>
+              <p>
+                {t('about.desc2')}
               </p>
             </div>
 
-            {/* Vertical Divider */}
-            <div className="hidden lg:block lg:col-span-1 flex justify-center">
-              <div className="w-[1px] h-24 bg-amber-400/20" />
-            </div>
-
-            {/* Middle 4 Pillars Icons */}
-            <div className="lg:col-span-4 grid grid-cols-4 gap-2 text-center py-2 lg:py-0">
+            {/* Bottom 2 Info Cards (Exact Match to Reference UI: Form & Location) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-6 sm:pt-7 relative z-10">
               
-              {/* Pillar 1 */}
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-14 h-14 rounded-full border-2 border-amber-400/40 bg-amber-950/70 flex items-center justify-center text-amber-200 font-hindi text-2xl shadow-inner hover:scale-105 transition-transform">
-                  ॐ
-                </div>
-                <span className="text-[11px] font-medium text-amber-100/90 leading-tight">
-                  {t('about.pillars.spiritual')}
+              {/* Card 1: Deity / Sacred Form */}
+              <div className="bg-[#fffdfa] rounded-xl sm:rounded-2xl border border-[#f0e7d8] p-3.5 sm:p-4 shadow-xs hover:border-[#c28227]/40 transition-colors">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-widest text-[#b7791f] uppercase block font-sans">
+                  {t('about.card1Label', isHi ? 'पवित्र स्वरूप' : 'SANCTUM DEITY')}
+                </span>
+                <span className="text-xs sm:text-sm lg:text-[15px] font-bold text-stone-900 leading-snug mt-1 block">
+                  {t('about.card1Value', isHi ? 'हरि-हर स्वरूप (शिव एवं विष्णु)' : 'Hari-Hara Swaroop (Shiva & Vishnu)')}
                 </span>
               </div>
 
-              {/* Pillar 2 */}
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-14 h-14 rounded-full border-2 border-amber-400/40 bg-amber-950/70 flex items-center justify-center text-amber-200 text-xl shadow-inner hover:scale-105 transition-transform">
-                  <Users className="w-6 h-6 text-[#ffd700]" />
-                </div>
-                <span className="text-[11px] font-medium text-amber-100/90 leading-tight">
-                  {t('about.pillars.welfare')}
+              {/* Card 2: Location */}
+              <div className="bg-[#fffdfa] rounded-xl sm:rounded-2xl border border-[#f0e7d8] p-3.5 sm:p-4 shadow-xs hover:border-[#c28227]/40 transition-colors">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-widest text-[#b7791f] uppercase block font-sans">
+                  {t('about.card2Label', isHi ? 'स्थान' : 'LOCATION')}
                 </span>
-              </div>
-
-              {/* Pillar 3 */}
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-14 h-14 rounded-full border-2 border-amber-400/40 bg-amber-950/70 flex items-center justify-center text-amber-200 text-xl shadow-inner hover:scale-105 transition-transform">
-                  <BookOpen className="w-6 h-6 text-[#ffd700]" />
-                </div>
-                <span className="text-[11px] font-medium text-amber-100/90 leading-tight">
-                  {t('about.pillars.culture')}
-                </span>
-              </div>
-
-              {/* Pillar 4 */}
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-14 h-14 rounded-full border-2 border-amber-400/40 bg-amber-950/70 flex items-center justify-center text-amber-200 font-hindi text-xl shadow-inner hover:scale-105 transition-transform">
-                  🔱
-                </div>
-                <span className="text-[11px] font-medium text-amber-100/90 leading-tight">
-                  {t('about.pillars.harmony')}
+                <span className="text-xs sm:text-sm lg:text-[15px] font-bold text-stone-900 leading-snug mt-1 block">
+                  {t('about.card2Value', isHi ? 'बैकतपुर (खुसरूपुर), पटना, बिहार' : 'Baikathpur, Patna, Bihar')}
                 </span>
               </div>
 
             </div>
 
-            {/* Right Scalloped Quote Card - Elegant Corner Quote Marks */}
-            <div className="lg:col-span-4 pl-0 lg:pl-2 flex items-center">
-              <div className="bg-[#fef9ee] text-stone-900 p-5 sm:p-6 rounded-[24px] border-2 border-[#c28227] shadow-xl relative overflow-hidden w-full text-center flex flex-col items-center justify-center min-h-[160px]">
-                
-                {/* Large Gold Opening Quote (Top Left) */}
-                <div className="absolute top-2 left-3 text-[#c28227] text-4xl sm:text-5xl font-serif font-bold opacity-80 pointer-events-none select-none leading-none">
-                  “
-                </div>
-
-                {/* Large Gold Closing Quote (Bottom Right) */}
-                <div className="absolute bottom-5 right-3 text-[#c28227] text-4xl sm:text-5xl font-serif font-bold opacity-80 pointer-events-none select-none leading-none">
-                  ”
-                </div>
-
-                {/* Clean Centered Verse Text */}
-                <div className="relative z-10 space-y-1 text-xs sm:text-sm font-semibold text-stone-800 font-hindi leading-snug text-center max-w-[260px] my-auto px-2">
-                  <p>{t('about.quoteLine1')}</p>
-                  <p>{t('about.quoteLine2')}</p>
-                  <p>{t('about.quoteLine3')}</p>
-                </div>
-
-                {/* Bottom Filigree Centered */}
-                <div className="relative z-10 flex items-center gap-2 mt-3 justify-center">
-                  <span className="h-[1px] w-6 bg-[#c28227]/40" />
-                  <span className="text-[#c28227] text-xs">❖</span>
-                  <span className="h-[1px] w-6 bg-[#c28227]/40" />
-                </div>
-
-              </div>
+            {/* Optional Clean Read More Link */}
+            <div className="pt-4 sm:pt-5 relative z-10">
+              <Link
+                to="/about-us"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#842c2b] hover:text-[#c28227] transition-colors group"
+              >
+                <span>{t('about.readMore', isHi ? 'और जानें' : 'Read More')}</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
           </div>
 
         </div>
-
       </div>
     </section>
   );

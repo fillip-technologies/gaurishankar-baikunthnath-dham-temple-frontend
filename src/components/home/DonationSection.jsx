@@ -6,7 +6,6 @@ import {
   Utensils,
   Sun,
   BookOpen,
-  ShieldCheck,
   IndianRupee,
   Loader2,
   AlertCircle,
@@ -16,6 +15,8 @@ import {
 } from 'lucide-react';
 import { createDonationOrderApi, verifyDonationApi } from '../clientApi/allApi';
 import { loadRazorpayScript } from '../../utils/loadRazorpay';
+import BankDonationSection from './BankDonationSection';
+import sacredDiyaBg from '../../assets/home/sacred_diya_temple_bg.jpg';
 
 const EMPTY_PAYER = { name: '', email: '', phone: '' };
 
@@ -180,31 +181,45 @@ export default function DonationSection({ causes = ALL_CAUSES }) {
     // #donate-section, Navbar online-donation-section / seva-daan-section) lands here.
     <section
       id="donate"
-      className="w-full bg-gradient-to-b from-[#2a080d] via-[#38060d] to-[#2a080d] text-white py-16 sm:py-20 relative overflow-hidden"
+      className="w-full bg-gradient-to-b from-[#fdfbf6] via-[#f7efe0] to-[#f4e9d5] text-stone-900 py-14 sm:py-20 relative overflow-hidden border-y-2 border-[#dca64d] shadow-inner"
     >
       <span id="donate-section" className="absolute -top-24" aria-hidden="true" />
       <span id="online-donation-section" className="absolute -top-24" aria-hidden="true" />
       <span id="seva-daan-section" className="absolute -top-24" aria-hidden="true" />
 
-      {/* Background accent */}
-      <div className="absolute top-0 right-0 w-[420px] h-[420px] opacity-10 pointer-events-none z-0 translate-x-16 -translate-y-16">
+      {/* ── Sacred Diya & Temple Watermark Background Artwork ── */}
+      <div className="absolute left-0 bottom-0 top-0 w-full lg:w-1/2 opacity-35 sm:opacity-45 pointer-events-none overflow-hidden z-0">
+        <img
+          src={sacredDiyaBg}
+          alt="Sacred Diya Background Art"
+          className="w-full h-full object-cover object-left-bottom"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f7efe0]/70 to-[#f7efe0]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#f4e9d5] via-transparent to-[#fdfbf6]/70" />
+      </div>
+
+      {/* Subtle Background Sacred Mandir & Mandala Motif */}
+      <div className="absolute top-0 right-0 w-[460px] h-[460px] opacity-10 pointer-events-none z-0 translate-x-20 -translate-y-20">
         <svg viewBox="0 0 400 400" className="w-full h-full text-[#c28227] fill-current">
           <circle cx="200" cy="200" r="180" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
           <circle cx="200" cy="200" r="140" fill="none" stroke="currentColor" strokeWidth="1" />
+          <circle cx="200" cy="200" r="100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 6" />
+        </svg>
+      </div>
+      <div className="absolute bottom-0 left-0 w-[420px] h-[420px] opacity-10 pointer-events-none z-0 -translate-x-20 translate-y-20">
+        <svg viewBox="0 0 400 400" className="w-full h-full text-[#c28227] fill-current">
+          <circle cx="200" cy="200" r="180" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
+          <circle cx="200" cy="200" r="130" fill="none" stroke="currentColor" strokeWidth="1" />
         </svg>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
-        {/* Heading */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
+        {/* Section Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#c28227]/20 border border-[#c28227]/40 text-amber-300 text-xs font-bold">
-            <HeartHandshake className="w-4 h-4" />
-            <span>{t('donation.badge', isHi ? 'दान एवं सेवा' : 'Donation & Seva')}</span>
-          </div>
-          <h2 className={`text-3xl sm:text-4xl font-extrabold text-[#ffd700] ${isHi ? 'font-sans' : 'font-cinzel'}`}>
+          <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#7a1615] drop-shadow-xs ${isHi ? 'font-yatra' : 'font-cinzel'}`}>
             {t('donation.title', isHi ? 'सेवा में सहभागी बनें' : 'Support the Temple')}
           </h2>
-          <p className="text-sm sm:text-base text-amber-100/80 max-w-2xl mx-auto font-hindi leading-relaxed">
+          <p className="text-sm sm:text-base text-stone-700 max-w-2xl mx-auto font-hindi leading-relaxed">
             {t(
               'donation.subtitle',
               isHi
@@ -214,44 +229,35 @@ export default function DonationSection({ causes = ALL_CAUSES }) {
           </p>
         </div>
 
-        {/* Cause cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* 4 Seva Cause Cards (Integrated Ivory & Golden Theme) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {causes.map((c) => (
             <div
               key={c.id}
-              className="bg-white/5 backdrop-blur-sm rounded-2xl border border-amber-500/20 p-5 flex flex-col gap-3 hover:border-[#c28227] hover:bg-white/10 transition group"
+              className="bg-white/95 rounded-2xl border border-[#e4cb9c] p-5 flex flex-col gap-3.5 shadow-md hover:shadow-xl hover:border-[#c28227] hover:-translate-y-1 transition-all duration-300 group"
             >
-              <div className="p-3 rounded-xl bg-[#c28227] text-white w-fit shadow-lg">
-                <c.Icon className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ffd778] via-[#e5a83b] to-[#b8781c] p-0.5 shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-full h-full rounded-[10px] bg-[#fbf5e6] flex items-center justify-center text-[#842c2b]">
+                  <c.Icon className="w-6 h-6" />
+                </div>
               </div>
-              <h3 className="font-bold text-amber-100 font-hindi text-sm leading-snug">
+              <h3 className="font-extrabold text-stone-900 font-hindi text-sm sm:text-[15px] leading-snug group-hover:text-[#842c2b] transition-colors">
                 {isHi ? c.hi : c.en}
               </h3>
               <button
+                type="button"
                 onClick={() => openForm(c)}
-                className="mt-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#c28227] text-white font-bold text-xs hover:brightness-110 shadow-sm transition"
+                className="mt-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#842c2b] to-[#6d1b1a] hover:from-[#6d1b1a] hover:to-[#551312] text-white font-bold text-xs shadow-md transition cursor-pointer active:scale-95"
               >
-                <HeartHandshake className="w-4 h-4" />
+                <HeartHandshake className="w-4 h-4 text-amber-300" />
                 <span>{isHi ? 'दान करें' : 'Donate'}</span>
               </button>
             </div>
           ))}
         </div>
 
-        {/* Primary CTA + trust line */}
-        <div className="flex flex-col items-center gap-4">
-          <button
-            onClick={() => openForm(causes[0])}
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ffd700] text-[#2a080d] font-extrabold text-sm sm:text-base hover:brightness-105 shadow-xl transition"
-          >
-            <HeartHandshake className="w-5 h-5" />
-            <span>{t('donation.cta', isHi ? 'अभी दान करें' : 'Donate Now')}</span>
-          </button>
-          <div className="flex items-center gap-2 text-amber-100/70 text-xs font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>{isHi ? 'Razorpay द्वारा सुरक्षित भुगतान · 80G छूट योग्य' : 'Secured by Razorpay · 80G tax deductible'}</span>
-          </div>
-        </div>
+        {/* Direct Bank Transfer & QR Code Section (Image 2 Reference UI) */}
+        <BankDonationSection onOpenOnlineModal={() => openForm(causes[0])} />
       </div>
 
       {/* Donation / Payment Modal */}

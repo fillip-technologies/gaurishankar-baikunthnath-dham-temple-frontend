@@ -139,8 +139,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full bg-white border-b border-stone-200 shadow-sm py-1.5 sm:py-2 px-4 sm:px-8 lg:px-12 xl:px-16 font-sans overflow-visible relative z-40">
-      <div className="max-w-[1720px] mx-auto flex items-center justify-between gap-3 sm:gap-6">
+    <nav className="w-full bg-white border-b border-stone-200 shadow-sm py-1.5 sm:py-2 px-3 sm:px-5 lg:px-8 font-sans overflow-visible relative z-40">
+      <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
 
         {/* Left: Temple Logo & Branding */}
         <Link
@@ -157,20 +157,24 @@ export default function Navbar() {
           {/* Title & Subtitle Stack */}
           <div className="flex flex-col justify-center py-0.5 shrink-0">
             {t('brand.prefix') && (
-              <span className={`text-[8.5px] sm:text-[10.5px] font-bold tracking-wider text-[#c28227] uppercase leading-tight mb-0.5 whitespace-nowrap ${currentLang === 'hi' ? 'font-sans text-[9px] sm:text-xs' : 'font-sans'
-                }`}>
+              <span className={`text-[8.5px] sm:text-[10.5px] font-bold tracking-wider text-[#c28227] uppercase leading-tight mb-0.5 whitespace-nowrap ${
+                currentLang === 'hi' ? 'font-rozha text-[9.5px] sm:text-xs' : 'font-cinzel'
+              }`}>
                 {t('brand.prefix')}
               </span>
             )}
-            <h1 className={`text-xs sm:text-base md:text-lg lg:text-[18px] xl:text-[19px] font-bold tracking-normal text-stone-900 leading-tight whitespace-nowrap ${currentLang === 'hi' ? 'font-sans font-extrabold' : 'font-cinzel'
-              }`}>
+            <h1 className={`text-xs sm:text-base md:text-lg lg:text-[18px] xl:text-[19px] font-bold tracking-normal text-stone-900 leading-tight whitespace-nowrap ${
+              currentLang === 'hi' ? 'font-yatra tracking-wide' : 'font-cinzel'
+            }`}>
               {t('brand.title')}
             </h1>
 
             {/* Golden Horizontal Divider Line */}
             <div className="w-full h-[1.5px] bg-[#c28227] my-0.5" />
 
-            <span className="text-[8.5px] sm:text-[10px] font-bold tracking-wider text-stone-600 uppercase font-sans leading-tight mt-0.5 whitespace-nowrap">
+            <span className={`text-[8.5px] sm:text-[10px] font-bold tracking-wider text-stone-600 uppercase leading-tight mt-0.5 whitespace-nowrap ${
+              currentLang === 'hi' ? 'font-noto' : 'font-poppins'
+            }`}>
               {t('brand.subtitle')}
             </span>
           </div>

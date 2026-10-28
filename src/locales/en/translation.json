@@ -38,7 +38,10 @@
     "hoursTime": "5:00 AM - 9:00 PM",
     "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Om Namah Shivaya ॥",
     "helpdesk": "Helpdesk",
-    "eDonation": "e-Donation / Seva"
+    "eDonation": "e-Donation / Seva",
+    "updates": "UPDATES",
+    "importantNotice": "IMPORTANT NOTICE:",
+    "noticeText": "The Mandir Trust and Temple Committee do not authorize any third-party agents or external websites for Puja, Rudra Abhishek, VIP Darshan, or Room Bookings. Please book only through the official temple portal or counter. • Mandir Hours: 5:00 AM - 9:00 PM • Morning Aarti: 5:30 AM • Evening Maha Aarti: 7:00 PM • Helpline: +91 98765 43210"
   },
   "hero": {
     "chant": "ॐ नमो नारायणाय",
@@ -98,6 +101,42 @@
         "badgeGradient": "from-purple-800/90 to-purple-950/95",
         "title": "Shri Ganesh Chaturthi",
         "icon": "🐘"
+      },
+      {
+        "id": 6,
+        "day": "02",
+        "month": "Sep",
+        "year": "2026",
+        "badgeGradient": "from-blue-800/90 to-blue-950/95",
+        "title": "Anant Chaturdashi Mahotsav",
+        "icon": "🔱"
+      },
+      {
+        "id": 7,
+        "day": "17",
+        "month": "Sep",
+        "year": "2026",
+        "badgeGradient": "from-teal-800/90 to-teal-950/95",
+        "title": "Vishwakarma Jayanti Puja",
+        "icon": "⚙️"
+      },
+      {
+        "id": 8,
+        "day": "10",
+        "month": "Oct",
+        "year": "2026",
+        "badgeGradient": "from-rose-800/90 to-rose-950/95",
+        "title": "Sharad Navratri & Durga Puja",
+        "icon": "🌺"
+      },
+      {
+        "id": 9,
+        "day": "29",
+        "month": "Oct",
+        "year": "2026",
+        "badgeGradient": "from-amber-700/90 to-amber-950/95",
+        "title": "Deepawali & Maha Ganga Aarti",
+        "icon": "🪔"
       }
     ]
   },
@@ -123,9 +162,14 @@
   },
   "liveDarshan": {
     "badge": "LIVE STREAM",
+    "tagline": "EXPERIENCE DIVINE BLESSINGS",
     "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Direct Live Darshan ॥",
     "title": "Live Darshan",
     "subtitle": "Experience the divine presence of Lord Gaurishankar & Baikunthnath from anywhere in the world",
+    "desc": "Be a part of the daily aartis and experience the divine presence of Lord Vishnu from anywhere in the world.",
+    "watchLive": "Watch Live Darshan",
+    "schedule": "Darshan Schedule",
+    "watching": "1.2K Watching",
     "playerStatus": "Shri Baikunthnath Dham Main Sanctum Live",
     "viewers": "2,450 Viewers Live",
     "aartiSchedule": {
@@ -168,14 +212,20 @@
     "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Divine Photo Gallery ॥",
     "title": "DIVINE GALLERY",
     "subtitle": "Glance into the divine beauty, grand festivals, and sacred moments of our temple",
-    "explore": "EXPLORE GALLERY",
+    "explore": "Explore More",
     "items": {
       "temple": "TEMPLE",
       "festivals": "FESTIVALS",
       "rathYatra": "RATH YATRA",
       "janmashtami": "JANMASHTAMI",
       "droneView": "DRONE VIEW",
-      "devotees": "DEVOTEES"
+      "devotees": "DEVOTEES",
+      "gangaAarti": "GANGA AARTI",
+      "deepotsav": "DEEPOTSAV",
+      "shringar": "SHRINGAR",
+      "sanctum": "DIVINE SANCTUM",
+      "darshan": "LIVE DARSHAN",
+      "heritage": "VEDIC HERITAGE"
     }
   },
   "historyPage": {
@@ -212,5 +262,18 @@
       "mandap": "Carved Sandstone Mandap",
       "campus": "Temple Courtyard & Campus"
     }
+  },
+  "quickLinks": {
+    "chant": "॥ Shri Gaurishankar Baikunthnath Dham • Devotee Quick Services & Portals ॥",
+    "badge": "Devotee Services",
+    "title": "Quick Links & Services",
+    "subtitle": "Direct one-touch access to temple pooja bookings, live aarti streaming, daily panchang, prasad delivery, and pilgrim accommodations.",
+    "all": "All Services",
+    "darshan": "Darshan & Rituals",
+    "pilgrim": "Pilgrim Stay & Prasad",
+    "seva": "Seva & Contribution",
+    "helpTitle": "Need help with pooja booking or visit?",
+    "helpSub": "Call Mandir Seva Desk: +91 98765 43210 (6:00 AM – 9:00 PM)",
+    "askNandi": "Ask Nandi AI"
   }
 }

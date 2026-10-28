@@ -1,52 +1,149 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=Inter:wght@300..800&family=Noto+Sans+Devanagari:wght@300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Rozha+One&family=Teko:wght@400..700&family=Yatra+One&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Montserrat', sans-serif;
-  --font-body: 'Montserrat', sans-serif;
-  --font-montserrat: 'Montserrat', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
-  --font-cinzel: 'Montserrat', sans-serif;
-  --font-hindi: 'Montserrat', sans-serif;
+  /* System UI Fallback */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* English Premium Headings (Majestic & Divine) */
+  --font-cinzel: 'Cinzel', serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-cormorant: 'Cormorant Garamond', Garamond, serif;
+
+  /* English Clean Modern Body & UI Text */
+  --font-inter: 'Inter', var(--font-system);
+  --font-roboto: 'Roboto', var(--font-system);
+  --font-poppins: 'Poppins', var(--font-system);
+  --font-montserrat: 'Montserrat', var(--font-system);
+  --font-sans: 'Inter', 'Poppins', var(--font-system);
+  --font-body: 'Inter', var(--font-system);
+
+  /* Hindi / Devanagari Sacred Headings */
+  --font-yatra: 'Yatra One', cursive;
+  --font-rozha: 'Rozha One', serif;
+
+  /* Hindi Shlokas, Mantras & Clean Details */
+  --font-teko: 'Teko', sans-serif;
+  --font-noto: 'Noto Sans Devanagari', sans-serif;
+  --font-hindi: 'Noto Sans Devanagari', var(--font-system);
+  --font-mantra: 'Yatra One', 'Noto Sans Devanagari', serif;
+
+  /* Master Theme Color */
+  --color-master: #842c2b;
+  --color-master-dark: #6b2221;
+  --color-master-light: #9c3534;
 }
 
 @layer base {
   :root {
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Montserrat', sans-serif;
-    --font-hindi: 'Montserrat', sans-serif;
+    /* Primary Typography Tokens */
+    --font-heading: 'Cinzel', 'Playfair Display', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-hindi: 'Noto Sans Devanagari', sans-serif;
+    --font-hindi-heading: 'Yatra One', cursive;
 
-    /* Primary Accent Gold from screenshot */
+    /* Master Theme Color */
+    --color-master: #842c2b;
+    --color-master-dark: #6b2221;
+    --color-master-light: #9c3534;
+
+    /* Primary Accent Gold */
     --color-gold-accent: #c28227;
-  }
 
-  *, ::before, ::after {
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    /* babadham.org Master Page Background */
+    --bg-page: #fcf8f2; /* hsl(36 67% 97%) */
   }
 
   body {
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f8fafc;
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #fcf8f2; /* Exact page background from babadham.org: hsl(36 67% 97%) */
     color: #1e293b;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: inherit;
   }
 }
 
-/* Custom Exact Utilities */
+/* Master Color Utilities */
+.bg-master {
+  background-color: var(--color-master, #842c2b);
+}
+
+.bg-master-dark {
+  background-color: var(--color-master-dark, #6b2221);
+}
+
+.bg-master-light {
+  background-color: var(--color-master-light, #9c3534);
+}
+
+.text-master {
+  color: var(--color-master, #842c2b);
+}
+
+.border-master {
+  border-color: var(--color-master, #842c2b);
+}
+
+.border-master-dark {
+  border-color: var(--color-master-dark, #6b2221);
+}
+
+/* ─── Master Typography Utilities ─────────────────────────────────────────── */
+/* English Premium Fonts */
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', Garamond, serif;
+}
+
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.font-roboto {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 .font-montserrat {
   font-family: 'Montserrat', sans-serif;
 }
 
-.font-cinzel {
-  font-family: 'Montserrat', sans-serif;
+/* Hindi / Devanagari Premium Fonts */
+.font-yatra {
+  font-family: 'Yatra One', cursive;
+}
+
+.font-rozha {
+  font-family: 'Rozha One', serif;
+}
+
+.font-teko {
+  font-family: 'Teko', sans-serif;
+}
+
+.font-noto {
+  font-family: 'Noto Sans Devanagari', sans-serif;
 }
 
 .font-hindi {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-mantra {
+  font-family: 'Yatra One', 'Noto Sans Devanagari', serif;
 }
 
 .text-gold-accent {
@@ -65,6 +162,12 @@
   border-color: #c28227;
 }
 
+.gold-gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #fffbf2 50%, #f7d283 85%, #d49a3d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* 100% Seamless Infinite Chant Marquee Ticker (No Gaps) */
 @keyframes marquee-seamless {
   0% { transform: translateX(0%); }
@@ -78,6 +181,16 @@
 }
 
 .animate-marquee-continuous:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-updates {
+  display: flex;
+  width: max-content;
+  animation: marquee-seamless 70s linear infinite;
+}
+
+.animate-marquee-updates:hover {
   animation-play-state: paused;
 }
 
