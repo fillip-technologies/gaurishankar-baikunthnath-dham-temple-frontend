@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
-import shivlingImg from '../../assets/home/sacred_shivling_abhishek.jpg';
+import shivlingImg from '../../assets/home/hero-image-3.png';
 
 export default function AboutSection() {
   const { t, i18n } = useTranslation();
@@ -10,8 +10,8 @@ export default function AboutSection() {
   const isHi = currentLang === 'hi';
 
   return (
-    <section 
-      id="about-section" 
+    <section
+      id="about-section"
       className="w-full bg-[#fcf8f2] py-14 sm:py-18 lg:py-24 text-stone-900 font-sans border-t border-stone-200/60 relative overflow-hidden"
     >
       {/* Subtle sacred background watermark pattern */}
@@ -19,13 +19,13 @@ export default function AboutSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-          
+
           {/* ── Left Column: Sacred Shivling Abhishek Image with Top-Left Om Badge ── */}
           <div className="lg:col-span-6 xl:col-span-6 relative">
             <div className="relative mx-auto max-w-[540px] lg:max-w-none">
-              
+
               {/* Sacred "ॐ" (Om) Floating Badge on Top-Left (Exact Match to Reference UI) */}
-              <div 
+              <div
                 className="absolute -top-3.5 -left-3.5 sm:-top-5 sm:-left-5 z-20 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#d97706] to-[#b45309] shadow-[0_6px_20px_rgba(180,83,9,0.35)] border-2 sm:border-[3px] border-white flex items-center justify-center text-white text-2xl sm:text-3xl font-hindi select-none transform hover:scale-105 transition-transform"
                 title="ॐ"
               >
@@ -39,7 +39,7 @@ export default function AboutSection() {
                   alt={isHi ? "भगवान शिव शिवलिंग अभिषेक" : "Lord Shiva Sacred Shivling Abhishek"}
                   className="w-full h-[360px] sm:h-[460px] lg:h-[520px] object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
                 />
-                
+
                 {/* Subtle bottom vignette gradient for depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
               </div>
@@ -49,9 +49,9 @@ export default function AboutSection() {
 
           {/* ── Right Column: Heading, Descriptions & Info Cards ── */}
           <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center relative">
-            
+
             {/* Sacred Hindi "ॐ" (Om) Background Watermark in Right Empty Space */}
-            <div 
+            <div
               className="absolute top-0 sm:top-2 lg:-top-20 xl:-top-22 right-1 sm:right-3 lg:-right-24 xl:-right-28 pointer-events-none select-none z-0 flex items-center justify-center opacity-90"
               aria-hidden="true"
             >
@@ -78,16 +78,14 @@ export default function AboutSection() {
             {/* Main Heading (Exact Match to Reference UI: Line 1 Dark Serif, Line 2 Bold Gold Gradient) */}
             <h2 className="flex flex-col tracking-wide mb-2 sm:mb-3 relative z-10">
               {/* Line 1: A SACRED ABODE OF */}
-              <span className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-[#26150f] uppercase leading-tight ${
-                isHi ? 'font-yatra' : 'font-cinzel'
-              }`}>
+              <span className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-[#26150f] uppercase leading-tight ${isHi ? 'font-yatra' : 'font-cinzel'
+                }`}>
                 {t('about.headingLine1', isHi ? 'परम पावन धाम' : 'A SACRED ABODE OF')}
               </span>
 
               {/* Line 2: LORD SHIVA */}
-              <span className={`text-2xl sm:text-3xl lg:text-4xl font-bold uppercase leading-tight bg-gradient-to-r from-[#d97706] via-[#c28227] to-[#78350f] bg-clip-text text-transparent ${
-                isHi ? 'font-yatra' : 'font-cinzel'
-              }`}>
+              <span className={`text-2xl sm:text-3xl lg:text-4xl font-bold uppercase leading-tight bg-gradient-to-r from-[#d97706] via-[#c28227] to-[#78350f] bg-clip-text text-transparent ${isHi ? 'font-yatra' : 'font-cinzel'
+                }`}>
                 {t('about.headingLine2', isHi ? 'भगवान शिव (गौरीशंकर धाम)' : 'LORD SHIVA')}
               </span>
             </h2>
@@ -107,7 +105,7 @@ export default function AboutSection() {
 
             {/* Bottom 2 Info Cards (Exact Match to Reference UI: Form & Location) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-6 sm:pt-7 relative z-10">
-              
+
               {/* Card 1: Deity / Sacred Form */}
               <div className="bg-[#fffdfa] rounded-xl sm:rounded-2xl border border-[#f0e7d8] p-3.5 sm:p-4 shadow-xs hover:border-[#c28227]/40 transition-colors">
                 <span className="text-[10px] sm:text-[11px] font-bold tracking-widest text-[#b7791f] uppercase block font-sans">

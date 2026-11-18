@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sun, Sunset, Moon, Flame, Clock } from 'lucide-react';
-import templeSunriseBg from '../../assets/home/about-reference-bg.jpg';
-import bgAarti1 from '../../assets/home/herosection-3.png';
-import bgAarti2 from '../../assets/home/sacred_shivling_abhishek.jpg';
-import bgAarti3 from '../../assets/home/sacred_diya_temple_bg.jpg';
+import templeSunriseBg from '../../assets/home/hero-image-2.png';
+import bgAarti1 from '../../assets/home/aarti-image.jpg';
+import bgAarti2 from '../../assets/home/rajbhog-arti.jpg';
+import bgAarti3 from '../../assets/home/aarti-2.png';
 import bgAarti4 from '../../assets/home/upcoming-festival.png';
 
 // Decorative Hanging Golden Temple Bells Component (Exact Match to Reference UI)
@@ -126,10 +126,10 @@ export default function MandirScheduleSection() {
       <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#c28227_1px,transparent_1px)] [background-size:24px_24px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center flex flex-col items-center mb-10 sm:mb-12">
-          
+
           {/* Top Chant: — ❖ ॥ Har Har Mahadev ॥ ❖ — */}
           <div className="flex items-center gap-2 text-[#842c2b] text-xs sm:text-[13px] font-hindi tracking-widest mb-1.5 font-semibold">
             <span className="w-6 sm:w-10 h-[1px] bg-[#c28227]/60" />
@@ -141,9 +141,8 @@ export default function MandirScheduleSection() {
 
           {/* Section Title */}
           <h2
-            className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#5c1615] tracking-tight drop-shadow-xs ${
-              isHi ? 'font-yatra' : 'font-cinzel'
-            }`}
+            className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#5c1615] tracking-tight drop-shadow-xs ${isHi ? 'font-yatra' : 'font-cinzel'
+              }`}
           >
             {t('mandirSchedule.title', isHi ? 'आरती एवं मंदिर समय' : 'Aarti & Temple Timings')}
           </h2>
@@ -154,7 +153,7 @@ export default function MandirScheduleSection() {
               <span className="w-10 sm:w-16 h-[1.5px] bg-gradient-to-r from-transparent to-[#c28227]" />
               <span className="text-[10px]">❖</span>
             </div>
-            
+
             {/* Sacred Trishul Symbol */}
             <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 text-[#c28227] fill-current drop-shadow-xs">
               <path d="M12 2L10 6H14L12 2Z" />
@@ -182,11 +181,11 @@ export default function MandirScheduleSection() {
 
         {/* 2-Column Main Schedule Grid (Matching Exact Reference Layout) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
-          
+
           {/* Left Column: Temple Hours Card (Maroon Gradient + Sunrise Temple Spire Image) */}
           <div className="lg:col-span-5 flex">
             <div className="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#dca64d]/60 shadow-xl flex flex-col justify-between p-6 sm:p-7 lg:p-8 text-white group min-h-[380px] sm:min-h-[420px]">
-              
+
               {/* Background Temple Sunrise Image on Right */}
               <img
                 src={templeSunriseBg}
@@ -211,9 +210,8 @@ export default function MandirScheduleSection() {
               {/* Card Header Content */}
               <div className="relative z-10">
                 <h3
-                  className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-100 tracking-wide drop-shadow-sm ${
-                    isHi ? 'font-yatra' : 'font-cinzel'
-                  }`}
+                  className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-100 tracking-wide drop-shadow-sm ${isHi ? 'font-yatra' : 'font-cinzel'
+                    }`}
                 >
                   {t('mandirSchedule.hoursTitle', isHi ? 'मंदिर दर्शन समय' : 'Temple Hours')}
                 </h3>
@@ -234,7 +232,7 @@ export default function MandirScheduleSection() {
 
               {/* Timings List */}
               <div className="relative z-10 space-y-4 sm:space-y-5 my-auto">
-                
+
                 {/* Opening Time Item */}
                 <div className="flex items-center gap-3.5 sm:gap-4">
                   {/* Golden Sun Medallion */}
@@ -309,9 +307,8 @@ export default function MandirScheduleSection() {
 
                     {/* Title */}
                     <h4
-                      className={`text-base sm:text-lg lg:text-xl font-bold text-white drop-shadow-md leading-snug ${
-                        isHi ? 'font-yatra' : 'font-cinzel'
-                      }`}
+                      className={`text-base sm:text-lg lg:text-xl font-bold text-white drop-shadow-md leading-snug ${isHi ? 'font-yatra' : 'font-cinzel'
+                        }`}
                     >
                       {c.title}
                     </h4>

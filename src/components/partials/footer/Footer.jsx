@@ -241,14 +241,25 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar / Copyright */}
-        <div className="border-t border-white/15 pt-6 sm:pt-7 text-center text-xs sm:text-[13px] text-amber-100/90 font-hindi">
-          <p>
+        {/* Bottom Bar / Copyright & Credits */}
+        <div className="border-t border-white/15 pt-6 sm:pt-7 flex flex-col md:flex-row items-center justify-between gap-3 text-xs sm:text-[13px] text-amber-100/90">
+          <p className="font-hindi text-center md:text-left">
             © {currentYear} श्री गौरीशंकर वैकुंठनाथ धाम मंदिर न्यास समिति. All Rights Reserved.
             <span className="mx-2.5 opacity-40 hidden sm:inline">|</span>
             <span className="block sm:inline mt-1 sm:mt-0 text-amber-200 font-semibold">
               हर हर महादेव ॥
             </span>
+          </p>
+          <p className="text-center md:text-right font-sans text-xs text-amber-100/80">
+            Designed and Developed by{' '}
+            <a
+              href="https://filliptechnologies.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#f3ba63] hover:text-white font-semibold transition-colors duration-200 hover:underline"
+            >
+              Fillip Technologies
+            </a>
           </p>
         </div>
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Video, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
-import heroBg1 from '../../assets/home/herosection.png';
-import heroBg2 from '../../assets/home/herosection-2.png';
-import heroBg3 from '../../assets/home/herosection-3.png';
+import heroBg3 from '../../assets/home/hero-image.png';
+import heroBg2 from '../../assets/home/hero-image-2.png';
+import heroBg1 from '../../assets/home/hero-image-3.png';
 
 const slides = [
   { id: 0, image: heroBg1, alt: "Baikunth Dham Aerial Sunset View" },
@@ -47,7 +47,7 @@ export default function Hero() {
 
   return (
     <section id="hero-section" className="relative w-full min-h-[560px] sm:min-h-[78vh] lg:min-h-[82vh] bg-stone-950 text-white overflow-hidden flex flex-col justify-between font-sans">
-      
+
       {/* Background Images: Seamless Dissolve (Zero Black Flash) + Ken Burns Slow Zoom */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {slides.map((slide, index) => {
@@ -55,28 +55,25 @@ export default function Hero() {
           const isPrev = index === prevSlideIndex;
 
           return (
-            <div 
-              key={slide.id} 
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                isCurrent
-                  ? 'opacity-100 z-[2]'
-                  : isPrev
+            <div
+              key={slide.id}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCurrent
+                ? 'opacity-100 z-[2]'
+                : isPrev
                   ? 'opacity-100 z-[1]'
                   : 'opacity-0 z-0 pointer-events-none'
-              }`}
-            >
-              <img 
-                src={slide.image} 
-                alt={slide.alt}
-                className={`w-full h-full object-cover transition-transform duration-[7000ms] ease-out ${
-                  isCurrent || isPrev ? 'scale-105' : 'scale-100'
-                } ${
-                  index === 0 
-                    ? 'object-[82%_20%] sm:object-[center_35%]' 
-                    : index === 1 
-                    ? 'object-center' 
-                    : 'object-[75%_center] sm:object-[center_30%]'
                 }`}
+            >
+              <img
+                src={slide.image}
+                alt={slide.alt}
+                className={`w-full h-full object-cover transition-transform duration-[7000ms] ease-out ${isCurrent || isPrev ? 'scale-105' : 'scale-100'
+                  } ${index === 0
+                    ? 'object-[82%_20%] sm:object-[center_35%]'
+                    : index === 1
+                      ? 'object-center'
+                      : 'object-[75%_center] sm:object-[center_30%]'
+                  }`}
               />
             </div>
           );
@@ -101,14 +98,12 @@ export default function Hero() {
 
           {/* Main Hero Headings */}
           <div className="flex flex-col gap-0.5 sm:gap-2">
-            <h1 className={`text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-md leading-tight sm:whitespace-nowrap ${
-              currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
-            }`}>
+            <h1 className={`text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-md leading-tight sm:whitespace-nowrap ${currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
+              }`}>
               {t('hero.titleLine1')}
             </h1>
-            <h2 className={`text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-md leading-tight sm:whitespace-nowrap ${
-              currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
-            }`}>
+            <h2 className={`text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-md leading-tight sm:whitespace-nowrap ${currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
+              }`}>
               {t('hero.titleLine2')}
             </h2>
           </div>
@@ -141,7 +136,7 @@ export default function Hero() {
       </div>
 
       {/* Manual Chevron Slider Arrows (Hidden on Mobile/Phone) */}
-      <button 
+      <button
         onClick={handlePrevSlide}
         className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full bg-stone-950/50 hover:bg-[#c28227] text-white border border-stone-700 hover:border-[#c28227] transition-all backdrop-blur-sm cursor-pointer hover:scale-110 active:scale-95"
         aria-label="Previous Slide"
@@ -149,7 +144,7 @@ export default function Hero() {
         <ChevronLeft className="w-5 h-5" />
       </button>
 
-      <button 
+      <button
         onClick={handleNextSlide}
         className="hidden sm:flex absolute right-3 lg:right-14 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full bg-stone-950/50 hover:bg-[#c28227] text-white border border-stone-700 hover:border-[#c28227] transition-all backdrop-blur-sm cursor-pointer hover:scale-110 active:scale-95"
         aria-label="Next Slide"
@@ -164,11 +159,10 @@ export default function Hero() {
             key={slide.id}
             onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
-            className={`transition-all duration-300 cursor-pointer ${
-              currentSlideIndex === index
-                ? 'w-3 h-3 rounded-full border-2 border-[#ffd700] bg-[#c28227] shadow-lg shadow-[#c28227]'
-                : 'w-2 h-2 rounded-full bg-white/40 hover:bg-white'
-            }`}
+            className={`transition-all duration-300 cursor-pointer ${currentSlideIndex === index
+              ? 'w-3 h-3 rounded-full border-2 border-[#ffd700] bg-[#c28227] shadow-lg shadow-[#c28227]'
+              : 'w-2 h-2 rounded-full bg-white/40 hover:bg-white'
+              }`}
           />
         ))}
       </div>

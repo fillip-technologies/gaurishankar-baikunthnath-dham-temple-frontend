@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
-import heroBg from '../../../assets/home/herosection-2.png';
+import heroBg from '../../../assets/home/hero-image-3.png';
 
 export default function PoojaAartiHero() {
   const { t, i18n } = useTranslation();
@@ -9,7 +9,7 @@ export default function PoojaAartiHero() {
 
   return (
     <div className="w-full text-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-b-2 border-[#c28227]/40 relative overflow-hidden">
-      
+
       {/* Background Image */}
       <img
         src={heroBg}
@@ -24,7 +24,7 @@ export default function PoojaAartiHero() {
       <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#c28227_1px,transparent_1px)] [background-size:24px_24px] z-15" />
 
       <div className="max-w-6xl mx-auto relative z-20 text-center space-y-4">
-        
+
         {/* Sacred Top Chant */}
         <div className="flex items-center justify-center gap-2 text-[#ffd700] text-xs sm:text-sm font-hindi tracking-widest pt-2">
           <Sparkles className="w-4 h-4 text-amber-400" />

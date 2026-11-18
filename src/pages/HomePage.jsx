@@ -7,6 +7,7 @@ import LiveDarshanSection from '../components/home/LiveDarshanSection';
 import MandirScheduleSection from '../components/home/MandirScheduleSection';
 import QuickLinksSection from '../components/home/QuickLinksSection';
 import DonationSection from '../components/home/DonationSection';
+import AajKaShringar from '../components/darshan/pooja-aarti/AajKaShringar';
 import GallerySection from '../components/home/GallerySection';
 
 export default function HomePage() {
@@ -20,6 +21,7 @@ export default function HomePage() {
       <MandirScheduleSection />
       <QuickLinksSection />
       <DonationSection />
+      <AajKaShringar />
       <GallerySection />
     </main>
   );

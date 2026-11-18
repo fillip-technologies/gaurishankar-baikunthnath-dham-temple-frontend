@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Clock, MapPin, Calendar, ArrowRight } from 'lucide-react';
-import shivlingImg from '../../assets/home/sacred_shivling_abhishek.jpg';
+import shivlingImg from '../../assets/home/events-2.jpg';
 import templeHeroImg from '../../assets/home/about-reference-bg.jpg';
 import diyaImg from '../../assets/home/sacred_diya_temple_bg.jpg';
 import herosection3Img from '../../assets/home/herosection-3.png';
@@ -60,9 +60,9 @@ const EVENTS = [
 
 /* ─── Calendar strip dates — full August 2026 (1–30) ───────────────────── */
 const CALENDAR_DAYS = [
-  { d: 1,  w: 'SAT' }, { d: 2,  w: 'SUN' }, { d: 3,  w: 'MON' },
-  { d: 4,  w: 'TUE' }, { d: 5,  w: 'WED' }, { d: 6,  w: 'THU' },
-  { d: 7,  w: 'FRI' }, { d: 8,  w: 'SAT' }, { d: 9,  w: 'SUN' },
+  { d: 1, w: 'SAT' }, { d: 2, w: 'SUN' }, { d: 3, w: 'MON' },
+  { d: 4, w: 'TUE' }, { d: 5, w: 'WED' }, { d: 6, w: 'THU' },
+  { d: 7, w: 'FRI' }, { d: 8, w: 'SAT' }, { d: 9, w: 'SUN' },
   { d: 10, w: 'MON' }, { d: 11, w: 'TUE' }, { d: 12, w: 'WED' },
   { d: 13, w: 'THU' }, { d: 14, w: 'FRI' }, { d: 15, w: 'SAT' },
   { d: 16, w: 'SUN' }, { d: 17, w: 'MON' }, { d: 18, w: 'TUE' },
@@ -161,13 +161,6 @@ export default function UpcomingEvents() {
                 <div className="text-[9px] sm:text-[10px] opacity-70 mt-0.5">{activeEvent.year}</div>
               </div>
 
-              {/* Icon overlay */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white/30 backdrop-blur-sm bg-white/10 flex items-center justify-center text-xl sm:text-2xl shadow-sm">
-                  {activeEvent.icon}
-                </div>
-              </div>
-
               {/* Prev/Next */}
               <button
                 onClick={goPrev}
@@ -260,15 +253,14 @@ export default function UpcomingEvents() {
                       const idx = EVENTS.findIndex((e) => parseInt(e.day, 10) === d);
                       if (idx !== -1) setActiveIndex(idx);
                     }}
-                    className={`flex flex-col items-center justify-center w-8 sm:w-9 h-10 sm:h-11 rounded-lg transition-all shrink-0 cursor-pointer ${
-                      isActive
-                        ? 'bg-[#8b1a1a] text-white shadow-md'
-                        : isEvent
+                    className={`flex flex-col items-center justify-center w-8 sm:w-9 h-10 sm:h-11 rounded-lg transition-all shrink-0 cursor-pointer ${isActive
+                      ? 'bg-[#8b1a1a] text-white shadow-md'
+                      : isEvent
                         ? 'bg-amber-100 text-[#8b1a1a] border border-amber-300'
                         : w === 'SUN'
-                        ? 'text-red-400 hover:bg-stone-100'
-                        : 'text-stone-600 hover:bg-stone-100'
-                    }`}
+                          ? 'text-red-400 hover:bg-stone-100'
+                          : 'text-stone-600 hover:bg-stone-100'
+                      }`}
                     aria-label={`${d} ${w}`}
                   >
                     <span className="text-[11px] font-bold leading-none">{d < 10 ? `0${d}` : d}</span>
@@ -303,9 +295,8 @@ export default function UpcomingEvents() {
             <button
               key={event.id}
               onClick={() => setActiveIndex(idx)}
-              className={`text-left rounded-xl overflow-hidden shadow-sm border transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group bg-white ${
-                activeIndex === idx ? 'ring-2 ring-[#8b1a1a] border-[#8b1a1a]' : 'border-stone-200'
-              }`}
+              className={`text-left rounded-xl overflow-hidden shadow-sm border transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group bg-white ${activeIndex === idx ? 'ring-2 ring-[#8b1a1a] border-[#8b1a1a]' : 'border-stone-200'
+                }`}
             >
               <div className="relative h-24 sm:h-36 overflow-hidden">
                 <img
@@ -339,9 +330,8 @@ export default function UpcomingEvents() {
                   </div>
                 </div>
                 <div className="mt-2 flex justify-end">
-                  <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-white transition-all ${
-                    activeIndex === idx ? 'bg-[#8b1a1a]' : 'bg-stone-200 group-hover:bg-[#8b1a1a]'
-                  }`}>
+                  <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-white transition-all ${activeIndex === idx ? 'bg-[#8b1a1a]' : 'bg-stone-200 group-hover:bg-[#8b1a1a]'
+                    }`}>
                     <ChevronRight className="w-3 h-3" />
                   </div>
                 </div>

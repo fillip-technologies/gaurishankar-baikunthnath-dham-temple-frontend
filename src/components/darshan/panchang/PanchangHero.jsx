@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Calendar, MapPin, Sparkles, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
-import heroBg from '../../../assets/home/herosection-2.png';
+import heroBg from '../../../assets/home/hero-image-2.png';
 import { SACRED_CITIES, formatFullDate } from './panchangUtils';
 
 export default function PanchangHero({ selectedDate, setSelectedDate, selectedCity, setSelectedCity }) {
@@ -50,7 +50,7 @@ export default function PanchangHero({ selectedDate, setSelectedDate, selectedCi
       <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#c28227_1px,transparent_1px)] [background-size:24px_24px] z-15" />
 
       <div className="max-w-6xl mx-auto relative z-20 space-y-6">
-        
+
         {/* Sacred Top Chant */}
         <div className="flex items-center justify-center gap-2 text-[#ffd700] text-xs sm:text-sm font-hindi tracking-widest text-center">
           <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
@@ -72,7 +72,7 @@ export default function PanchangHero({ selectedDate, setSelectedDate, selectedCi
         {/* Interactive Control Panel: Date Selector & Location Picker */}
         <div className="bg-white/95 backdrop-blur-md text-stone-900 border border-amber-200/80 rounded-2xl p-4 sm:p-6 shadow-2xl max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-            
+
             {/* Date Navigation & Picker (7 cols) */}
             <div className="md:col-span-7 space-y-2">
               <label className="text-[11px] sm:text-xs font-bold tracking-wider text-[#c28227] uppercase flex items-center gap-1.5 font-sans">
@@ -113,11 +113,10 @@ export default function PanchangHero({ selectedDate, setSelectedDate, selectedCi
                 <button
                   type="button"
                   onClick={setToday}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition border cursor-pointer ${
-                    isToday
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition border cursor-pointer ${isToday
                       ? 'bg-[#c28227] text-white border-[#c28227] shadow-sm'
                       : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'
-                  }`}
+                    }`}
                 >
                   {t('panchangPage.today', 'Today')}
                 </button>

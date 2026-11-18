@@ -136,6 +136,7 @@ export default function AajKaShringar() {
             <img
               src={shringarData.image}
               alt={shringarData.title}
+              onError={(e) => { e.currentTarget.src = todayShringarImg; }}
               className="w-full h-full object-cover object-center max-h-[520px] transition-transform duration-700 group-hover:scale-105"
             />
             
@@ -266,6 +267,7 @@ export default function AajKaShringar() {
             <img
               src={shringarData.image}
               alt={shringarData.title}
+              onError={(e) => { e.currentTarget.src = todayShringarImg; }}
               className="w-full h-full object-contain max-h-[80vh]"
             />
             <div className="bg-stone-900/90 text-white p-3 text-center text-xs">
