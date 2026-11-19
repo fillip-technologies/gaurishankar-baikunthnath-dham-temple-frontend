@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Gift } from 'lucide-react';
-import heroBg from '../../../assets/home/herosection.png';
+import heroBg from '../../../assets/home/hero-image-3.png';
 
 export default function PrasadBookingHero() {
   const { i18n } = useTranslation();

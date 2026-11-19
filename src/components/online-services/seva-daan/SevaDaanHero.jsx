@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flame } from 'lucide-react';
-import heroBg from '../../../assets/home/herosection-2.png';
+import heroBg from '../../../assets/home/hero-image-3.png';
 
 export default function SevaDaanHero() {
   const { i18n } = useTranslation();

@@ -179,14 +179,15 @@ export default function Footer() {
             <div className="w-full max-w-[280px] sm:max-w-[310px] rounded-xl overflow-hidden border border-white/20 shadow-lg bg-stone-900/60 relative group">
               <iframe
                 title="Shree Gaurishankar Baikunthnath Dham Temple Location"
-                src="https://maps.google.com/maps?q=Baikathpur%20Patna%20Bihar%20Gaurishankar%20Mandir&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3258.9538458369666!2d85.37576399999999!3d25.496333000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f29c754d05fa47%3A0x836e96c933cd8748!2sShri%20GauriShankar%20BaikunthDham%20Mandir!5e1!3m2!1sen!2sin!4v1795063483345!5m2!1sen!2sin"
                 className="w-full h-28 sm:h-32 border-0 block"
                 loading="lazy"
                 allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
+                referrerPolicy="strict-origin-when-cross-origin"
+                style={{ border: 0 }}
               />
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Shree+Gaurishankar+Baikunthnath+Dham+Temple+Baikathpur+Patna"
+                href="https://www.google.com/maps/place/Shri+GauriShankar+BaikunthDham+Mandir/@25.496333,85.375764,17z"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="absolute top-2 left-2 bg-white/95 hover:bg-white text-blue-700 hover:text-blue-800 text-[10px] font-medium px-2 py-0.5 rounded shadow-sm transition-colors flex items-center gap-1 border border-stone-200"

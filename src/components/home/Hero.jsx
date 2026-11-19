@@ -67,57 +67,55 @@ export default function Hero() {
               <img
                 src={slide.image}
                 alt={slide.alt}
-                className={`w-full h-full object-cover transition-transform duration-[7000ms] ease-out ${isCurrent || isPrev ? 'scale-105' : 'scale-100'
-                  } ${index === 0
-                    ? 'object-[82%_20%] sm:object-[center_35%]'
-                    : index === 1
-                      ? 'object-center'
-                      : 'object-[75%_center] sm:object-[center_30%]'
-                  }`}
+                className={`w-full h-full object-cover object-center transition-transform duration-[7000ms] ease-out ${
+                  isCurrent || isPrev ? 'scale-105' : 'scale-100'
+                }`}
               />
             </div>
           );
         })}
       </div>
 
-      {/* Responsive Gradient Overlays - Crisp Visibility for Temple & Sunset at Bottom */}
+      {/* Responsive Gradient Overlays - Crisp Visibility for Temple & Text */}
       <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-950/40 via-60% to-transparent pointer-events-none z-10 hidden sm:block" />
-      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/30 via-50% to-transparent pointer-events-none z-10 sm:hidden" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/20 pointer-events-none z-10 hidden sm:block" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none z-10 hidden sm:block" />
+      <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/75 via-55% to-stone-950/25 pointer-events-none z-10 sm:hidden" />
 
       {/* Content Container */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 w-full pb-12 sm:pb-16 lg:pb-20 pt-32 sm:pt-16 mt-auto sm:my-auto flex flex-col justify-end sm:justify-center">
-        <div className="max-w-2xl flex flex-col items-start gap-1.5 sm:gap-5">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 w-full pb-8 sm:pb-16 lg:pb-20 pt-20 sm:pt-16 mt-auto sm:my-auto flex flex-col justify-end sm:justify-center">
+        <div className="max-w-2xl flex flex-col items-start gap-2 sm:gap-5">
 
           {/* Sacred Chant above Main Heading */}
           <div className="flex items-center gap-1.5 sm:gap-3 text-[#ffd700] text-xs sm:text-lg font-mantra tracking-widest">
             <span className="w-4 sm:w-12 h-[1px] bg-gradient-to-r from-transparent to-[#c28227]" />
-            <span className="drop-shadow">{t('hero.chant')}</span>
+            <span className="drop-shadow-md">{t('hero.chant')}</span>
             <span className="w-4 sm:w-12 h-[1px] bg-gradient-to-l from-transparent to-[#c28227]" />
           </div>
 
           {/* Main Hero Headings */}
           <div className="flex flex-col gap-0.5 sm:gap-2">
-            <h1 className={`text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-md leading-tight sm:whitespace-nowrap ${currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
-              }`}>
+            <h1 className={`text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-lg leading-tight ${
+              currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
+            }`}>
               {t('hero.titleLine1')}
             </h1>
-            <h2 className={`text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-md leading-tight sm:whitespace-nowrap ${currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
-              }`}>
+            <h2 className={`text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal gold-gradient-text drop-shadow-lg leading-tight ${
+              currentLang === 'hi' ? 'font-yatra' : 'font-cinzel'
+            }`}>
               {t('hero.titleLine2')}
             </h2>
           </div>
 
           {/* Description */}
-          <p className="text-stone-200/90 text-[11.5px] sm:text-base lg:text-lg max-w-xl font-light leading-relaxed drop-shadow mt-0.5">
+          <p className="text-stone-200 text-xs sm:text-base lg:text-lg max-w-xl font-normal leading-relaxed drop-shadow mt-0.5">
             {t('hero.desc')}
           </p>
 
           {/* Action Buttons: Single Row on Phone + Positioned at Bottom */}
-          <div className="flex flex-row items-center gap-2 sm:gap-3.5 pt-2 sm:pt-4 w-full sm:w-auto">
+          <div className="flex flex-row items-center gap-2.5 sm:gap-3.5 pt-2 sm:pt-4 w-full sm:w-auto">
             <a
               href="#live-darshan"
-              className="flex-1 sm:flex-initial bg-[#c28227] hover:bg-[#a66d1e] text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded font-semibold text-[10.5px] sm:text-xs tracking-wider uppercase shadow-md transition-all duration-200 flex items-center justify-center gap-1.5 group"
+              className="flex-1 sm:flex-initial bg-[#c28227] hover:bg-[#a66d1e] text-white px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-xs tracking-wider uppercase shadow-md transition-all duration-200 flex items-center justify-center gap-1.5 active:scale-95 group"
             >
               <Video className="w-3.5 h-3.5 text-white group-hover:scale-110 transition-transform shrink-0" />
               <span className="whitespace-nowrap">{t('hero.liveDarshan')}</span>
@@ -125,7 +123,7 @@ export default function Hero() {
 
             <a
               href="#donate"
-              className="flex-1 sm:flex-initial border border-[#c28227] bg-stone-950/60 hover:bg-[#c28227]/20 backdrop-blur-md text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded font-semibold text-[10.5px] sm:text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5"
+              className="flex-1 sm:flex-initial border border-[#c28227] bg-stone-950/70 hover:bg-[#c28227]/20 backdrop-blur-md text-white px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 active:scale-95 shadow-md"
             >
               <Heart className="w-3.5 h-3.5 text-[#ffd700] shrink-0" />
               <span className="whitespace-nowrap">{t('hero.donate')}</span>
